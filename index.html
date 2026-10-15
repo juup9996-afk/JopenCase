@@ -560,6 +560,8 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 /* Cases verstecken */
 .hid-list{display:flex;flex-direction:column;gap:8px;max-height:44vh;overflow-y:auto}
 .hid-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface-2)}
+.hid-btn{gap:6px;margin-top:10px;align-self:flex-start;opacity:.85}
+.hid-row.is-hid{border-color:var(--accent)}
 .hid-n{display:flex;flex-direction:column;min-width:0}
 .hid-n b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .hid-n small{color:var(--muted);font:400 11px var(--mono)}
@@ -1218,6 +1220,7 @@ body.skin-edit .stage{padding-bottom:54vh}
             ${cs.builtin ? `<small class="muted">${q.free ? 'Gratis, solange noch frei. Sonst ' + fmtTok(cs.price) + '.' : 'Normaler Preis ' + fmtTok(cs.price) + '.'}</small>` : ''}</div>
           ${cs.builtin ? `<div class="free-clock${q.free ? ' ok' : ''}"><span class="fc-ico" aria-hidden="true">⏱</span><span data-free="case">${esc(freeText())}</span></div>` : ''}
           <button class="btn primary" data-act="opencase" data-id="${cs.id}" ${cs.cards.length ? '' : 'disabled'}>${q.free ? 'Gratis öffnen' : `Case öffnen · ${fmtTok(q.cost)}`}</button>
+          ${cs.builtin ? '' : `<button class="btn small hid-btn" data-act="hidthis" data-id="${cs.id}"><span aria-hidden="true">🙈</span> Case verstecken</button>`}
         </div>
       </div>
       <section>
@@ -3444,7 +3447,6 @@ body.skin-edit .stage{padding-bottom:54vh}
     const i = $('#cheat-code');
     if (!i) return;
     if (i.value.trim() === CHEAT_CODE) { SFX.play('pop'); cheatMenu(); return; }
-    if (hidTry(i.value)) { SFX.play('pop'); return; }
     const box = $('#dlg .dlg-box');
     $('#cheat-msg').textContent = 'Falscher Code.';
     box.classList.remove('bad'); void box.offsetWidth; box.classList.add('bad');
@@ -4456,50 +4458,18 @@ body.skin-edit .stage{padding-bottom:54vh}
   window.__JB_MUSIC = { render: MUSIC.render, state: MUSIC.state, steps: MUSIC.STEPS };
   // ================= Cases verstecken =================
   // Ein verstecktes Case taucht nirgends mehr auf (Home, Case, Inventar, Sammlung, Community, Gacha, Widgets).
-  // Zum Verstecken: Cheat-Menue (Code 6906). Zum Zeigen: im Cheat-Fenster statt 6906 den eigenen Versteck-Code eingeben.
-  // Der Code wird nur als Pruefwert gespeichert (SHA-256, tausendfach wiederholt, mit Salz). Das ist ein Sichtschutz, kein Tresor.
-  const sha256 = (() => {
-    const K = [], H0 = [];
-    const isP = n => { for (let i = 2; i * i <= n; i++) if (n % i === 0) return false; return true; };
-    for (let c = 2, n = 0; n < 64; c++) if (isP(c)) { if (n < 8) H0[n] = ((Math.pow(c, 0.5) % 1) * 4294967296) | 0; K[n++] = ((Math.pow(c, 1 / 3) % 1) * 4294967296) | 0; }
-    const utf8 = s => Array.from(unescape(encodeURIComponent(s)), ch => ch.charCodeAt(0));
-    return function sha256(str) {
-      const b = utf8(String(str)), l = b.length;
-      b.push(0x80); while (b.length % 64 !== 56) b.push(0);
-      const hi = Math.floor(l * 8 / 4294967296), lo = (l * 8) >>> 0;
-      b.push(hi >>> 24 & 255, hi >>> 16 & 255, hi >>> 8 & 255, hi & 255, lo >>> 24 & 255, lo >>> 16 & 255, lo >>> 8 & 255, lo & 255);
-      const h = H0.slice(), w = new Array(64);
-      for (let o = 0; o < b.length; o += 64) {
-        for (let i = 0; i < 16; i++) w[i] = (b[o + i * 4] << 24) | (b[o + i * 4 + 1] << 16) | (b[o + i * 4 + 2] << 8) | b[o + i * 4 + 3];
-        for (let i = 16; i < 64; i++) {
-          const a = w[i - 15], c = w[i - 2];
-          const s0 = ((a >>> 7) | (a << 25)) ^ ((a >>> 18) | (a << 14)) ^ (a >>> 3), s1 = ((c >>> 17) | (c << 15)) ^ ((c >>> 19) | (c << 13)) ^ (c >>> 10);
-          w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
-        }
-        let [a, bb, c, d, e, f, g, hh] = h;
-        for (let i = 0; i < 64; i++) {
-          const S1 = ((e >>> 6) | (e << 26)) ^ ((e >>> 11) | (e << 21)) ^ ((e >>> 25) | (e << 7)), ch = (e & f) ^ (~e & g), t1 = (hh + S1 + ch + K[i] + w[i]) | 0;
-          const S0 = ((a >>> 2) | (a << 30)) ^ ((a >>> 13) | (a << 19)) ^ ((a >>> 22) | (a << 10)), mj = (a & bb) ^ (a & c) ^ (bb & c), t2 = (S0 + mj) | 0;
-          hh = g; g = f; f = e; e = (d + t1) | 0; d = c; c = bb; bb = a; a = (t1 + t2) | 0;
-        }
-        h[0] = (h[0] + a) | 0; h[1] = (h[1] + bb) | 0; h[2] = (h[2] + c) | 0; h[3] = (h[3] + d) | 0; h[4] = (h[4] + e) | 0; h[5] = (h[5] + f) | 0; h[6] = (h[6] + g) | 0; h[7] = (h[7] + hh) | 0;
-      }
-      return h.map(x => (x >>> 0).toString(16).padStart(8, '0')).join('');
-    };
-  })();
-  const HID_ROUNDS = 12000;
-  const hidHash = (code, salt) => { let x = salt + ':' + code; for (let i = 0; i < HID_ROUNDS; i++) x = sha256(x + salt); return x; };
-  const HID = { open: false, arm: null, view: 'add', after: 'add' };   // open: bis zum Neuladen sichtbar
+  // Verstecken: im Reiter Case ("Case verstecken") oder im Cheat-Menue (Code 6906) -> "Verstecke Cases".
+  // Zurueckholen: nur im Cheat-Menue (Code 6906) -> "Verstecke Cases" -> "Zeigen". Das ist ein Sichtschutz, kein Tresor.
+  const HID = { open: false };   // open: alle bis zum Neuladen sichtbar
 
-  function hidMeta() {
+  function hidMeta(create) {
     let m = S.meta.hid;
-    if (!m || typeof m !== 'object') return null;
-    if (!/^[0-9a-f]{64}$/.test(String(m.h)) || typeof m.s !== 'string' || !m.s) { delete S.meta.hid; return null; }
+    if (!m || typeof m !== 'object') { if (!create) return null; m = S.meta.hid = { ids: [] }; }
     if (!Array.isArray(m.ids)) m.ids = [];
+    if ('h' in m || 's' in m) { delete m.h; delete m.s; }   // alter Versteck-Code ist abgeschafft
     return m;
   }
   function isHid(id) { if (HID.open) return false; const m = S.meta.hid; return !!(m && Array.isArray(m.ids) && m.ids.indexOf(id) >= 0); }
-  const hidCount = () => { const m = hidMeta(); return m ? m.ids.filter(id => caseById(id)).length : 0; };
   const hidCandidates = () => S.cases.filter(c => !c.builtin);
   function hidForget(id) {   // alle Merker auf ein Case loesen, das gerade verschwindet
     if (UI.caseId === id) UI.caseId = null;
@@ -4507,98 +4477,50 @@ body.skin-edit .stage{padding-bottom:54vh}
     if (typeof GA !== 'undefined' && GA.caseId === id) GA.caseId = null;
   }
   const hidSet = (id, on) => {
-    const m = hidMeta(); if (!m) return;
+    const m = hidMeta(on); if (!m) return;
     const has = m.ids.indexOf(id) >= 0;
     if (on && !has) { m.ids.push(id); hidForget(id); } else if (!on && has) m.ids = m.ids.filter(x => x !== id);
     saveMeta(true);
   };
-  const hidRows = (list, hiddenNow) => list.length ? list.map(cs => `<div class="hid-row"><span class="hid-n"><b>${esc(cs.name)}</b><small>${cs.cards.length} Karten</small></span><button class="btn small${hiddenNow(cs) ? '' : ' primary'}" data-act="${hiddenNow(cs) ? 'hidshow' : 'hidhide'}" data-id="${cs.id}">${hiddenNow(cs) ? 'Zeigen' : 'Verstecken'}</button></div>`).join('') : '<p class="note" style="max-width:none">Du hast noch kein eigenes Case. Erstelle erst eins unter Community.</p>';
+  const hidIsMarked = id => { const m = hidMeta(); return !!(m && m.ids.indexOf(id) >= 0); };
 
-  // ---- Code festlegen ----
-  function hidSetup(next) {
-    HID.after = next || 'add';
-    dlg(`<h3>Versteck-Code festlegen</h3>
-      <p class="note" style="max-width:none">Mit diesem Code holst du versteckte Cases zurück: Im Cheat-Fenster gibst du ihn statt 6906 ein. <b>Merk ihn dir gut, es gibt keine Wiederherstellung.</b></p>
-      <label class="field"><span>Code (mindestens 4 Zeichen)</span><input type="password" id="hid-c1" autocomplete="off" maxlength="40"></label>
-      <label class="field"><span>Code wiederholen</span><input type="password" id="hid-c2" autocomplete="off" maxlength="40"></label>
-      <p class="note" id="hid-msg" style="min-height:1.3em"></p>
-      <div class="row"><button class="btn" data-act="hidback">Abbrechen</button><button class="btn primary" data-act="hidsave">Speichern</button></div>`);
-    setTimeout(() => { const i = $('#hid-c1'); if (i) i.focus(); }, 60);
-  }
-  ACTS.hidsave = () => {
-    const a = ($('#hid-c1') || {}).value.trim(), b = ($('#hid-c2') || {}).value.trim(), msg = $('#hid-msg');
-    const err = a.length < 4 ? 'Der Code braucht mindestens 4 Zeichen.' : a !== b ? 'Die beiden Eingaben sind nicht gleich.' : a === CHEAT_CODE ? 'Wähle einen anderen Code als den Cheat-Code.' : '';
-    if (err) { msg.textContent = err; SFX.play('err'); return; }
-    busy('Code wird gesichert …');
-    setTimeout(() => {
-      const s = uid(12), old = hidMeta();
-      S.meta.hid = { s, h: hidHash(a, s), ids: old ? old.ids : [] };
-      saveMeta(true); busy(null); SFX.play('pop');
-      if (HID.after === 'manage') hidManage(); else hidAdd();
-    }, 30);
+  // ---- Reiter Case: Knopf "Case verstecken" ----
+  ACTS.hidthis = id => {
+    const cs = caseById(id); if (!cs || cs.builtin) return;
+    hidSet(id, true); SFX.play('pop'); toast(`${cs.name} ist jetzt versteckt.`); refresh();
   };
-  ACTS.hidback = () => { if (HID.after === 'manage') hidManage(); else cheatMenu(); };
 
-  // ---- Cheat-Menue (6906): Cases verstecken. Zeigt nur sichtbare Cases ----
-  function hidAdd() {
-    if (!hidMeta()) { hidSetup('add'); return; }
-    HID.view = 'add';
-    const list = hidCandidates().filter(c => !isHid(c.id));
-    dlg(`<h3>Cases verstecken</h3>
-      <p class="note" style="max-width:none">Ein verstecktes Case verschwindet überall in der App, auch aus der Sammlung. Zurückholen: im Cheat-Fenster statt 6906 deinen Versteck-Code eingeben.</p>
-      <div class="hid-list">${hidRows(list, () => false)}</div>
+  // ---- Cheat-Menue (6906): Knopf "Verstecke Cases" ----
+  const hidRows = list => list.length
+    ? list.map(cs => { const h = hidIsMarked(cs.id); return `<div class="hid-row${h ? ' is-hid' : ''}"><span class="hid-n"><b>${esc(cs.name)}</b><small>${cs.cards.length} Karten · ${h ? 'versteckt' : 'sichtbar'}</small></span><button class="btn small${h ? ' primary' : ''}" data-act="${h ? 'hidshow' : 'hidhide'}" data-id="${cs.id}">${h ? 'Wieder zeigen' : 'Verstecken'}</button></div>`; }).join('')
+    : '<p class="note" style="max-width:none">Du hast noch kein eigenes Case. Erstelle erst eins unter Community.</p>';
+  function hidManage() {
+    const list = hidCandidates().slice().sort((a, b) => (hidIsMarked(b.id) - hidIsMarked(a.id)) || a.created - b.created);
+    const n = list.filter(c => hidIsMarked(c.id)).length;
+    dlg(`<h3>Verstecke Cases</h3>
+      <p class="note" style="max-width:none">${n ? `${n} Case${n === 1 ? ' ist' : 's sind'} versteckt.` : 'Im Moment ist kein Case versteckt.'} ${HID.open ? '<b>Alle sind bis zum Neuladen sichtbar.</b>' : 'Verstecken kannst du auch im Reiter Case.'}</p>
+      <div class="hid-list">${hidRows(list)}</div>
+      ${n ? `<div class="row"><button class="btn small${HID.open ? ' primary' : ''}" data-act="hidopen">${HID.open ? 'Wieder verstecken' : 'Alle bis Neuladen anzeigen'}</button></div>` : ''}
       <p class="note" style="max-width:none">Das ist ein Sichtschutz für neugierige Blicke. Die Daten liegen weiter in diesem Browser und in Sicherungen.</p>
       <button class="btn" data-act="hidmenuback">Zurück</button>`);
   }
   ACTS.hidmenuback = () => cheatMenu();
-  ACTS.hidhide = id => {
-    if (!hidMeta()) return;
-    const cs = caseById(id); if (!cs) return;
-    hidSet(id, true); SFX.play('pop'); toast(`${cs.name} ist jetzt versteckt.`); refresh();
-    if (HID.view === 'manage') hidManage(); else hidAdd();
-  };
-
-  // ---- Versteck-Code im Cheat-Fenster eingegeben: verwalten ----
-  function hidTry(code) {
-    const m = hidMeta();
-    if (!m) return false;
-    code = String(code || '').trim();
-    if (code.length < 4 || hidHash(code, m.s) !== m.h) return false;
-    hidManage();
-    return true;
-  }
-  function hidManage() {
-    const m = hidMeta();
-    if (!m) { closeDlg(); return; }
-    HID.view = 'manage';
-    const list = hidCandidates(), isH = id => m.ids.indexOf(id) >= 0, n = list.filter(c => isH(c.id)).length;
-    dlg(`<h3>Versteckte Cases verwalten</h3>
-      <p class="note" style="max-width:none">${n ? `${n} Case${n === 1 ? ' ist' : 's sind'} versteckt.` : 'Im Moment ist kein Case versteckt.'} ${HID.open ? 'Alle sind bis zum Neuladen sichtbar.' : ''}</p>
-      <div class="hid-list">${hidRows(list, c => isH(c.id))}</div>
-      <div class="row"><button class="btn small${HID.open ? '' : ' primary'}" data-act="hidopen">${HID.open ? 'Wieder verstecken' : 'Alle bis Neuladen anzeigen'}</button></div>
-      <div class="row"><button class="btn small" data-act="hidchange">Code ändern</button><button class="btn small danger" data-act="hidremove">${HID.arm === 'remove' ? 'Wirklich? Alle zeigen' : 'Schutz entfernen'}</button></div>
-      <button class="btn" data-act="dlgclose">Schließen</button>`);
-  }
+  ACTS.hidhide = id => { const cs = caseById(id); if (!cs || cs.builtin) return; hidSet(id, true); SFX.play('pop'); toast(`${cs.name} ist jetzt versteckt.`); refresh(); hidManage(); };
   ACTS.hidshow = id => { const cs = caseById(id); hidSet(id, false); SFX.play('pop'); if (cs) toast(`${cs.name} ist wieder sichtbar.`); refresh(); hidManage(); };
   ACTS.hidopen = () => { HID.open = !HID.open; SFX.play('pop'); refresh(); hidManage(); };
-  ACTS.hidchange = () => hidSetup('manage');
-  ACTS.hidremove = () => {
-    if (HID.arm !== 'remove') { HID.arm = 'remove'; hidManage(); setTimeout(() => { if (HID.arm === 'remove') { HID.arm = null; if (HID.view === 'manage' && !$('#dlg').hidden && $('#dlg .hid-list')) hidManage(); } }, 4000); return; }
-    HID.arm = null; delete S.meta.hid; HID.open = false; saveMeta(true); SFX.play('back'); toast('Der Schutz ist entfernt, alle Cases sind sichtbar.'); closeDlg(); refresh();
-  };
-  CHEAT_EXTRA.push({ label: 'Cases verstecken', fn: hidAdd });
+  CHEAT_EXTRA.push({ label: 'Verstecke Cases', fn: hidManage });
 
   // ---- Sicherung ----
-  const hidExport = () => { const m = hidMeta(); return m ? { s: m.s, h: m.h, ids: m.ids.slice() } : null; };
+  const hidExport = () => { const m = hidMeta(); return m && m.ids.length ? { ids: m.ids.slice() } : null; };
   function hidImport(w, idMap) {
-    if (!w || typeof w !== 'object' || !/^[0-9a-f]{64}$/.test(String(w.h)) || typeof w.s !== 'string' || !w.s || !Array.isArray(w.ids)) return;
+    if (!w || typeof w !== 'object' || !Array.isArray(w.ids)) return;
     const ids = w.ids.map(id => (idMap && idMap[id]) || null).filter(Boolean);
-    let m = hidMeta();
-    if (!m) m = S.meta.hid = { s: w.s, h: w.h, ids: [] };
+    if (!ids.length) return;
+    const m = hidMeta(true);
     ids.forEach(id => { if (m.ids.indexOf(id) < 0) m.ids.push(id); });
     saveMeta(true);
   }
-  window.__JB_HID = { sha256, hash: hidHash, isHid: id => isHid(id) };
+  window.__JB_HID = { isHid: id => isHid(id) };
   // ================= Home: Widgets =================
   // Der Home-Bildschirm besteht aus Widgets in einem Raster mit zwei Spalten. Jedes Widget ist halb oder ganz breit.
   const HOME_MAX = 24;
