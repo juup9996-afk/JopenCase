@@ -37,7 +37,7 @@ h3{font:400 24px/1.1 var(--display)}
 .note{color:var(--muted);font-size:13px;max-width:46ch}
 
 /* Rahmen */
-.app{height:100%;display:flex;flex-direction:column}
+.app{height:100%;display:flex;flex-direction:column;position:relative;z-index:1}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
 .brand{font:400 27px/1 var(--display);letter-spacing:.01em;white-space:nowrap}
 .stats{font:400 13px/1.15 var(--mono);color:var(--muted);text-align:right;white-space:nowrap;display:flex;flex-direction:column;align-items:flex-end}
@@ -53,8 +53,8 @@ h3{font:400 24px/1.1 var(--display)}
 .tabs button[aria-selected=true]{color:var(--fg);box-shadow:inset 0 2px 0 var(--accent)}
 
 /* Bedienelemente */
-.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--surface-2);padding:13px 22px;border-radius:10px;font-weight:600;letter-spacing:.01em;text-align:center}
-.btn.primary{background:var(--accent);color:#1a1608;border-color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--btn,var(--surface-2));color:var(--btn-fg,inherit);padding:13px 22px;border-radius:10px;font-weight:600;letter-spacing:.01em;text-align:center}
+.btn.primary{background:var(--accent);color:var(--on-accent,#1a1608);border-color:transparent}
 .btn.small{padding:9px 14px;font-size:13.5px;font-weight:500}
 .btn.danger{border-color:#6b2f3a;color:#ff9aa8}
 .btn:disabled{opacity:.4;cursor:default}
@@ -188,10 +188,10 @@ summary{cursor:pointer;font-weight:500}
 .cropping{touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none}
 .cropping:active{cursor:grabbing}
 .has-pan{container-type:size}
-.c-art.has-pan img,.t-art.has-pan img{inset:auto;left:50%;top:50%;max-width:none;object-fit:fill;transform-origin:50% 50%;
+.c-art.has-pan img,.t-art.has-pan img,.c-art.has-pan video,.t-art.has-pan video{inset:auto;left:50%;top:50%;max-width:none;object-fit:fill;transform-origin:50% 50%;
   width:max(100cqw,calc(100cqh*var(--ar,1)));height:max(100cqh,calc(100cqw/var(--ar,1)));
   transform:translate(-50%,-50%) translate(calc(var(--tx,0)*1cqw),calc(var(--ty,0)*1cqh)) scale(var(--tz,1))}
-.cropping img{pointer-events:none;will-change:transform}
+.cropping img,.cropping video{pointer-events:none;will-change:transform}
 .cr-guide{position:absolute;inset:0;pointer-events:none;z-index:2;
   background:linear-gradient(90deg,transparent calc(50% - .5px),rgba(255,255,255,.55) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
   linear-gradient(0deg,transparent calc(50% - .5px),rgba(255,255,255,.55) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
@@ -257,7 +257,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .c-name{font:400 9.2cqw/1.05 var(--display);min-width:0;overflow-wrap:anywhere}
 .gem{width:4.6cqw;height:4.6cqw;flex:none;background:var(--rc);transform:rotate(45deg);border-radius:.8cqw;box-shadow:0 0 3cqw var(--rc)}
 .c-art{flex:1;min-height:0;position:relative;overflow:hidden;border-radius:3%/2.4%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);background:#10131b}
-.c-art svg,.c-art img,.t-art svg,.t-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.c-art svg,.c-art img,.t-art svg,.t-art img,.c-art video,.t-art video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .c-foot{display:flex;justify-content:space-between;gap:6px;font:500 4.3cqw/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--rc) 75%,#fff)}
 .holo,.glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
 .glare{background:radial-gradient(farthest-corner circle at var(--mx) var(--my),rgba(255,255,255,.26),transparent 55%);mix-blend-mode:overlay}
@@ -373,7 +373,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
 .seg button{background:none;border:0;padding:11px 6px;font-size:14px;color:var(--muted);font-weight:500}
 .seg button+button{border-left:1px solid var(--line)}
-.seg button[aria-pressed=true]{background:var(--accent);color:#1a1608}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent,#1a1608)}
 :root[data-theme=light] .seg button[aria-pressed=true]{color:#fff}
 .switch{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:11px 14px}
 .switch button{width:46px;height:28px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);position:relative;padding:0;flex:none}
@@ -399,25 +399,25 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 /* Slot */
 .sl-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .sl-head h2{font-size:30px}
-.sl-machine{position:relative;container-type:inline-size;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(ellipse at 50% 15%,#3a2a66,#120d24 72%);padding:3cqw;isolation:isolate;color:#fff}
-.sl-machine.fs-on{box-shadow:0 0 0 2px #b36bff,0 0 30px -4px #b36bffaa}
+.sl-machine{position:relative;container-type:inline-size;border-radius:20px;overflow:hidden;border:2px solid var(--sl-fr,#3a3350);background:radial-gradient(ellipse at 50% 15%,#3a2a66,#120d24 72%);padding:3cqw;isolation:isolate;color:#fff}
+.sl-machine.fs-on{box-shadow:0 0 0 2px var(--fs2,#c14bff),0 0 30px -4px color-mix(in srgb,var(--fs2,#c14bff) 70%,transparent)}
 .sl-bg{position:absolute;inset:0;z-index:-2}
-.sl-bg img,.sl-bg video{width:100%;height:100%;object-fit:cover;display:block}
+.sl-bg{overflow:hidden}
 .sl-dim{position:absolute;inset:0;z-index:-1;background:#000;opacity:var(--dim,.35)}
 .sl-frame{display:flex;flex-direction:column;gap:2.5cqw}
-.sl-fs{display:flex;align-items:center;justify-content:space-between;gap:8px;background:linear-gradient(90deg,#6b3dff,#c14bff);color:#fff;border-radius:10px;padding:6px 12px;font:500 12.5px var(--mono)}
+.sl-fs{display:flex;align-items:center;justify-content:space-between;gap:8px;background:linear-gradient(90deg,var(--fs1,#6b3dff),var(--fs2,#c14bff));color:#fff;border-radius:10px;padding:6px 12px;font:500 12.5px var(--mono)}
 .sl-fs b{letter-spacing:.1em;text-transform:uppercase}
-.sl-fs-won{color:#ffe9a8}
+.sl-fs-won{color:var(--win,#ffe9a8)}
 .sl-reels{position:relative;aspect-ratio:5/4;container-type:size;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1.4cqw}
-.reel{position:relative;overflow:hidden;border-radius:2.4cqw;background:rgba(8,6,20,.66);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 0 3cqw rgba(0,0,0,.6)}
+.reel{position:relative;overflow:hidden;border-radius:2.4cqw;background:var(--sl-rb,rgba(8,6,20,.66));border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 0 3cqw rgba(0,0,0,.6)}
 .reel.spinning .strip{filter:blur(.9px)}
 .strip{will-change:transform}
 .sc{height:25cqh;display:flex;align-items:center;justify-content:center;font-size:min(11cqw,13cqh);line-height:1;transition:opacity .3s,filter .3s}
 .sc span{display:block;line-height:1}
 .sc img{width:78%;height:78%;object-fit:contain;display:block}
-.sc.s8{text-shadow:0 0 .8em #ffd36b}
+.sc.s8{text-shadow:0 0 .8em var(--win,#ffd36b)}
 .sc.s9{filter:drop-shadow(0 0 .35em #c78bff)}
-.sc.hit{animation:hitp .6s ease-in-out infinite alternate;z-index:1;filter:drop-shadow(0 0 .45em #ffd36b)}
+.sc.hit{animation:hitp .6s ease-in-out infinite alternate;z-index:1;filter:drop-shadow(0 0 .45em var(--win,#ffd36b))}
 .sc.dimmed{opacity:.32}
 @keyframes hitp{from{transform:scale(1)}to{transform:scale(1.14)}}
 .sl-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;overflow:visible}
@@ -425,29 +425,28 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .sl-win{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) scale(.6);opacity:0;pointer-events:none;text-align:center;z-index:5;transition:opacity .25s,transform .25s;background:rgba(10,8,24,.82);border:1px solid rgba(255,211,107,.7);border-radius:16px;padding:8px 22px;color:#ffd36b;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);min-width:46%}
 .sl-win.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .sl-win small{display:block;font:500 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#fff}
+.sl-win small.wmx{color:var(--win,#ffd36b);letter-spacing:.1em}
 .sl-win b{display:block;font:400 clamp(26px,9cqw,40px)/1.1 var(--display)}
 .sl-win.big{border-color:#ffd36b;box-shadow:0 0 28px -2px #ffd36bcc}
 .sl-win.mega{border-color:#ff6bd6;box-shadow:0 0 36px 0 #ff6bd6cc;color:#fff}
 .sl-win.scat{border-color:#c78bff;color:#e6c9ff;box-shadow:0 0 28px -2px #b36bffcc}
 .sl-bar{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+@media (max-width:359px){.sl-head{flex-wrap:wrap;gap:6px}.sl-head h2{font-size:26px}.sl-bar{grid-template-columns:1fr 1fr}.sl-bar .sl-bet{grid-column:1/-1;order:3;justify-self:center}.sl-bar .sl-stat:first-child{grid-column:1}.sl-stat b{font-size:15px}}
 .sl-stat small,.sl-bet small{display:block;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .sl-stat b{font:500 16px var(--mono);color:var(--accent)}
 .sl-stat:last-child{text-align:right}
 .sl-bet{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 6px}
-.sl-bet button{width:38px;height:38px;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);font-size:22px;line-height:1;padding:0}
+.sl-bet button{width:38px;height:38px;border-radius:9px;border:1px solid var(--line);background:var(--btn,var(--surface-2));color:var(--btn-fg,inherit);font-size:22px;line-height:1;padding:0}
 .sl-bet button:disabled{opacity:.35}
 .sl-bet div{text-align:center;min-width:74px}
 .sl-bet b{font:500 15px var(--mono)}
 .sl-ctrl{display:flex;align-items:center;justify-content:center;gap:14px}
-.sl-spin{width:104px;height:104px;flex:none;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#ffe9a8,var(--accent) 60%,#a98a3a);color:#1a1608;font:700 13px var(--body);letter-spacing:.06em;box-shadow:0 6px 0 #6e5a24,0 10px 22px rgba(0,0,0,.4);padding:0}
-.sl-spin:active:not(:disabled){transform:translateY(3px);box-shadow:0 3px 0 #6e5a24}
+.sl-spin{width:104px;height:104px;flex:none;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,var(--spin1,#ffe9a8),var(--spin2,var(--accent)) 60%,color-mix(in srgb,var(--spin2,var(--accent)) 62%,#000));color:var(--spin-fg,#1a1608);font:700 13px var(--body);letter-spacing:.06em;box-shadow:0 6px 0 color-mix(in srgb,var(--spin2,var(--accent)) 40%,#000),0 10px 22px rgba(0,0,0,.4);padding:0}
+.sl-spin:active:not(:disabled){transform:translateY(3px);box-shadow:0 3px 0 color-mix(in srgb,var(--spin2,var(--accent)) 40%,#000)}
 .sl-spin:disabled{opacity:.6}
 .sl-side{flex:1;min-width:0;flex-direction:column;font-size:13px;padding:10px 6px;gap:2px}
 .sl-side small{display:block;font:400 11px var(--mono);opacity:.85}
-.sl-side[aria-pressed=true]{background:var(--accent);color:#1a1608}
-.sl-cust-body{display:flex;flex-direction:column;gap:14px;margin-top:12px}
-.sl-sym-row{display:flex;gap:8px;align-items:center}
-.sl-sym-prev{width:56px;height:56px!important;flex:none;border:1px solid var(--line);border-radius:10px;background:#120d24;font-size:32px!important}
+.sl-side[aria-pressed=true]{background:var(--accent);color:var(--on-accent,#1a1608)}
 table.pt{width:100%;border-collapse:collapse;font:400 13px var(--mono)}
 .pt th,.pt td{padding:6px 4px;text-align:right;border-bottom:1px solid var(--line)}
 .pt td:nth-child(2){text-align:left;font-family:var(--body)}
@@ -529,10 +528,102 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .ap-prev{display:block;margin-top:8px;width:min(40vw,140px);border-radius:10px;border:1px solid var(--line)}
 .set-sub{font-size:16px;margin:6px 0 -4px}
 :root[data-theme=light] .ap-ok{color:#1d7a43}:root[data-theme=light] .ap-bad{color:#b3243a}
+
+
+/* Home: Widgets */
+.wgrid{align-items:stretch}
+.widget{position:relative;grid-column:span 1;min-width:0;display:flex;flex-direction:column}
+.widget.ws-2{grid-column:span 2}
+.widget .w-body{flex:1;display:flex;flex-direction:column;min-width:0}
+.widget .w-body>.tile,.widget .w-body>.games{flex:1}
+.widget.wt-games .games{justify-content:flex-start}
+.widget.editing .w-body{pointer-events:none;opacity:.9}
+.widget.editing{outline:2px dashed color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:3px;border-radius:14px}
+.w-tools{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:6px;font-size:11.5px;color:var(--muted)}
+.w-tools b{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-tools span{display:flex;gap:4px;flex:none}
+.w-tools button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--btn,var(--surface-2));color:var(--btn-fg,inherit);padding:0;font-size:15px;line-height:1}
+.w-tools button:disabled{opacity:.3}
+.w-note{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.45;margin:0}
+.w-name{font:400 20px/1.1 var(--display);overflow-wrap:anywhere}
+.w-bar{height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden;width:100%}
+.w-bar i{display:block;height:100%;background:var(--accent)}
+.w-media{padding:0!important;overflow:hidden;gap:0!important}
+.wm-box{position:relative;width:100%;overflow:hidden;background:rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center}
+.w-empty{font-size:13px}
+.w-cap{padding:8px 12px;display:block}
+.w-case .case.small{width:min(100%,92px)}
+.wadd-list{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow-y:auto}
+.wadd-row{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.wadd-row b{font-weight:600}
+.wadd-row small{color:var(--muted);font-size:12.5px}
+/* Cases verstecken */
+.hid-list{display:flex;flex-direction:column;gap:8px;max-height:44vh;overflow-y:auto}
+.hid-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface-2)}
+.hid-n{display:flex;flex-direction:column;min-width:0}
+.hid-n b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.hid-n small{color:var(--muted);font:400 11px var(--mono)}
+/* Sticky-Wilds */
+.reel.stick{box-shadow:inset 0 0 0 2px var(--win,#ffd36b),inset 0 0 3cqw color-mix(in srgb,var(--win,#ffd36b) 55%,transparent)}
+.wm{position:absolute;left:50%;top:5%;transform:translate(-50%,0);z-index:2;pointer-events:none;background:rgba(8,6,20,.86);border:2px solid var(--win,#ffd36b);color:var(--win,#ffd36b);border-radius:999px;padding:.05em .5em;font:700 min(6.4cqw,3.2cqh) var(--mono);font-style:normal;text-shadow:0 0 .5em rgba(0,0,0,.8);animation:wmpop .45s cubic-bezier(.3,1.6,.5,1)}
+.wm.up{animation:wmup .5s ease-out}
+@keyframes wmpop{from{transform:translate(-50%,0) scale(.2);opacity:0}to{transform:translate(-50%,0) scale(1);opacity:1}}
+@keyframes wmup{50%{transform:translate(-50%,0) scale(1.35)}}
+.sc.fresh{animation:wfresh .4s ease-out}
+@keyframes wfresh{from{transform:scale(.3) translateY(-60%);opacity:0}to{transform:none;opacity:1}}
+.sl-ico{width:38px;height:38px;padding:0!important;font-size:18px;line-height:1;border-radius:50%}
+.sl-ico[aria-pressed=false]{opacity:.55}
+.buy-opt{display:flex;flex-direction:column;gap:8px}
+.buy-opt .seg button{padding:10px 4px;font-size:13.5px}
+.buy-sum{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:12px 14px}
+.buy-sum b{font:400 28px var(--display);color:var(--accent)}
+.buy-sum small{font:400 12px var(--mono);color:var(--muted)}
+
+/* Design: Hintergrund ueber die ganze App */
+#skinbg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sk-fill,.sk-layer,.sk-dimmer{position:absolute;inset:0}
+.sk-dimmer{background:#000}
+.sk-m{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:var(--fit,cover);object-position:var(--px,50%) var(--py,50%);transform:scale(var(--z,1));transform-origin:var(--px,50%) var(--py,50%);filter:blur(var(--bl,0px));user-select:none}
+.sk-mascot{position:absolute;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
+#skmascot{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
+#skmascot .sk-mascot{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+body.skin-on .tabs{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.skined{--fg:#e9ebf2;--muted:#8c94a8;--surface:#141822;--surface-2:#1b2030;--line:#283044;--accent:#d8c8a0;--on-accent:#1a1608;--btn:#1b2030;--btn-fg:#e9ebf2;--body:'Figtree',system-ui,-apple-system,sans-serif;--display:'Instrument Serif',Georgia,serif;position:fixed;left:0;right:0;bottom:0;z-index:57;max-height:50vh;max-height:50dvh;display:flex;flex-direction:column;background:#0c0e13;color:var(--fg);font:14px/1.45 var(--body);border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -14px 40px rgba(0,0,0,.55);padding-bottom:env(safe-area-inset-bottom,0px)}
+body.skin-edit .stage{padding-bottom:54vh}
+.sk-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px 6px}
+.sk-head b{font:400 22px var(--display)}
+.sk-tabs{display:flex;gap:2px;padding:0 10px;overflow-x:auto;border-bottom:1px solid var(--line);flex:none}
+.sk-tab{background:none;border:0;padding:9px 11px;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.sk-tab[aria-selected=true]{color:var(--fg);border-bottom-color:var(--accent)}
+.sk-body{overflow-y:auto;padding:14px 16px 22px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0;-webkit-overflow-scrolling:touch}
+.sk-body .field>span{display:flex;justify-content:space-between}
+.sk-val{font-weight:400;color:var(--fg);letter-spacing:0}
+.sk-pres{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sk-pre{height:70px;border-radius:12px;border:2px solid transparent;color:#fff;font:600 14px var(--body);text-shadow:0 1px 4px rgba(0,0,0,.65);display:flex;align-items:flex-end;padding:8px;text-align:left}
+.sk-pre.on{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 35%,transparent)}
+.sk-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+.sk-col{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)}
+.sk-col input[type=color]{width:100%;height:38px;padding:2px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
+.sk-prev{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);height:min(30vh,230px);max-width:100%;margin:0 auto;touch-action:none;cursor:grab;flex:none}
+.sk-prev:active{cursor:grabbing}
+.sk-prev-dim{position:absolute;inset:0;background:#000;pointer-events:none}
+.sk-syms{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sk-sym{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;color:var(--fg)}
+.sk-sym.on{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 35%,transparent)}
+.sk-sym-i{font-size:24px;line-height:1;height:32px;display:flex;align-items:center;justify-content:center}
+.sk-sym-i img{width:30px;height:30px;object-fit:contain}
+.sk-sym small{font-size:9.5px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sk-symed{display:flex;gap:12px;align-items:flex-start}
+.sk-sym-big{width:84px;height:84px;flex:none;border:1px solid var(--line);border-radius:14px;background:#120d24;font-size:44px;display:flex;align-items:center;justify-content:center}
+.sk-sym-big img{width:82%;height:82%;object-fit:contain}
+.ga-machine{position:relative;overflow:hidden;isolation:isolate}
+.ga-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.ga-bgdim{position:absolute;inset:0;z-index:-1;background:#000}
 </style>
 <style>body{margin:0}</style>
 </head><body>
 
+<div id="skinbg" aria-hidden="true" hidden><div class="sk-fill"></div><div class="sk-layer"></div><div class="sk-dimmer"></div><div class="sk-mhost"></div></div>
 <div class="app">
   <header class="top">
     <div class="brand">JopenBox</div>
@@ -566,6 +657,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 <div class="lightbox sheet" id="setai" hidden></div>
 <div class="lightbox sheet" id="crop" hidden></div>
 <div class="lightbox dlg" id="dlg" hidden></div>
+<div class="skined" id="skined" hidden></div>
 <div class="busy" id="busy" hidden></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -810,6 +902,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
         r: RIDX[c.r] != null ? c.r : 'common',
         l: LOOKS.some(x => x[0] === c.l) ? c.l : 'auto',
         p: typeof c.p === 'string' && REF_RE.test(c.p) ? c.p : null,
+        ...(c.m === 'video' && typeof c.p === 'string' && REF_RE.test(c.p) ? { m: 'video' } : {}),
         e: typeof c.e === 'string' ? c.e.replace(/[<>&"']/g, '').slice(0, 16) : '',
         ...(c.v != null && c.v !== '' && Number.isFinite(+c.v) && +c.v >= 0 ? { v: Math.min(1000000000, Math.round(+c.v)) } : {}),
         z: Number.isFinite(+c.z) && c.z != null ? Math.min(4, Math.max(1, Math.round(+c.z * 100) / 100)) : 1,
@@ -835,7 +928,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   const serializeCase = c => ({
     id: c.id, name: c.name, theme: c.theme, perCase: c.perCase, perBooster: c.perBooster, price: c.price, pv: MONEY_VER,
     odds: { ...c.odds }, demo: !!c.demo, created: c.created,
-    cards: c.cards.map(k => ({ id: k.id, n: k.n, r: k.r, l: k.l, p: k.p && REF_RE.test(k.p) ? k.p : null, ...(k.e ? { e: k.e } : {}), ...(k.v != null ? { v: k.v } : {}), ...(k.z && k.z !== 1 ? { z: k.z } : {}), ...(k.x ? { x: k.x } : {}), ...(k.y ? { y: k.y } : {}) })),
+    cards: c.cards.map(k => ({ id: k.id, n: k.n, r: k.r, l: k.l, p: k.p && REF_RE.test(k.p) ? k.p : null, ...(k.m === 'video' && k.p ? { m: 'video' } : {}), ...(k.e ? { e: k.e } : {}), ...(k.v != null ? { v: k.v } : {}), ...(k.z && k.z !== 1 ? { z: k.z } : {}), ...(k.x ? { x: k.x } : {}), ...(k.y ? { y: k.y } : {}) })),
   });
   function normProg(v) {
     v = v || {};
@@ -1009,6 +1102,8 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     if (src) {
       const pan = forcePan || hasPan(c);
       const tf = pan ? ` style="--tx:${c.x || 0};--ty:${c.y || 0};--tz:${c.z || 1}"` : '';
+      // Videos laufen nur auf der grossen Karte; in Raster-Vorschauen steht das erste Bild
+      if (c.m === 'video') return `<div class="${cls}${pan ? ' has-pan' : ''}"><video src="${esc(src)}${lazy ? '#t=0.1' : ''}"${tf} muted loop playsinline webkit-playsinline preload="${lazy ? 'metadata' : 'auto'}"${lazy ? '' : ' autoplay'}></video></div>`;
       return `<div class="${cls}${pan ? ' has-pan' : ''}"><img src="${esc(src)}" alt=""${tf}${lazy ? ' loading="lazy"' : ''} decoding="async"></div>`;
     }
     const a = art(c, !!c.e);
@@ -1082,7 +1177,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   const VIEW_TAB = { gacha: 'home', slot: 'home' };
   const LEAVE = {};         // Aufraeum-Funktionen beim Verlassen einer Ansicht
   const DIAG = { img: 0, status: '' };
-  const ownedCases = () => S.cases.filter(c => c.builtin || progOf(c.id).inv).sort((a, b) => progOf(a.id).added - progOf(b.id).added || a.created - b.created);
+  const ownedCases = () => S.cases.filter(c => (c.builtin || progOf(c.id).inv) && !isHid(c.id)).sort((a, b) => progOf(a.id).added - progOf(b.id).added || a.created - b.created);
   const pickOwned = id => { const own = ownedCases(); return own.find(c => c.id === id) || own[0] || null; };
   const emptyHTML = (title, text, label) => `<div class="empty-note"><b>${esc(title)}</b><span>${esc(text)}</span><button class="btn primary small" data-view="com">${esc(label)}</button></div>`;
   const caseChips = (own, sel, act) => own.length > 1
@@ -1100,21 +1195,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   const freeShort = () => { const f = freeInfo(); return f.left > 0 ? 'Gratis' : `Gratis in ${mmss(f.next - Date.now())}`; };
   const priceText = q => (q.free ? 'Gratis' : `${fmtTok(q.cost)}`);
 
-  function renderHome() {
-    const f = freeInfo();
-    $('#view-home').innerHTML = `<div><span class="eyebrow">Home</span><h2>Willkommen</h2></div>
-      <div class="games" role="group" aria-label="Spiele">
-        <button class="gbtn" data-view="gacha" aria-label="Gacha"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="11.5"/><path d="M4.5 16h23"/><path d="M4.5 16a11.5 11.5 0 0 1 23 0" fill="var(--accent)" fill-opacity=".35"/><circle cx="16" cy="16" r="3" fill="var(--bg)"/></svg><small>Gacha</small></button>
-        <button class="gbtn" data-view="slot" aria-label="Slot"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6.5" width="25" height="19" rx="3.5"/><path d="M12 7v18M20 7v18"/><circle cx="7.8" cy="16" r="1.6" fill="currentColor"/><path d="M14.6 13.4l1.4-1.4 1.4 1.4M14.6 18.6l1.4 1.4 1.4-1.4"/><circle cx="24.2" cy="16" r="1.6" fill="currentColor"/></svg><small>Slot</small></button>
-      </div>
-      <div class="tiles">
-        <div class="tile"><span class="eyebrow">Startoken</span><b class="tile-big">${fmtTok(tokens())}</b>
-          <small class="muted">Karten verkaufen bringt Startoken.</small></div>
-        <div class="tile"><span class="eyebrow">Gratis-Cases</span><b class="tile-big">${f.left} von ${FREE_PER_HOUR}</b>
-          <small class="muted" data-free="home">${esc(freeText())}</small>
-          <button class="btn primary small" data-act="gostandard">Zum Standard-Case</button></div>
-      </div>`;
-  }
+  function renderHome() { homeRender(); }
 
   function renderCase() {
     const el = $('#view-case');
@@ -1224,7 +1305,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 
   function renderCom() {
     const el = $('#view-com');
-    const mine = S.cases.filter(c => !c.builtin);
+    const mine = S.cases.filter(c => !c.builtin && !isHid(c.id));
     const rows = mine.map(cs => {
       const p = progOf(cs.id);
       return `<div class="case-row th-${cs.theme}">
@@ -1277,6 +1358,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     Object.keys(RENDER).forEach(k => { const el = $('#view-' + k); if (el) el.hidden = k !== v; });
     const tab = VIEW_TAB[v] || v;
     TAB_IDS.forEach(k => { const b = $('#tab-' + k); if (b) b.setAttribute('aria-selected', String(k === tab)); });
+    skEnter(v);
     RENDER[v]();
     $('#stage').scrollTop = 0;
   }
@@ -1512,7 +1594,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
           <div class="sec-head"><h3>Karten</h3><span class="eyebrow" id="ed-count"></span></div>
           <div class="row left">
             <label class="btn primary small" for="ed-files">Fotos hinzufügen</label>
-            <input type="file" id="ed-files" class="vh" accept="image/*" multiple>
+            <input type="file" id="ed-files" class="vh" accept="image/*,video/*" multiple>
             <button class="btn small" data-ed="ai">KI-Bilder</button>
             <button class="btn small" data-ed="selmode" id="ed-selbtn">Auswählen</button>
             <button class="btn small" data-ed="distribute">Seltenheiten verteilen</button>
@@ -1645,6 +1727,19 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     cv.width = cv.height = 0; // Speicher auf iOS freigeben
     return out;
   }
+  // Foto, GIF oder Video fuer eine Karte vorbereiten. Fotos werden verkleinert; GIFs und Videos bleiben unveraendert (sonst stuende nichts mehr in Bewegung).
+  const MAX_VIDEO = 15 * 1024 * 1024, MAX_GIF = 12 * 1024 * 1024;
+  const isVideoFile = f => /^video\//.test(f.type) || /\.(mp4|mov|m4v|webm)$/i.test(f.name || '');
+  async function prepMedia(file) {
+    if (isVideoFile(file)) {
+      if (file.size > MAX_VIDEO) throw Object.assign(new Error('video zu gross'), { big: true });
+      return { blob: file, m: 'video' };
+    }
+    if (file.type === 'image/gif' || /\.gif$/i.test(file.name || '')) {
+      if (file.size <= MAX_GIF) return { blob: file.type === 'image/gif' ? file : new Blob([file], { type: 'image/gif' }), m: null };
+    }
+    return { blob: await shrink(file), m: null };
+  }
   function guessName(fn, n) {
     const base = String(fn || '').replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim();
     if (!base || /^(img|image|photo|dsc|pxl|screenshot|bild|foto|whatsapp)\b/i.test(base) || /^[\d\s]+$/.test(base)) return 'Karte ' + n;
@@ -1653,22 +1748,22 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   async function addPhotos(files) {
     const room = MAX_CARDS - ED.draft.cards.length;
     if (files.length > room) { files = files.slice(0, Math.max(0, room)); toast(`Maximal ${MAX_CARDS} Karten pro Case.`); }
-    let ok = 0, bad = 0;
+    let ok = 0, bad = 0, big = 0;
     for (let i = 0; i < files.length; i++) {
       busy(`Fotos verarbeiten (${i + 1}/${files.length})`, i / files.length);
       try {
-        const blob = await shrink(files[i]);
+        const { blob, m } = await prepMedia(files[i]);
         let id = uid(6);
         while (ED.draft.cards.some(c => c.id === id)) id = uid(6);
-        ED.draft.cards.push({ id, n: guessName(files[i].name, ED.draft.cards.length + 1), r: 'common', l: 'auto', z: 1, x: 0, y: 0, p: null, _blob: blob, _url: URL.createObjectURL(blob) });
+        ED.draft.cards.push({ id, n: guessName(files[i].name, ED.draft.cards.length + 1), r: 'common', l: 'auto', z: 1, x: 0, y: 0, p: null, ...(m ? { m } : {}), _blob: blob, _url: URL.createObjectURL(blob) });
         ok++;
-      } catch (e) { bad++; }
+      } catch (e) { if (e && e.big) big++; else bad++; }
       if (i % 4 === 3) await sleep(0);
     }
     busy(null);
     if (ok) ED.dirty = true;
     renderEdGrid(); renderEdChips(); renderEdCount();
-    toast(bad ? `${ok} Karten hinzugefügt, ${bad} Bilder konnten nicht gelesen werden.` : `${ok} Karten hinzugefügt.`);
+    toast(bad || big ? `${ok} Karten hinzugefügt${bad ? `, ${bad} Bilder konnten nicht gelesen werden` : ''}${big ? `, ${big} Video${big === 1 ? ' ist' : 's sind'} größer als 15 MB` : ''}.` : `${ok} Karten hinzugefügt.`);
   }
 
   // Einzelne Karte bearbeiten
@@ -1692,7 +1787,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
           <div class="row left"><button class="btn small" data-sh="aigen" id="sh-aigo">Bild erzeugen</button></div>
           <p class="note" id="sh-aimsg" style="max-width:none;margin:0"></p>
           <p class="note" style="max-width:none;margin:0">Bild-KI: ${esc(apName('image'))} (ändern unter Zahnrad, KI-Anbieter). Du beschreibst nur das Motiv, Stil und Hochformat kommen automatisch dazu. Bei vielen Bild-KIs klappt Englisch besser.</p></div>
-        <div class="row left"><label class="btn small" for="sh-file">Foto ersetzen</label><input type="file" id="sh-file" class="vh" accept="image/*">
+        <div class="row left"><label class="btn small" for="sh-file">Foto, GIF oder Video ersetzen</label><input type="file" id="sh-file" class="vh" accept="image/*,video/*">
           <button class="btn small danger" data-sh="del">Karte löschen</button><button class="btn primary small" data-sh="close">Fertig</button></div>
       </div>`;
     paintSheet();
@@ -2547,7 +2642,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
       const c = cur();
       if (c) {
         if (c._url) URL.revokeObjectURL(c._url);
-        c._blob = blob; c._url = URL.createObjectURL(blob); c.z = 1; c.x = 0; c.y = 0; ED.dirty = true;
+        c._blob = blob; c._url = URL.createObjectURL(blob); delete c.m; c.z = 1; c.x = 0; c.y = 0; ED.dirty = true;
         paintSheet();
         const m2 = $('#sh-aimsg'); if (m2) m2.textContent = 'Fertig. Das Bild ist auf der Karte. Tippe im Editor auf Speichern.';
       }
@@ -2725,7 +2820,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
       if (run.fatal || !alive()) break;
       if (blob && ED === run.ed) {
         if (c._url) URL.revokeObjectURL(c._url);
-        c._blob = blob; c._url = URL.createObjectURL(blob);
+        c._blob = blob; c._url = URL.createObjectURL(blob); delete c.m;
         c.z = 1; c.x = 0; c.y = 0;
         ED.dirty = true;
         run.ok++; run.streak = 0; run.lastUrl = c._url;
@@ -2987,17 +3082,22 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   let CR = null;
   const clampN = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   function setAr(img) {
-    if (img && img.naturalWidth && img.naturalHeight) img.style.setProperty('--ar', (img.naturalWidth / img.naturalHeight).toFixed(4));
+    const w = img && (img.naturalWidth || img.videoWidth), h = img && (img.naturalHeight || img.videoHeight);
+    if (w && h) img.style.setProperty('--ar', (w / h).toFixed(4));
   }
   document.addEventListener('load', e => {
     const t = e.target;
     if (t && t.tagName === 'IMG' && t.closest('.has-pan')) { setAr(t); if (CR) crApply(); }
   }, true);
+  document.addEventListener('loadedmetadata', e => {
+    const t = e.target;
+    if (t && t.tagName === 'VIDEO' && t.closest('.has-pan')) { setAr(t); if (CR) crApply(); }
+  }, true);
   function crApply() {
     if (!CR) return;
     const c = ED && ED.draft.cards.find(x => x.id === CR.cid);
     if (!c) return;
-    const art = $('#cr-card .c-art'), img = art && art.querySelector('img');
+    const art = $('#cr-card .c-art'), img = art && art.querySelector('img,video');
     if (!img) return;
     c.z = c.z || 1; c.x = c.x || 0; c.y = c.y || 0;
     setAr(img);
@@ -3144,8 +3244,10 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
       count: (c, d, t, o = {}) => tone(c, d, t, { f: 900 + (o.i || 0) % 8 * 40, dur: 0.03, g: 0.08, a: 0.001 }),
       win: (c, d, t) => arp(c, d, t, [72, 76, 79, 84], 0.09, { g: 0.12 }),
       lose: (c, d, t) => { tone(c, d, t, { f: NOTE(64), f2: NOTE(57), dur: 0.5, g: 0.12, type: 'triangle' }); },
+      wild: (c, d, t) => { tone(c, d, t, { f: 180, f2: 70, dur: 0.2, g: 0.2 }); arp(c, d, t + 0.02, [67, 71, 74, 79], 0.06, { g: 0.1, dur: 0.4, type: 'triangle' }); },
+      wmult: (c, d, t, o = {}) => { const k = Math.min(24, Math.round(Math.log2(Math.max(2, o.m || 2)) * 4)); tone(c, d, t, { f: NOTE(72 + k), dur: 0.5, g: 0.13, type: 'triangle' }); tone(c, d, t + 0.07, { f: NOTE(79 + k), dur: 0.45, g: 0.09 }); },
     };
-    const DUR = { tick: 0.1, settle: 0.7, coin: 0.8, pop: 0.2, back: 0.2, err: 0.5, rip: 0.6, thud: 0.4, flip: 0.2, r_rare: 0.8, r_epic: 1, r_legendary: 1.2, r_mythic: 2.4, r_ultra: 3.2, reel: 0.3, spin: 0.5, win1: 0.9, win2: 1.2, win3: 2.2, scatter: 1.3, count: 0.1, win: 1.1, lose: 0.8 };
+    const DUR = { tick: 0.1, settle: 0.7, coin: 0.8, pop: 0.2, back: 0.2, err: 0.5, rip: 0.6, thud: 0.4, flip: 0.2, r_rare: 0.8, r_epic: 1, r_legendary: 1.2, r_mythic: 2.4, r_ultra: 3.2, reel: 0.3, spin: 0.5, win1: 0.9, win2: 1.2, win3: 2.2, scatter: 1.3, count: 0.1, win: 1.1, lose: 0.8, wild: 0.9, wmult: 0.7 };
     function ensure() {
       if (prefs().sound === false) return null;
       try {
@@ -3342,6 +3444,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     const i = $('#cheat-code');
     if (!i) return;
     if (i.value.trim() === CHEAT_CODE) { SFX.play('pop'); cheatMenu(); return; }
+    if (hidTry(i.value)) { SFX.play('pop'); return; }
     const box = $('#dlg .dlg-box');
     $('#cheat-msg').textContent = 'Falscher Code.';
     box.classList.remove('bad'); void box.offsetWidth; box.classList.add('bad');
@@ -3384,6 +3487,8 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   ACTS.cheatx = id => { const x = CHEAT_EXTRA[+id]; if (x) { x.fn(); cheatBal(); SFX.play('pop'); } };
   // ================= Slot-Kern (reine Logik, ohne Oberflaeche) =================
   // 5 Walzen x 4 Reihen, 30 feste Gewinnlinien, Wild und Freispiel-Symbol (Scatter).
+  // Freispiele: Wilds bleiben kleben ("sticky"), fuellen die ganze Walze von oben nach unten und tragen einen
+  // zufaelligen Multiplikator (2x bis 50x). Alle Multiplikatoren der Wild-Walzen, die an einer Gewinnlinie beteiligt sind, werden addiert.
   const SLOTCORE = (() => {
     const W = 5, H = 4, WILD = 8, SCAT = 9, SEVEN = 7;
     const NAMES = ['Kirsche', 'Zitrone', 'Traube', 'Glocke', 'Stern', 'Diamant', 'Krone', 'Sieben', 'Wild', 'Freispiel'];
@@ -3393,18 +3498,23 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     const PAYS = [[9,28,70], [9,28,70], [14,45,115], [18,70,180], [28,115,340], [45,180,700], [70,350,1400], [140,700,3500]];
     const SCATTER_PAY = [3, 20, 100];   // Vielfache des Gesamteinsatzes bei 3 / 4 / 5 Freispiel-Symbolen
     const FREE_SPINS = [10, 15, 25];  // gewonnene Freispiele bei 3 / 4 / 5
-    const FREE_MULT = 3;             // Gewinnlinien zaehlen in Freispielen dreifach
+    const FREE_MULT = 1;             // (frueher x3) jetzt zaehlen die Wild-Multiplikatoren
     const FREE_CAP = 60;
     const WEIGHTS = [
-      [22,20,18,14,10,7,5,3,0,2],
-      [22,20,18,14,10,7,5,3,3,2],
-      [22,20,18,14,10,7,5,3,3,2],
-      [22,20,18,14,10,7,5,3,3,2],
-      [22,20,18,14,10,7,5,3,0,2],
+      [22,20,18,14,10,7,5,3,0,1.22],
+      [22,20,18,14,10,7,5,3,3,1.22],
+      [22,20,18,14,10,7,5,3,3,1.22],
+      [22,20,18,14,10,7,5,3,3,1.22],
+      [22,20,18,14,10,7,5,3,0,1.22],
     ];   // je Walze: Gewichte fuer Symbol 0..9 (Wild nur auf Walze 2-4)
-    const cum = WEIGHTS.map(w => { let t = 0; return w.map(x => (t += x)); });
-    function draw(rng, reel) { const c = cum[reel], r = rng() * c[c.length - 1]; for (let i = 0; i < c.length; i++) if (r < c[i]) return i; return 0; }
-    function spin(rng) { const g = []; for (let r = 0; r < W; r++) { const col = []; for (let k = 0; k < H; k++) col.push(draw(rng, r)); g.push(col); } return g; }
+    // In Freispielen landen Wilds seltener, dafuer bleiben sie kleben (siehe freeSpin)
+    const FS_WEIGHTS = WEIGHTS.map(w => w.slice());
+    [1, 2, 3].forEach(r => { FS_WEIGHTS[r][8] = 0.35; });
+    const mkCum = ws => ws.map(w => { let t = 0; return w.map(x => (t += x)); });
+    let cum = mkCum(WEIGHTS), fcum = mkCum(FS_WEIGHTS);
+    const retune = () => { cum = mkCum(WEIGHTS); fcum = mkCum(FS_WEIGHTS); };
+    function draw(rng, reel, tab) { const c = (tab || cum)[reel], r = rng() * c[c.length - 1]; for (let i = 0; i < c.length; i++) if (r < c[i]) return i; return 0; }
+    function spin(rng, free) { const g = [], tab = free ? fcum : cum; for (let r = 0; r < W; r++) { const col = []; for (let k = 0; k < H; k++) col.push(draw(rng, r, tab)); g.push(col); } return g; }
     // Eine Linie auswerten: { sym, count, pay } oder null
     function lineWin(grid, line) {
       let base = -1, n = 0, lead = 0, leading = true;
@@ -3421,69 +3531,1374 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
       if (lead >= 3 && PAYS[SEVEN][lead - 3] > (best ? best.pay : 0)) best = { sym: SEVEN, count: lead, pay: PAYS[SEVEN][lead - 3] };
       return best;
     }
-    // Ergebnis in Cent: bet = Gesamteinsatz (durch 30 teilbar), mult = Gewinn-Multiplikator (Freispiele)
-    function evaluate(grid, bet, mult) {
+    // Ergebnis in Cent: bet = Gesamteinsatz, mult = Gewinn-Multiplikator, wm = Multiplikator je Walze (Sticky-Wilds), 0 = keiner
+    function evaluate(grid, bet, mult, wm) {
       const lineBet = bet / LINES.length, wins = [];
       let total = 0;
       LINES.forEach((line, li) => {
         const w = lineWin(grid, line);
-        if (w) { const cents = Math.round(w.pay * lineBet * mult); wins.push({ line: li, sym: w.sym, count: w.count, cents }); total += cents; }
+        if (w) {
+          let m = mult, wsum = 0;
+          if (wm) { for (let r = 0; r < w.count; r++) wsum += wm[r] || 0; if (wsum > 0) m = mult * wsum; }
+          const cents = Math.round(w.pay * lineBet * m);
+          wins.push({ line: li, sym: w.sym, count: w.count, cents, m: wsum || 0 });
+          total += cents;
+        }
       });
       let sc = 0; const scCells = [];
       grid.forEach((col, r) => col.forEach((s, k) => { if (s === SCAT) { sc++; scCells.push([r, k]); } }));
       const scPay = sc >= 3 ? Math.round(SCATTER_PAY[Math.min(sc, 5) - 3] * bet) : 0;
       return { wins, lineTotal: total, scatter: sc, scatterCells: scCells, scatterPay: scPay, spins: sc >= 3 ? FREE_SPINS[Math.min(sc, 5) - 3] : 0, total: total + scPay };
     }
-    return { W, H, WILD, SCAT, NAMES, EMOJI, LINES, PAYS, SCATTER_PAY, FREE_SPINS, FREE_MULT, FREE_CAP, WEIGHTS, spin, evaluate, lineWin };
+
+    // ---- Sticky-Wild-Multiplikatoren ----
+    const WM_VALUES = [2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 40, 50];
+    const WM_WEIGHTS = [26, 20, 15, 11, 8, 6, 4, 3, 2.5, 1.8, 1.2, 0.8, 0.6, 0.3];
+    // Stufen beim Kaufen: Zufall 2-50x, mindestens 10x, mindestens 25x, immer 50x
+    const TIERS = [{ k: 'rnd', min: 2, n: 'Zufall 2–50×' }, { k: 'x10', min: 10, n: 'mind. 10×' }, { k: 'x25', min: 25, n: 'mind. 25×' }, { k: 'x50', min: 50, n: 'immer 50×' }];
+    function drawMult(rng, min) {
+      let t = 0;
+      for (let i = 0; i < WM_VALUES.length; i++) if (WM_VALUES[i] >= min) t += WM_WEIGHTS[i];
+      let r = rng() * t;
+      for (let i = 0; i < WM_VALUES.length; i++) {
+        if (WM_VALUES[i] < min) continue;
+        r -= WM_WEIGHTS[i];
+        if (r < 0) return WM_VALUES[i];
+      }
+      return WM_VALUES[WM_VALUES.length - 1];
+    }
+    // Kaufpreis als Vielfaches des Einsatzes: BUY_X[Start-Wilds 0..2][Stufe 0..3]  (aus der Simulation, siehe t/slot_sim2.js)
+    const BUY_X = [[95, 275, 500, 780], [570, 1700, 3200, 5000], [3350, 10050, 19000, 29600]];
+    const BUY_CAP = 1000000000;   // hoechster Kaufpreis: 10.000.000 Startoken (in Cent)
+    const buyCost = (bet, w, t) => Math.min(BUY_CAP, Math.round(BUY_X[Math.max(0, Math.min(2, w))][Math.max(0, Math.min(3, t))] * bet));
+    // Neue Freispielrunde: Zustand mit Start-Wilds an zufaelligen Walzen
+    function freeStart(rng, spins, startWilds, tier) {
+      const st = { left: spins || FREE_SPINS[0], tier: tier || 0, wilds: [] };
+      const reels = [1, 2, 3];   // Wilds gibt es nur auf Walze 2 bis 4
+      for (let i = 0; i < (startWilds || 0) && reels.length; i++) {
+        const j = Math.floor(rng() * reels.length), r = reels.splice(j, 1)[0];
+        st.wilds.push({ r, m: drawMult(rng, TIERS[st.tier].min) });
+      }
+      return st;
+    }
+    // Ein Freispiel. st wird veraendert (left, wilds). Rueckgabe: { grid, ev, fresh: neue Sticky-Wilds mit den Reihen, wo sie gelandet sind }
+    function freeSpin(st, rng, bet, gridOverride, forceMult) {
+      const g = (gridOverride || spin(rng, true)).map(c => c.slice());
+      const fresh = [], sticky = new Set(st.wilds.map(w => w.r));
+      for (let r = 0; r < W; r++) {
+        if (sticky.has(r)) { g[r] = Array(H).fill(WILD); continue; }
+        if (g[r].includes(WILD)) {
+          const rows = []; g[r].forEach((s, k) => { if (s === WILD) rows.push(k); });
+          const m = forceMult || drawMult(rng, TIERS[st.tier].min);
+          st.wilds.push({ r, m }); fresh.push({ r, m, rows });
+          g[r] = Array(H).fill(WILD);
+        }
+      }
+      const wm = Array(W).fill(0); st.wilds.forEach(w => { wm[w.r] = w.m; });
+      const ev = evaluate(g, bet, 1, wm);
+      st.left--;
+      if (ev.spins) st.left = Math.min(FREE_CAP, st.left + ev.spins);
+      return { grid: g, ev, fresh };
+    }
+    return { W, H, WILD, SCAT, NAMES, EMOJI, LINES, PAYS, SCATTER_PAY, FREE_SPINS, FREE_MULT, FREE_CAP, WEIGHTS, FS_WEIGHTS, retune, WM_VALUES, WM_WEIGHTS, TIERS, BUY_X, BUY_CAP, buyCost, drawMult, freeStart, freeSpin, spin, evaluate, lineWin };
   })();
   if (typeof module !== 'undefined' && module.exports) module.exports = SLOTCORE;
+
+  // ================= Eingebaute Bilder (SVG, selbst gezeichnet) =================
+  // Irische Symbole, Kobold, Hintergrund. Alles Text im Code, keine Dateien.
+  const SVGH = (vb, body) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">${body}</svg>`;
+  const LEAF = 'M50 50C30 42 20 22 35 13C44 8 50 17 50 24C50 17 56 8 65 13C80 22 70 42 50 50Z';
+  const CLOVER = `<g fill="url(#cg)" stroke="#12602a" stroke-width="2" stroke-linejoin="round">${[0, 90, 180, 270].map(a => `<path d="${LEAF}" transform="rotate(${a} 50 50)"/>`).join('')}</g><g fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.6" stroke-linecap="round">${[0, 90, 180, 270].map(a => `<path d="M50 46L50 28" transform="rotate(${a} 50 50)"/>`).join('')}</g>`;
+  const CG = '<defs><radialGradient id="cg" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#8ff070"/><stop offset="1" stop-color="#1c8a3a"/></radialGradient></defs>';
+  const GOLD = (id, a = '#fff0a8', b = '#e9b53a', c = '#9a6a12') => `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset=".55" stop-color="${b}"/><stop offset="1" stop-color="${c}"/></linearGradient>`;
+  const SPARK4 = (x, y, r, f = '#fff') => `<path d="M${x} ${y - r}L${x + r * .28} ${y - r * .28}L${x + r} ${y}L${x + r * .28} ${y + r * .28}L${x} ${y + r}L${x - r * .28} ${y + r * .28}L${x - r} ${y}L${x - r * .28} ${y - r * .28}Z" fill="${f}"/>`;
+
+  // Kobold-Gesicht (Wild): Hut, Haare und Bart in Rot, gruener Mantel
+  const FACE = `<defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1e8a3c"/><stop offset=".5" stop-color="#36b556"/><stop offset="1" stop-color="#157230"/></linearGradient>${GOLD('bk')}
+      <radialGradient id="fg" cx="45%" cy="35%" r="75%"><stop offset="0" stop-color="#ffe0bd"/><stop offset="1" stop-color="#f0a97a"/></radialGradient>
+      <linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f26a1e"/><stop offset="1" stop-color="#b8330c"/></linearGradient></defs>
+    <path d="M12 96C14 80 28 74 50 74C72 74 86 80 88 96Z" fill="#1d8f3d" stroke="#0e5222" stroke-width="2"/>
+    <path d="M42 74L50 86L58 74Z" fill="#fff" stroke="#c9c9c9" stroke-width="1"/>
+    <path d="M44 80L50 77L56 80L50 83Z" fill="#ff8a1c" stroke="#a84e00" stroke-width="1"/>
+    <path d="M25 52C14 54 12 68 20 76C24 70 26 62 28 54Z" fill="url(#rg)" stroke="#8c2406" stroke-width="1.6"/>
+    <path d="M75 52C86 54 88 68 80 76C76 70 74 62 72 54Z" fill="url(#rg)" stroke="#8c2406" stroke-width="1.6"/>
+    <ellipse cx="50" cy="54" rx="24" ry="23" fill="url(#fg)" stroke="#b8714a" stroke-width="1.6"/>
+    <path d="M26 56C28 80 40 90 50 90C60 90 72 80 74 56C70 66 62 68 50 68C38 68 30 66 26 56Z" fill="url(#rg)" stroke="#8c2406" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M40 72C44 76 56 76 60 72C58 70 42 70 40 72Z" fill="#ffd2c0" opacity=".0"/>
+    <path d="M42 73C46 77 54 77 58 73" fill="none" stroke="#7a1d05" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="50" cy="59" rx="4.6" ry="3.6" fill="#f08a6a" stroke="#b8604a" stroke-width="1.2"/>
+    <circle cx="41" cy="49" r="3.4" fill="#2a1a10"/><circle cx="59" cy="49" r="3.4" fill="#2a1a10"/>
+    <circle cx="42.2" cy="47.8" r="1.1" fill="#fff"/><circle cx="60.2" cy="47.8" r="1.1" fill="#fff"/>
+    <path d="M35 43C38 40 43 40 46 43" fill="none" stroke="#c4440f" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M54 43C57 40 62 40 65 43" fill="none" stroke="#c4440f" stroke-width="2.6" stroke-linecap="round"/>
+    <circle cx="35" cy="57" r="4.5" fill="#ff8a7a" opacity=".45"/><circle cx="65" cy="57" r="4.5" fill="#ff8a7a" opacity=".45"/>
+    <ellipse cx="50" cy="35" rx="36" ry="7" fill="#115f2a" stroke="#0a3d1a" stroke-width="2"/>
+    <path d="M27 34L31 7Q50 -1 69 7L73 34Q50 41 27 34Z" fill="url(#hg)" stroke="#0a3d1a" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M28.5 28Q50 35 71.5 28L72.4 34Q50 41 27.6 34Z" fill="#1a1a1a"/>
+    <rect x="43" y="28.5" width="14" height="9" rx="1.6" fill="url(#bk)" stroke="#8a5a0c" stroke-width="1.4" transform="rotate(1 50 33)"/>
+    <rect x="46" y="31" width="8" height="4.4" rx="1" fill="#1a1a1a" transform="rotate(1 50 33)"/>
+    <path d="M36 12Q38 9 42 9" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2.2" stroke-linecap="round"/>`;
+
+  const ART_SRC = {
+    clover: SVGH('0 0 100 100', `${CG}${CLOVER}<path d="M50 52C51 68 57 80 67 90" fill="none" stroke="#12602a" stroke-width="4.5" stroke-linecap="round"/>`),
+    horseshoe: SVGH('0 0 100 100', `<defs>${GOLD('hs', '#fff6c8', '#e6b43a', '#8a5c0c')}</defs>
+      <path d="M22 14L22 52A28 28 0 0 0 78 52L78 14L61 14L61 52A11 11 0 0 1 39 52L39 14Z" fill="url(#hs)" stroke="#6e4608" stroke-width="2.6" stroke-linejoin="round"/>
+      ${[[30.5, 22], [30.5, 38], [69.5, 22], [69.5, 38], [36, 62], [64, 62]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6" fill="#5a3a06"/>`).join('')}
+      <path d="M26 18L26 50" stroke="#fff" stroke-opacity=".6" stroke-width="2.4" stroke-linecap="round"/>`),
+    pint: SVGH('0 0 100 100', `<defs><linearGradient id="bm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd24d"/><stop offset="1" stop-color="#d9811a"/></linearGradient></defs>
+      <path d="M66 36H76Q90 36 90 50V60Q90 74 76 74H66" fill="none" stroke="#e8e8ef" stroke-opacity=".9" stroke-width="7" stroke-linecap="round"/>
+      <path d="M22 30H68L64 86Q64 90 60 90H30Q26 90 26 86Z" fill="url(#bm)" stroke="#fff" stroke-opacity=".85" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M32 44L35 82M42 44L43 82" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+      <path d="M20 32Q18 18 30 18Q32 10 42 14Q50 8 58 14Q70 12 70 24Q72 32 66 32Z" fill="#fff" stroke="#ddd" stroke-width="1.6" stroke-linejoin="round"/>
+      <circle cx="40" cy="60" r="2" fill="#fff" fill-opacity=".6"/><circle cx="50" cy="70" r="1.6" fill="#fff" fill-opacity=".6"/><circle cx="52" cy="52" r="1.4" fill="#fff" fill-opacity=".6"/>`),
+    harp: SVGH('0 0 100 100', `<defs>${GOLD('hp', '#fff2b0', '#e2ac36', '#8a5a0c')}</defs>
+      <path d="M72 14C80 36 74 64 58 90L70 90C86 64 90 34 80 12Z" fill="url(#hp)" stroke="#6e4608" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M26 92L26 26C26 14 36 8 50 10C62 11 72 13 80 12" fill="none" stroke="url(#hp)" stroke-width="7" stroke-linecap="round"/>
+      <path d="M26 92L26 26C26 14 36 8 50 10C62 11 72 13 80 12" fill="none" stroke="#6e4608" stroke-width="1.6" stroke-opacity=".7"/>
+      ${[0, 1, 2, 3, 4, 5].map(i => { const x = 34 + i * 6.4, yt = 13 + i * 0.4 - (i === 0 ? 0 : 0), yb = 80 - i * 1.2; return `<path d="M${x} ${yt + 4 - Math.sin(i / 5 * 3) * 3}L${x + 4 + i * 2.2} ${yb + 8}" stroke="#fff6c8" stroke-width="1.8" stroke-linecap="round"/>`; }).join('')}
+      <path d="M20 92H64" stroke="#6e4608" stroke-width="5" stroke-linecap="round"/>`),
+    coin: SVGH('0 0 100 100', `<defs>${GOLD('cn', '#fff4b8', '#eab43c', '#94640e')}</defs>
+      <circle cx="50" cy="50" r="42" fill="url(#cn)" stroke="#7a5008" stroke-width="3"/>
+      <circle cx="50" cy="50" r="33" fill="none" stroke="#9a6a12" stroke-width="2.4" stroke-dasharray="3 3"/>
+      <g transform="translate(50 52) scale(.5) translate(-50 -50)" opacity=".85"><g fill="#b07a14" stroke="#7a5008" stroke-width="3" stroke-linejoin="round">${[0, 90, 180, 270].map(a => `<path d="${LEAF}" transform="rotate(${a} 50 50)"/>`).join('')}</g></g>
+      <path d="M24 34Q36 18 56 16" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/>`),
+    hat: SVGH('0 0 100 100', `<defs><linearGradient id="hg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1e8a3c"/><stop offset=".5" stop-color="#3cc05e"/><stop offset="1" stop-color="#157230"/></linearGradient>${GOLD('bk2')}</defs>
+      <ellipse cx="50" cy="76" rx="42" ry="11" fill="#0f6a2a" stroke="#0a3d1a" stroke-width="2.4"/>
+      <path d="M26 76L31 20Q50 10 69 20L74 76Q50 86 26 76Z" fill="url(#hg2)" stroke="#0a3d1a" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M27.5 64Q50 74 72.5 64L73.8 76Q50 86 26.2 76Z" fill="#1a1a1a"/>
+      <rect x="42" y="65" width="16" height="13" rx="2" fill="url(#bk2)" stroke="#8a5a0c" stroke-width="1.8"/><rect x="45.5" y="68.5" width="9" height="6" rx="1" fill="#1a1a1a"/>
+      <path d="M35 26Q36 20 42 18" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2.6" stroke-linecap="round"/>
+      <g transform="translate(62 30) scale(.2)">${CG}${CLOVER}</g>`),
+    rainbow: SVGH('0 0 100 100', `<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe6ff"/><stop offset="1" stop-color="#e8f6ff"/></linearGradient></defs>
+      <circle cx="50" cy="50" r="46" fill="url(#sk)" opacity=".0"/>
+      ${['#ff3b3b', '#ff9a2e', '#ffe14a', '#4cd964', '#3aa8ff', '#8a5cf0'].map((c, i) => `<path d="M${8 + i * 6} 70A${42 - i * 6} ${42 - i * 6} 0 0 1 ${92 - i * 6} 70" fill="none" stroke="${c}" stroke-width="6.4"/>`).join('')}
+      <g fill="#fff" stroke="#cfd8e6" stroke-width="1.4"><circle cx="14" cy="76" r="9"/><circle cx="25" cy="79" r="8"/><circle cx="5" cy="79" r="6"/><circle cx="86" cy="76" r="9"/><circle cx="75" cy="79" r="8"/><circle cx="95" cy="79" r="6"/></g>`),
+    pot: SVGH('0 0 100 100', `<defs>${GOLD('pg')}<linearGradient id="pk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a4a58"/><stop offset="1" stop-color="#14141c"/></linearGradient></defs>
+      <path d="M16 50C8 76 26 92 50 92C74 92 92 76 84 50Z" fill="url(#pk)" stroke="#000" stroke-width="2.4"/>
+      <ellipse cx="50" cy="50" rx="34" ry="9" fill="#2a2a34" stroke="#000" stroke-width="2.4"/>
+      ${[[30, 44, 9], [44, 38, 10], [58, 40, 10], [70, 45, 9], [38, 30, 9], [52, 27, 10], [64, 31, 9], [47, 17, 8], [58, 18, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#pg)" stroke="#8a5a0c" stroke-width="1.8"/>`).join('')}
+      <path d="M24 66Q22 80 34 86" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="3" stroke-linecap="round"/>
+      ${SPARK4(18, 22, 7)}${SPARK4(84, 30, 6)}${SPARK4(76, 10, 4)}`),
+    kobold: SVGH('0 0 100 100', FACE),
+    medal: SVGH('0 0 100 100', `<defs>${GOLD('md', '#fff6c0', '#f0bc40', '#98660e')}<linearGradient id="rb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a5a"/><stop offset=".25" stop-color="#ffb02e"/><stop offset=".5" stop-color="#ffe94a"/><stop offset=".75" stop-color="#4cd964"/><stop offset="1" stop-color="#3aa8ff"/></linearGradient>${CG.slice(6, -7)}</defs>
+      <circle cx="50" cy="50" r="46" fill="url(#rb)" stroke="#6a4506" stroke-width="2.4"/>
+      <circle cx="50" cy="50" r="37" fill="url(#md)" stroke="#8a5a0c" stroke-width="2.4"/>
+      <g transform="translate(50 50) scale(.62) translate(-50 -50)">${CLOVER}</g>
+      ${SPARK4(16, 18, 8)}${SPARK4(86, 80, 7)}${SPARK4(84, 16, 5)}
+      <path d="M22 36Q30 22 50 17" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/>`),
+
+    // Kobold als ganze Figur (Maskottchen)
+    mascot: SVGH('0 0 200 320', `<defs><linearGradient id="mc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#157230"/><stop offset=".5" stop-color="#2fae52"/><stop offset="1" stop-color="#106026"/></linearGradient>
+      <linearGradient id="tn" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b87a3a"/><stop offset="1" stop-color="#8a5524"/></linearGradient>${GOLD('mb')}</defs>
+      <ellipse cx="100" cy="312" rx="62" ry="7" fill="#000" opacity=".22"/>
+      <path d="M72 252L70 292L94 292L96 252Z" fill="url(#tn)" stroke="#5a3410" stroke-width="2.4"/><path d="M104 252L106 292L130 292L128 252Z" fill="url(#tn)" stroke="#5a3410" stroke-width="2.4"/>
+      <path d="M71 280L70 298L94 298L95 280Z" fill="#f4f4f4" stroke="#bbb" stroke-width="1.6"/><path d="M105 280L106 298L130 298L129 280Z" fill="#f4f4f4" stroke="#bbb" stroke-width="1.6"/>
+      <path d="M64 298Q66 292 94 292L96 308Q96 312 90 312L66 312Q60 310 64 298Z" fill="#1c1c1c" stroke="#000" stroke-width="2"/><path d="M136 298Q134 292 106 292L104 308Q104 312 110 312L134 312Q140 310 136 298Z" fill="#1c1c1c" stroke="#000" stroke-width="2"/>
+      <rect x="76" y="296" width="12" height="9" rx="1.5" fill="url(#mb)" stroke="#8a5a0c" stroke-width="1.4"/><rect x="112" y="296" width="12" height="9" rx="1.5" fill="url(#mb)" stroke="#8a5a0c" stroke-width="1.4"/>
+      <path d="M54 142C42 186 46 228 62 254L138 254C154 228 158 186 146 142Z" fill="url(#mc)" stroke="#0a3d1a" stroke-width="2.6" stroke-linejoin="round"/>
+      <path d="M84 144L116 144L120 236L80 236Z" fill="#e8892a" stroke="#8a4a10" stroke-width="2"/>
+      ${[160, 182, 204].map(y => `<circle cx="100" cy="${y}" r="4.6" fill="url(#mb)" stroke="#8a5a0c" stroke-width="1.4"/>`).join('')}
+      <rect x="58" y="236" width="84" height="14" fill="#1a1a1a" stroke="#000" stroke-width="2"/><rect x="88" y="233" width="24" height="20" rx="3" fill="url(#mb)" stroke="#8a5a0c" stroke-width="2"/><rect x="95" y="239" width="10" height="8" rx="1.5" fill="#1a1a1a"/>
+      <path d="M52 150C36 150 24 138 20 118L34 112C38 126 44 132 56 134Z" fill="url(#mc)" stroke="#0a3d1a" stroke-width="2.4" stroke-linejoin="round"/>
+      <circle cx="24" cy="110" r="10" fill="#f6c39a" stroke="#b8714a" stroke-width="2"/>
+      <path d="M148 150C164 156 176 170 178 192L162 196C160 182 154 172 144 168Z" fill="url(#mc)" stroke="#0a3d1a" stroke-width="2.4" stroke-linejoin="round"/>
+      <circle cx="172" cy="200" r="10" fill="#f6c39a" stroke="#b8714a" stroke-width="2"/>
+      <circle cx="176" cy="186" r="15" fill="url(#mb)" stroke="#8a5a0c" stroke-width="2.4"/><circle cx="176" cy="186" r="10.5" fill="none" stroke="#a87414" stroke-width="1.6" stroke-dasharray="2 2"/>
+      <g transform="translate(25 -6) scale(1.5)">${FACE}</g>`),
+    // Hintergrund: irische Huegel, Regenbogen, Wolken
+    scene: SVGH('0 0 400 800', `<defs><linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8fd8"/><stop offset=".55" stop-color="#9edcf8"/><stop offset="1" stop-color="#d9f2e0"/></linearGradient>
+      <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#47b75a"/><stop offset="1" stop-color="#1e7a38"/></linearGradient>
+      <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f9a4a"/><stop offset="1" stop-color="#125a2a"/></linearGradient>
+      <linearGradient id="h3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f7a38"/><stop offset="1" stop-color="#0b3f1d"/></linearGradient></defs>
+      <rect width="400" height="800" fill="url(#s1)"/>
+      <g opacity=".9">${['#ff3b3b', '#ff9a2e', '#ffe14a', '#4cd964', '#3aa8ff', '#8a5cf0'].map((c, i) => `<path d="M-40 ${470 - i * 0} A${300 - i * 22} ${300 - i * 22} 0 0 1 ${460 - i * 0} 470" transform="translate(${i * 0} 0)" fill="none" stroke="${c}" stroke-width="22" stroke-opacity=".0"/>`).join('')}
+      ${['#ff3b3b', '#ff9a2e', '#ffe14a', '#4cd964', '#3aa8ff', '#8a5cf0'].map((c, i) => `<path d="M${-30 + i * 20} 520A${260 - i * 20} ${260 - i * 20} 0 0 1 ${450 - i * 20} 520" fill="none" stroke="${c}" stroke-width="20" stroke-opacity=".78"/>`).join('')}</g>
+      <g fill="#fff" opacity=".95"><ellipse cx="70" cy="130" rx="56" ry="20"/><ellipse cx="110" cy="116" rx="40" ry="20"/><ellipse cx="300" cy="200" rx="60" ry="20"/><ellipse cx="340" cy="186" rx="38" ry="18"/><ellipse cx="200" cy="300" rx="50" ry="16"/><ellipse cx="236" cy="290" rx="32" ry="15"/></g>
+      <path d="M0 560C80 520 160 520 240 548C310 572 360 560 400 540L400 800L0 800Z" fill="url(#h1)"/>
+      <path d="M0 640C90 596 190 604 280 640C330 658 370 656 400 646L400 800L0 800Z" fill="url(#h2)"/>
+      <path d="M0 720C100 690 200 700 300 724C340 733 372 732 400 726L400 800L0 800Z" fill="url(#h3)"/>
+      <g>${[[46, 600, .8], [320, 612, 1], [150, 662, 1.1], [260, 690, 1.2], [60, 730, 1.3], [350, 750, 1.2], [200, 770, 1.4], [120, 600, .6]].map(([x, y, s]) => `<g transform="translate(${x} ${y}) scale(${s * .26})">${CG.slice(0, 0)}<g fill="#5fd06a" stroke="#0e5a28" stroke-width="3" stroke-linejoin="round">${[0, 90, 180, 270].map(a => `<path d="${LEAF}" transform="rotate(${a} 50 50)"/>`).join('')}</g></g>`).join('')}</g>
+      <g transform="translate(262 534)"><ellipse cx="30" cy="50" rx="34" ry="9" fill="#000" opacity=".25"/><path d="M4 22C0 42 12 54 30 54C48 54 60 42 56 22Z" fill="#23232c" stroke="#000" stroke-width="2"/><ellipse cx="30" cy="22" rx="26" ry="7" fill="#33333f" stroke="#000" stroke-width="2"/>${[[16, 17, 7], [30, 12, 8], [44, 17, 7], [23, 6, 6], [37, 6, 6]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#ffd24a" stroke="#9a6a12" stroke-width="1.6"/>`).join('')}</g>`),
+  };
+  const ART_URL = {};
+  const artURL = n => ART_URL[n] || (ART_SRC[n] ? (ART_URL[n] = 'data:image/svg+xml;utf8,' + encodeURIComponent(ART_SRC[n])) : '');
+  window.__JB_ART = { names: Object.keys(ART_SRC), svg: n => ART_SRC[n], url: artURL };
+
+  // ================= Designer: Aussehen von Home, Gacha und Slot =================
+  // Jede dieser Seiten hat ein eigenes "Skin": Hintergrund (ganze App), Farben, Schrift, Maskottchen.
+  // Der Slot hat zusaetzlich Maschinen-Hintergrund, Symbole und Musik.
+  const SK_PAGES = ['home', 'gacha', 'slot'];
+  const SK_NAMES = { home: 'Home', gacha: 'Gacha', slot: 'Slot' };
+  const SK_FITS = [['cover', 'Füllen'], ['contain', 'Ganz'], ['fill', 'Strecken']];
+  const SK_FONTS = [['standard', 'Standard', ''], ['serif', 'Serif', "Georgia,'Times New Roman',serif"], ['rund', 'Rund', "'Trebuchet MS','Avenir Next','Segoe UI',system-ui,sans-serif"], ['mono', 'Maschine', "ui-monospace,Menlo,Consolas,monospace"], ['hand', 'Handschrift', "'Segoe Print','Bradley Hand','Comic Sans MS',cursive"]];
+  const SK_MAX_BYTES = 20 * 1024 * 1024;
+  const SK_SYM_COUNT = 10;
+  const mediaDef = (c1, c2, dim) => ({ k: null, ref: null, art: null, fit: 'cover', x: 50, y: 50, z: 1, dim, blur: 0, c1, c2 });
+  const SK_DEF = () => ({
+    p: 'klassisch',
+    page: mediaDef('#0c0e13', '#0c0e13', 0.3),
+    mach: { ...mediaDef('#3a2a66', '#120d24', 0.35), fr: '#3a3350', rl: '#080614', ra: 0.66 },
+    col: { accent: '#d8c8a0', text: '#e9ebf2', panel: '#141822', pa: 1, spin1: '#ffe9a8', spin2: '#d8c8a0', spinFg: '#1a1608', btn: '#1b2030', btnFg: '#e9ebf2', fs1: '#6b3dff', fs2: '#c14bff', win: '#ffd36b' },
+    font: 'standard',
+    sym: {},
+    mascot: { v: 'none', ref: null, pos: 'bl', size: 34, flip: false, front: false },
+    music: { on: true, src: 'irish', ref: null, vol: 0.4 },
+  });
+  const SK_IRISH_SYM = () => ({
+    0: { k: 'art', v: 'clover', n: 'Kleeblatt' }, 1: { k: 'art', v: 'horseshoe', n: 'Hufeisen' }, 2: { k: 'art', v: 'pint', n: 'Bierkrug' }, 3: { k: 'art', v: 'harp', n: 'Harfe' },
+    4: { k: 'art', v: 'coin', n: 'Goldmünze' }, 5: { k: 'art', v: 'hat', n: 'Zylinder' }, 6: { k: 'art', v: 'rainbow', n: 'Regenbogen' }, 7: { k: 'art', v: 'pot', n: 'Goldtopf' },
+    8: { k: 'art', v: 'kobold', n: 'Kobold' }, 9: { k: 'art', v: 'medal', n: 'Freispiel' },
+  });
+  const emojiSet = (arr, names) => { const o = {}; arr.forEach((e, i) => { o[i] = { k: 'emoji', v: e, n: names[i] }; }); return o; };
+  const SK_PRESETS = {
+    klassisch: { n: 'Klassisch', sw: ['#3a2a66', '#d8c8a0'], d: () => ({}) },
+    irish: {
+      n: 'Irish', sw: ['#1f8a3b', '#ffd24a'], d: () => ({
+        page: { ...mediaDef('#0b3a1c', '#2f8fd8', 0.08), k: 'art', art: 'scene' },
+        mach: { ...mediaDef('#117a3a', '#053a18', 0.12), fr: '#e9b53a', rl: '#031a0a', ra: 0.5 },
+        col: { accent: '#ffd24a', text: '#f4fff2', panel: '#0b3a1c', pa: 0.82, spin1: '#fff3b0', spin2: '#ffc42e', spinFg: '#3d2600', btn: '#14602e', btnFg: '#f4fff2', fs1: '#0d9a43', fs2: '#f2b51f', win: '#ffe27a' },
+        font: 'rund', sym: SK_IRISH_SYM(),
+        mascot: { v: 'art', ref: null, pos: 'bl', size: 34, flip: false, front: false },
+      }),
+    },
+    neon: {
+      n: 'Neon', sw: ['#2b0b5e', '#00f0ff'], d: () => ({
+        page: mediaDef('#06001a', '#2b0b5e', 0), mach: { ...mediaDef('#16003a', '#050015', 0), fr: '#00e5ff', rl: '#020010', ra: 0.6 },
+        col: { accent: '#00f0ff', text: '#f0f8ff', panel: '#0c0626', pa: 0.75, spin1: '#ff9bf5', spin2: '#a64bff', spinFg: '#12002e', btn: '#1b0a4a', btnFg: '#eaffff', fs1: '#ff2bd6', fs2: '#00e5ff', win: '#7dffcf' },
+        font: 'mono', sym: emojiSet(['🍒', '🫐', '🍉', '🔔', '⚡', '💎', '🚀', '🎰', '🛸', '🪩'], ['Kirsche', 'Blaubeere', 'Melone', 'Glocke', 'Blitz', 'Diamant', 'Rakete', 'Jackpot', 'Ufo', 'Disco']),
+      }),
+    },
+    ozean: {
+      n: 'Ozean', sw: ['#0a6a8a', '#6fe3ff'], d: () => ({
+        page: mediaDef('#021b3a', '#0a6a8a', 0), mach: { ...mediaDef('#0b6f94', '#022a47', 0), fr: '#7fe6ff', rl: '#021522', ra: 0.5 },
+        col: { accent: '#6fe3ff', text: '#eefcff', panel: '#06314d', pa: 0.8, spin1: '#d9fbff', spin2: '#2fc4e8', spinFg: '#03283a', btn: '#0a4a6e', btnFg: '#eefcff', fs1: '#0a8fd1', fs2: '#37e6c2', win: '#ffe9a0' },
+        font: 'rund', sym: emojiSet(['🐚', '🦀', '🐠', '⚓', '🐙', '🐬', '🧜', '🔱', '🦈', '🏝️'], ['Muschel', 'Krabbe', 'Fisch', 'Anker', 'Oktopus', 'Delfin', 'Meerjungfrau', 'Dreizack', 'Hai', 'Insel']),
+      }),
+    },
+    gold: {
+      n: 'Luxus', sw: ['#2a2008', '#e8c35a'], d: () => ({
+        page: mediaDef('#0a0805', '#2a2008', 0), mach: { ...mediaDef('#2b2108', '#0a0803', 0), fr: '#d4a82e', rl: '#050402', ra: 0.6 },
+        col: { accent: '#e8c35a', text: '#fff6df', panel: '#18130a', pa: 0.85, spin1: '#fff2b8', spin2: '#e0a825', spinFg: '#2a1c00', btn: '#2a2008', btnFg: '#fff6df', fs1: '#b8860b', fs2: '#ffd86b', win: '#ffe08a' },
+        font: 'serif', sym: emojiSet(['💰', '🪙', '💍', '⌚', '🏆', '👑', '💎', '🥇', '💫', '🎁'], ['Geldsack', 'Münze', 'Ring', 'Uhr', 'Pokal', 'Krone', 'Diamant', 'Goldbarren', 'Glanz', 'Freispiel']),
+      }),
+    },
+  };
+  const SK_PRESET_KEYS = Object.keys(SK_PRESETS);
+
+  // ---- Pruefen und Zusammenfuehren ----
+  const skNum = (v, lo, hi, d) => { v = +v; return Number.isFinite(v) ? Math.max(lo, Math.min(hi, v)) : d; };
+  const skHex = (v, d) => (typeof v === 'string' && /^#[0-9a-f]{6}$/i.test(v) ? v.toLowerCase() : d);
+  function skMedia(m, d) {
+    m = m && typeof m === 'object' ? m : {};
+    let k = m.k === 'img' || m.k === 'video' || m.k === 'art' ? m.k : null, ref = null, art = null;
+    if (k === 'img' || k === 'video') { ref = typeof m.ref === 'string' && REF_RE.test(m.ref) ? m.ref : null; if (!ref) k = null; }
+    else if (k === 'art') { art = typeof m.art === 'string' && ART_SRC[m.art] ? m.art : null; if (!art) k = null; }
+    const o = {
+      k, ref, art, fit: SK_FITS.some(f => f[0] === m.fit) ? m.fit : 'cover',
+      x: skNum(m.x, 0, 100, 50), y: skNum(m.y, 0, 100, 50), z: skNum(m.z, 1, 4, 1), dim: skNum(m.dim, 0, 0.9, d.dim), blur: skNum(m.blur, 0, 14, 0),
+      c1: skHex(m.c1, d.c1), c2: skHex(m.c2, d.c2),
+    };
+    if (d.fr) { o.fr = skHex(m.fr, d.fr); o.rl = skHex(m.rl, d.rl); o.ra = skNum(m.ra, 0, 1, d.ra); }
+    return o;
+  }
+  function skNorm(v) {
+    const d = SK_DEF();
+    v = v && typeof v === 'object' ? v : {};
+    const col = v.col && typeof v.col === 'object' ? v.col : {}, c = {};
+    Object.keys(d.col).forEach(k => { c[k] = k === 'pa' ? skNum(col.pa, 0.2, 1, d.col.pa) : skHex(col[k], d.col[k]); });
+    const sym = {};
+    if (v.sym && typeof v.sym === 'object') {
+      for (let i = 0; i < SK_SYM_COUNT; i++) {
+        const s = v.sym[i];
+        if (!s || typeof s !== 'object') continue;
+        const n = typeof s.n === 'string' ? s.n.replace(/[<>&"']/g, '').slice(0, 18) : '';
+        if (s.k === 'emoji' && typeof s.v === 'string' && s.v) sym[i] = { k: 'emoji', v: firstGlyph(s.v) || SLOTCORE.EMOJI[i], ...(n ? { n } : {}) };
+        else if (s.k === 'img' && typeof s.v === 'string' && REF_RE.test(s.v)) sym[i] = { k: 'img', v: s.v, ...(n ? { n } : {}) };
+        else if (s.k === 'art' && typeof s.v === 'string' && ART_SRC[s.v]) sym[i] = { k: 'art', v: s.v, ...(n ? { n } : {}) };
+        else if (n) sym[i] = { k: 'def', v: '', n };
+      }
+    }
+    const ms = v.mascot && typeof v.mascot === 'object' ? v.mascot : {};
+    let mv = ms.v === 'art' || ms.v === 'img' ? ms.v : 'none';
+    const mref = typeof ms.ref === 'string' && REF_RE.test(ms.ref) ? ms.ref : null;
+    if (mv === 'img' && !mref) mv = 'none';
+    const mu = v.music && typeof v.music === 'object' ? v.music : {};
+    const mur = typeof mu.ref === 'string' && REF_RE.test(mu.ref) ? mu.ref : null;
+    return {
+      p: SK_PRESET_KEYS.includes(v.p) || v.p === 'eigen' ? v.p : 'klassisch',
+      page: skMedia(v.page, d.page), mach: skMedia(v.mach, d.mach), col: c,
+      font: SK_FONTS.some(f => f[0] === v.font) ? v.font : 'standard', sym,
+      mascot: { v: mv, ref: mref, pos: ['tl', 'tr', 'bl', 'br', 'cl', 'cr'].includes(ms.pos) ? ms.pos : 'bl', size: skNum(ms.size, 10, 80, 34), flip: !!ms.flip, front: !!ms.front },
+      music: { on: mu.on !== false, src: mu.src === 'file' && mur ? 'file' : 'irish', ref: mur, vol: skNum(mu.vol, 0, 1, 0.4) },
+    };
+  }
+  const skFromPreset = key => {
+    const pr = SK_PRESETS[key] || SK_PRESETS.klassisch, base = SK_DEF(), o = pr.d();
+    const out = { ...base, ...o, p: key, page: { ...base.page, ...(o.page || {}) }, mach: { ...base.mach, ...(o.mach || {}) }, col: { ...base.col, ...(o.col || {}) }, mascot: { ...base.mascot, ...(o.mascot || {}) }, music: { ...base.music, ...(o.music || {}) }, sym: o.sym || {} };
+    return skNorm(out);
+  };
+  // Standard-Skin einer Seite; der Slot uebernimmt dabei alte Einstellungen (Hintergrund, Abdunkeln, Freispiel-Symbol)
+  let SK_SEEN = null;
+  function skinOf(page) {
+    let all = S.meta.skin;
+    if (!all || typeof all !== 'object') all = S.meta.skin = {};
+    if (SK_SEEN !== all) { SK_SEEN = all; SK_PAGES.forEach(p => { if (all[p]) all[p] = skNorm(all[p]); }); }
+    if (!all[page]) {
+      const sk = skFromPreset('klassisch');
+      if (page === 'slot') {
+        const old = S.meta.slot && typeof S.meta.slot === 'object' ? S.meta.slot : {};
+        if (old.bg && old.bg.ref && REF_RE.test(String(old.bg.ref)) && (old.bg.k === 'img' || old.bg.k === 'video')) { sk.mach.k = old.bg.k; sk.mach.ref = old.bg.ref; sk.p = 'eigen'; }
+        if (Number.isFinite(+old.dim)) sk.mach.dim = skNum(old.dim, 0, 0.9, 0.35);
+        if (old.scatter && old.scatter.k === 'emoji' && old.scatter.v && old.scatter.v !== SLOTCORE.EMOJI[9]) { sk.sym[9] = { k: 'emoji', v: firstGlyph(old.scatter.v) || SLOTCORE.EMOJI[9] }; sk.p = 'eigen'; }
+        else if (old.scatter && old.scatter.k === 'img' && REF_RE.test(String(old.scatter.v))) { sk.sym[9] = { k: 'img', v: old.scatter.v }; sk.p = 'eigen'; }
+        delete old.bg; delete old.scatter; delete old.dim;
+      }
+      all[page] = sk;
+    }
+    return all[page];
+  }
+  const skSave = now => saveMeta(!!now);
+  const skRefsOf = c => {
+    const r = [];
+    if (c.page.ref) r.push(c.page.ref);
+    if (c.mach.ref) r.push(c.mach.ref);
+    if (c.mascot.ref) r.push(c.mascot.ref);
+    if (c.music.ref) r.push(c.music.ref);
+    Object.values(c.sym).forEach(s => { if (s.k === 'img') r.push(s.v); });
+    return r;
+  };
+  const skAllRefs = () => { const r = new Set(); Object.values(S.meta.skin || {}).forEach(c => { if (c && c.page) skRefsOf(c).forEach(x => r.add(x)); }); return r; };
+  const mediaUsed = ref => S.cases.some(c => c.cards.some(x => x.p === ref)) || skAllRefs().has(ref) || (typeof homeRefs === 'function' && homeRefs().has(ref));
+  async function mediaDrop(ref) { if (ref && !mediaUsed(ref)) { try { await BE.dropPhoto(ref); } catch (e) { /* egal */ } } }
+
+  // ---- Medien anzeigen ----
+  const skSrcOf = m => (m.k === 'art' ? artURL(m.art) : (BE && m.ref ? BE.src(m.ref) : ''));
+  const skMediaVars = m => `--fit:${m.fit};--px:${m.x}%;--py:${m.y}%;--z:${Math.max(m.z, m.blur ? 1 + m.blur * 0.014 : 1).toFixed(3)};--bl:${m.blur}px`;
+  function skMediaHTML(m) {
+    if (!m || !m.k) return '';
+    const src = skSrcOf(m);
+    if (!src) return '';
+    return m.k === 'video'
+      ? `<video class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" autoplay muted loop playsinline webkit-playsinline></video>`
+      : `<img class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" alt="" draggable="false">`;
+  }
+  const skGrad = m => `linear-gradient(160deg,${m.c1},${m.c2})`;
+  const skRad = m => `radial-gradient(ellipse at 50% 15%,${m.c1},${m.c2} 72%)`;
+  function skPlay(root) { (root || document).querySelectorAll('video.sk-m').forEach(v => { v.muted = true; const p = v.play && v.play(); if (p && p.catch) p.catch(() => {}); }); }
+  // Medium in einen Rahmen legen. Beim Verschieben und Zoomen wird nur der Stil geaendert, damit Videos nicht neu starten.
+  function skLayer(host, m) {
+    if (!host) return;
+    const sig = (m.k || '') + '|' + (m.ref || '') + '|' + (m.art || '');
+    if (host.dataset.sig !== sig) { host.dataset.sig = sig; host.innerHTML = skMediaHTML(m); skPlay(host); }
+    const el = host.querySelector('.sk-m'); if (el) el.setAttribute('style', skMediaVars(m));
+  }
+  const skLum = hex => { const n = parseInt(hex.slice(1), 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) / 255; };
+  const skOn = hex => (skLum(hex) > 0.58 ? '#1a1608' : '#ffffff');
+  const skIsDefault = c => {
+    const d = SK_DEF();
+    return !c.page.k && c.page.c1 === d.page.c1 && c.page.c2 === d.page.c2 && c.font === 'standard' && c.mascot.v === 'none' && JSON.stringify(c.col) === JSON.stringify(d.col);
+  };
+
+  // ---- Anwenden ----
+  let SK_ON = null;
+  const SK_VARS = ['--accent', '--on-accent', '--fg', '--muted', '--surface', '--surface-2', '--line', '--spin1', '--spin2', '--spin-fg', '--btn', '--btn-fg', '--fs1', '--fs2', '--win', '--display', '--body'];
+  function skClear() {
+    const st = document.body.style;
+    SK_VARS.forEach(v => st.removeProperty(v));
+    document.body.classList.remove('skin-on');
+    delete document.body.dataset.skin;
+    const bg = $('#skinbg'); if (bg) bg.hidden = true;
+    const mc = $('#skmascot'); if (mc) mc.remove();
+  }
+  function skApply(page) {
+    if (!SK_PAGES.includes(page)) { SK_ON = null; skClear(); return; }
+    const c = skinOf(page), st = document.body.style, col = c.col;
+    SK_ON = page;
+    if (skIsDefault(c)) { skClear(); return; }
+    const b = document.body;
+    b.classList.add('skin-on'); b.dataset.skin = page;
+    st.setProperty('--accent', col.accent); st.setProperty('--on-accent', skOn(col.accent));
+    st.setProperty('--fg', col.text); st.setProperty('--muted', `color-mix(in srgb, ${col.text} 60%, transparent)`);
+    const pa = Math.round(col.pa * 100);
+    st.setProperty('--surface', `color-mix(in srgb, ${col.panel} ${pa}%, transparent)`);
+    st.setProperty('--surface-2', `color-mix(in srgb, color-mix(in srgb, ${col.panel}, #ffffff 10%) ${pa}%, transparent)`);
+    st.setProperty('--line', `color-mix(in srgb, ${col.text} 18%, transparent)`);
+    st.setProperty('--spin1', col.spin1); st.setProperty('--spin2', col.spin2); st.setProperty('--spin-fg', col.spinFg);
+    st.setProperty('--btn', col.btn); st.setProperty('--btn-fg', col.btnFg);
+    st.setProperty('--fs1', col.fs1); st.setProperty('--fs2', col.fs2); st.setProperty('--win', col.win);
+    const f = SK_FONTS.find(x => x[0] === c.font);
+    if (f && f[2]) { st.setProperty('--display', f[2]); st.setProperty('--body', f[2]); } else { st.removeProperty('--display'); st.removeProperty('--body'); }
+    const bg = $('#skinbg');
+    if (bg) {
+      bg.hidden = false;
+      bg.querySelector('.sk-fill').style.background = skGrad(c.page);
+      skLayer(bg.querySelector('.sk-layer'), c.page);
+      bg.querySelector('.sk-dimmer').style.opacity = c.page.dim;
+      const mh = bg.querySelector('.sk-mhost'), html = skMascotHTML(c, false);
+      if (mh.dataset.h !== html) { mh.dataset.h = html; mh.innerHTML = html; }
+    }
+    const old = $('#skmascot');
+    const fh = c.mascot.v !== 'none' && c.mascot.front ? skMascotHTML(c, true) : '';
+    if (!fh) { if (old) old.remove(); }
+    else { let d = old; if (!d) { d = document.createElement('div'); d.id = 'skmascot'; document.body.appendChild(d); } if (d.dataset.h !== fh) { d.dataset.h = fh; d.innerHTML = fh; } }
+  }
+  const skMachStyle = c => `--dim:${c.mach.dim};--sl-fr:${c.mach.fr};--sl-rb:color-mix(in srgb, ${c.mach.rl} ${Math.round(c.mach.ra * 100)}%, transparent)`;
+  function skApplyMach() {
+    const m = $('#sl-machine'), c = skinOf('slot');
+    if (!m) return;
+    m.setAttribute('style', skMachStyle(c) + (m.classList.contains('fs-on') ? '' : ''));
+    const b = $('#sl-bg'); if (b) { b.style.background = skRad(c.mach); skLayer(b, c.mach); }
+  }
+  const SK_POS = { tl: 'left:0;top:60px', tr: 'right:0;top:60px', bl: 'left:0;bottom:56px', br: 'right:0;bottom:56px', cl: 'left:0;top:34%', cr: 'right:0;top:34%' };
+  function skMascotHTML(c, front) {
+    const m = c.mascot;
+    if (m.v === 'none') return '';
+    if (!!m.front !== !!front) return '';
+    const src = m.v === 'art' ? artURL('mascot') : (BE && m.ref ? BE.src(m.ref) : '');
+    if (!src) return '';
+    const right = m.pos === 'tr' || m.pos === 'br' || m.pos === 'cr';
+    return `<img class="sk-mascot" src="${esc(src)}" alt="" draggable="false" style="${SK_POS[m.pos]};width:${m.size}vw;max-width:340px;transform:scaleX(${(m.flip ? -1 : 1)});transform-origin:${right ? '100%' : '0'} 50%">`;
+  }
+  // Seite wechseln: passenden Skin einschalten
+  function skEnter(page) {
+    if (SKD.page && SKD.page !== page) skClose(true);
+    skApply(page);
+    if (typeof MUSIC !== 'undefined') MUSIC.sync(page);
+  }
+  const skRefresh = () => { if (SK_ON) skApply(SK_ON); if (SKD.page === 'slot') skApplyMach(); if (SKD.page === 'gacha' && typeof gaSkin === 'function') gaSkin(); };
+
+  // ---- Symbole des Slots ----
+  const skSymDef = (page, s) => { const o = skinOf(page).sym[s]; return o && o.k !== 'def' ? o : { k: 'emoji', v: SLOTCORE.EMOJI[s] }; };
+  const skSymName = (page, s) => { const o = skinOf(page).sym[s]; return (o && o.n) || SLOTCORE.NAMES[s]; };
+
+  // ---- Designer-Oberflaeche ----
+  const SKD = { page: null, tab: 'vorlage', sub: 'page', sel: 0, armPreset: null, fileFor: null };
+  const SK_TABS = { slot: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['sym', 'Symbole'], ['farben', 'Farben'], ['mehr', 'Mehr']], gacha: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['farben', 'Farben'], ['mehr', 'Mehr']], home: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['farben', 'Farben'], ['mehr', 'Mehr']] };
+  function skOpen(page) {
+    SKD.page = page; SKD.tab = 'vorlage'; SKD.sub = 'page'; SKD.sel = 0; SKD.armPreset = null;
+    const el = $('#skined');
+    el.hidden = false;
+    document.body.classList.add('skin-edit');
+    skRender();
+  }
+  function skClose(quiet) {
+    const el = $('#skined');
+    el.hidden = true; el.innerHTML = '';
+    document.body.classList.remove('skin-edit');
+    SKD.page = null;
+    if (!quiet && typeof MUSIC !== 'undefined') MUSIC.sync(current);
+  }
+  const skField = (label, inner) => `<div class="field"><span>${label}</span>${inner}</div>`;
+  const skRange = (path, min, max, step, val, label) => `<label class="field"><span>${label}<b class="sk-val" data-skv="${path}">${(+val).toFixed(step < 1 ? (step < 0.1 ? 2 : 1) : 0)}</b></span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}" data-skf="${path}"></label>`;
+  const skColor = (path, val, label) => `<label class="sk-col"><input type="color" value="${val}" data-skf="${path}" aria-label="${esc(label)}"><span>${label}</span></label>`;
+  const skChips = (items, cur, attr) => `<div class="chips">${items.map(([k, n]) => `<button class="chip${cur === k ? ' on' : ''}" ${attr}="${k}">${n}</button>`).join('')}</div>`;
+  const skSymPrev = (page, s) => { const d = skSymDef(page, s); return d.k === 'art' ? `<img src="${esc(artURL(d.v))}" alt="">` : d.k === 'img' ? (BE && BE.src(d.v) ? `<img src="${esc(BE.src(d.v))}" alt="">` : '?') : `<span>${esc(d.v)}</span>`; };
+  function skTabBg(c) {
+    const t = SKD.sub, m = t === 'mach' ? c.mach : c.page;
+    const subs = SKD.page !== 'home' ? skChips([['page', 'Ganze App'], ['mach', 'Maschine']], t, 'data-sksub') : '';
+    const src = m.k === 'art' ? artURL(m.art) : (BE && m.ref ? BE.src(m.ref) : '');
+    const prev = m.k ? `<div class="sk-prev" id="sk-prev" data-skdrag="${t}" style="background:${t === 'mach' ? skRad(m) : skGrad(m)};aspect-ratio:${t === 'mach' ? '5/4' : Math.max(1, innerWidth) + '/' + Math.max(1, innerHeight)}">${m.k === 'video' ? `<video class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" autoplay muted loop playsinline></video>` : `<img class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" alt="" draggable="false">`}<i class="sk-prev-dim" style="opacity:${m.dim}"></i></div><p class="note" style="margin:0">Ziehen, um das Bild auszurichten. Zoom und Position stehen unten.</p>` : '';
+    return `${subs}
+      <p class="note" style="margin:0;max-width:none">${t === 'mach' ? (SKD.page === 'slot' ? 'Hinter den Walzen, innerhalb der Maschine.' : 'Hinter dem Kasten mit dem Case-Namen.') : 'Läuft hinter der ganzen Seite, auch hinter Kopfzeile und Leiste.'} Foto, GIF oder Video.</p>
+      <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="${t}">Datei wählen</label>
+        <button class="btn small" data-sk="mediaoff" data-id="${t}" ${m.k ? '' : 'disabled'}>Entfernen</button>
+        ${t === 'page' ? `<button class="btn small${m.k === 'art' ? ' primary' : ''}" data-sk="artbg">Irische Hügel</button>` : ''}</div>
+      ${prev}
+      ${m.k ? skField('Anpassung', skChips(SK_FITS, m.fit, 'data-skfit')) + skRange(`${t}.z`, 1, 4, 0.01, m.z, 'Zoom ') + skRange(`${t}.x`, 0, 100, 1, m.x, 'Position links–rechts ') + skRange(`${t}.y`, 0, 100, 1, m.y, 'Position oben–unten ') + skRange(`${t}.blur`, 0, 14, 1, m.blur, 'Unschärfe ') : ''}
+      ${skRange(`${t}.dim`, 0, 0.9, 0.01, m.dim, 'Abdunkeln ')}
+      ${t === 'mach' && SKD.page === 'gacha' ? '' : `<div class="sk-cols">${skColor(`${t}.c1`, m.c1, 'Farbe 1')}${skColor(`${t}.c2`, m.c2, 'Farbe 2')}${t === 'mach' ? skColor('mach.fr', m.fr, 'Rahmen') + skColor('mach.rl', m.rl, 'Walzen') : ''}</div>`}
+      ${t === 'mach' && SKD.page === 'slot' ? skRange('mach.ra', 0, 1, 0.01, m.ra, 'Walzen-Deckkraft ') : ''}`;
+  }
+  function skTabSym(c) {
+    const s = SKD.sel, d = skSymDef('slot', s), nm = skSymName('slot', s);
+    const grid = Array.from({ length: SK_SYM_COUNT }, (_, i) => `<button class="sk-sym${i === s ? ' on' : ''}" data-sksel="${i}" aria-label="${esc(skSymName('slot', i))}"><span class="sk-sym-i">${skSymPrev('slot', i)}</span><small>${esc(skSymName('slot', i))}</small></button>`).join('');
+    return `<p class="note" style="margin:0;max-width:none">Tippe ein Symbol an und ändere es. Die erste Reihe zahlt am wenigsten, ${esc(skSymName('slot', 7))} am meisten.</p>
+      <div class="sk-syms">${grid}</div>
+      <div class="sk-symed">
+        <div class="sk-sym-big">${skSymPrev('slot', s)}</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <input type="text" id="sk-symname" maxlength="18" value="${esc(nm)}" placeholder="Name" autocomplete="off" aria-label="Name des Symbols">
+          <div class="row left"><input type="text" id="sk-symemo" maxlength="12" placeholder="Emoji, z. B. 🐉" autocomplete="off" aria-label="Emoji" style="flex:1;min-width:0"><button class="btn small" data-sk="symemo">OK</button></div>
+          <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="sym">Foto oder GIF</label><button class="btn small" data-sk="symreset">Standard</button></div>
+        </div>
+      </div>
+      ${skField('Symbol-Set übernehmen', skChips(SK_PRESET_KEYS.map(k => [k, SK_PRESETS[k].n]), '', 'data-sksymset'))}`;
+  }
+  function skTabColors(c) {
+    const o = c.col, hasM = SKD.page === 'slot';
+    return `<div class="sk-cols">${skColor('col.accent', o.accent, 'Akzent')}${skColor('col.text', o.text, 'Text')}${skColor('col.panel', o.panel, 'Flächen')}${skColor('col.btn', o.btn, 'Tasten')}${skColor('col.btnFg', o.btnFg, 'Tasten-Text')}</div>
+      ${skRange('col.pa', 0.2, 1, 0.01, o.pa, 'Flächen-Deckkraft ')}
+      ${hasM ? `<h4 class="set-sub">Dreh-Knopf</h4><div class="sk-cols">${skColor('col.spin1', o.spin1, 'Licht')}${skColor('col.spin2', o.spin2, 'Farbe')}${skColor('col.spinFg', o.spinFg, 'Schrift')}</div>
+      <h4 class="set-sub">Freispiele und Gewinn</h4><div class="sk-cols">${skColor('col.fs1', o.fs1, 'Leiste 1')}${skColor('col.fs2', o.fs2, 'Leiste 2')}${skColor('col.win', o.win, 'Gewinn')}</div>` : ''}`;
+  }
+  function skTabMore(c) {
+    const m = c.mascot, mu = c.music;
+    const posChips = skChips([['tl', '↖'], ['tr', '↗'], ['cl', '◀'], ['cr', '▶'], ['bl', '↙'], ['br', '↘']], m.pos, 'data-skpos');
+    return `${skField('Schrift', skChips(SK_FONTS.map(f => [f[0], f[1]]), c.font, 'data-skfont'))}
+      <h4 class="set-sub">Maskottchen</h4>
+      ${skChips([['none', 'Keins'], ['art', 'Kobold'], ['img', 'Eigenes Bild']], m.v, 'data-skmasc')}
+      <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="mascot">Bild wählen (am besten PNG ohne Hintergrund)</label></div>
+      ${m.v !== 'none' ? skField('Platz', posChips) + skRange('mascot.size', 10, 80, 1, m.size, 'Größe ') + `<div class="switch"><span>Spiegeln</span><button data-sk="mflip" aria-pressed="${m.flip}" aria-label="Spiegeln"></button></div><div class="switch"><span>Vor den Bedienelementen</span><button data-sk="mfront" aria-pressed="${m.front}" aria-label="Vor den Bedienelementen"></button></div>` : ''}
+      ${SKD.page === 'slot' ? `<h4 class="set-sub">Musik</h4>
+        <div class="switch"><span>Musik im Slot</span><button data-sk="musicon" aria-pressed="${mu.on}" aria-label="Musik an oder aus"></button></div>
+        ${skChips([['irish', 'Irisch (eingebaut)'], ['file', 'Eigene Datei']], mu.src, 'data-skmus')}
+        <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="music">Musikdatei wählen</label></div>
+        ${skRange('music.vol', 0, 1, 0.01, mu.vol, 'Lautstärke ')}
+        <p class="note" style="margin:0;max-width:none">Die irische Melodie ist selbst komponiert und wird beim Start erzeugt. Eigene Musik klappt nur in der Offline-App (GitHub oder Windows), nicht in der Claude-Version.</p>` : ''}`;
+  }
+  function skTabPreset(c) {
+    const cards = SK_PRESET_KEYS.map(k => { const p = SK_PRESETS[k]; return `<button class="sk-pre${c.p === k ? ' on' : ''}" data-skpre="${k}" style="background:linear-gradient(150deg,${p.sw[0]},${p.sw[1]})"><b>${p.n}</b></button>`; }).join('');
+    return `<p class="note" style="margin:0;max-width:none">${SKD.armPreset ? `Du ersetzt dein eigenes Design durch „${esc(SK_PRESETS[SKD.armPreset].n)}“. Tippe nochmal auf die Vorlage zum Bestätigen.` : 'Eine Vorlage setzt Hintergrund, Farben' + (SKD.page === 'slot' ? ', Symbole' : '') + ' und Schrift. Danach kannst du alles einzeln ändern.'}</p>
+      <div class="sk-pres">${cards}</div>
+      <div class="row left"><button class="btn small" data-sk="reset">Auf Vorlage „${esc((SK_PRESETS[c.p] || SK_PRESETS.klassisch).n)}“ zurücksetzen</button></div>`;
+  }
+  function skRender() {
+    const el = $('#skined'), page = SKD.page;
+    if (!el || !page) return;
+    const c = skinOf(page), tabs = SK_TABS[page];
+    if (!tabs.some(t => t[0] === SKD.tab)) SKD.tab = 'vorlage';
+    const body = { vorlage: skTabPreset, bg: skTabBg, sym: skTabSym, farben: skTabColors, mehr: skTabMore }[SKD.tab](c);
+    const keep = el.querySelector('.sk-body'), top = keep ? keep.scrollTop : 0;
+    el.innerHTML = `<div class="sk-head"><b>Design · ${SK_NAMES[page]}</b><button class="btn small primary" data-sk="done">Fertig</button></div>
+      <div class="sk-tabs">${tabs.map(([k, n]) => `<button class="sk-tab" data-sktab="${k}" aria-selected="${SKD.tab === k}">${n}</button>`).join('')}</div>
+      <div class="sk-body">${body}</div><input type="file" id="sk-file" class="vh" accept="image/*,video/*">`;
+    if (keep) el.querySelector('.sk-body').scrollTop = top;
+    skPlay(el);
+  }
+  // Pfad "mach.dim" lesen und schreiben
+  function skSet(path, v) {
+    const c = skinOf(SKD.page), ks = path.split('.');
+    let o = c; for (let i = 0; i < ks.length - 1; i++) o = o[ks[i]];
+    o[ks[ks.length - 1]] = v;
+    c.p = 'eigen';
+  }
+  // Datei fuer Hintergrund, Maskottchen, Symbol oder Musik
+  async function skShrink(file, edge, png) {
+    let bmp;
+    try { bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) { bmp = await loadImg(file); }
+    const W = bmp.width || bmp.naturalWidth, H = bmp.height || bmp.naturalHeight;
+    if (!W || !H) throw new Error('leer');
+    const s = Math.min(1, edge / Math.max(W, H)), cw = Math.max(1, Math.round(W * s)), ch = Math.max(1, Math.round(H * s));
+    const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    cv.getContext('2d').drawImage(bmp, 0, 0, cw, ch);
+    if (bmp.close) bmp.close();
+    const out = await new Promise((res, rej) => cv.toBlob(b => (b ? res(b) : rej(new Error('toBlob'))), png ? 'image/png' : 'image/jpeg', 0.86));
+    cv.width = cv.height = 0;
+    return out;
+  }
+  async function skPickFile(file, target) {
+    const page = SKD.page;
+    if (!file || !page) return;
+    const audio = target === 'music';
+    if (audio && !(/^audio\//.test(file.type) || /\.(mp3|m4a|wav|ogg|aac)$/i.test(file.name || ''))) { toast('Das ist keine Musikdatei.'); return; }
+    if (audio && BE && BE.mode === 'cloud') { toast('Eigene Musik geht in der Claude-Version nicht, nur in der Offline-App.'); return; }
+    if (file.size > SK_MAX_BYTES) { toast('Die Datei ist zu groß (höchstens 20 MB).'); return; }
+    const video = !audio && isVideoFile(file), gif = file.type === 'image/gif';
+    busy('Wird gespeichert …');
+    try {
+      const c = skinOf(page);
+      let blob = file, old = null;
+      if (!audio && !video && !gif) {
+        blob = await skShrink(file, target === 'sym' ? 320 : target === 'mascot' ? 900 : 1600, target === 'sym' || target === 'mascot' || file.type === 'image/png');
+      }
+      const ref = await BE.putPhoto(blob);
+      if (target === 'page' || target === 'mach') { old = c[target].ref; c[target].k = video ? 'video' : 'img'; c[target].ref = ref; c[target].art = null; }
+      else if (target === 'mascot') { old = c.mascot.ref; c.mascot.v = 'img'; c.mascot.ref = ref; }
+      else if (target === 'music') { old = c.music.ref; c.music.src = 'file'; c.music.ref = ref; }
+      else if (target === 'sym') { if (video) throw new Error('Video als Symbol'); const cur = c.sym[SKD.sel]; old = cur && cur.k === 'img' ? cur.v : null; c.sym[SKD.sel] = { k: 'img', v: ref, ...(cur && cur.n ? { n: cur.n } : {}) }; }
+      c.p = 'eigen';
+      skSave(true);
+      if (old && old !== ref) await mediaDrop(old);
+      busy(null); skRender(); skRefresh(); skAfter(target);
+    } catch (e) { busy(null); console.error(e); toast(e && /Video als Symbol/.test(e.message) ? 'Ein Symbol kann ein Foto oder GIF sein, kein Video.' : 'Das konnte ich nicht speichern.'); }
+  }
+  // Nach Aenderungen: Slot und Musik auffrischen
+  function skAfter(what) {
+    if (SKD.page === 'slot') { if (what === 'sym' || what === 'symset') renderSlot(); if (typeof MUSIC !== 'undefined') MUSIC.sync('slot', true); }
+    if (SKD.page === 'gacha' && current === 'gacha') renderGacha();
+    if (SKD.page === 'home' && current === 'home') renderHome();
+    skRefresh();
+  }
+
+  $('#skined').addEventListener('click', async e => {
+    const page = SKD.page;
+    if (!page) return;
+    const c = skinOf(page);
+    const t = e.target.closest('[data-sk],[data-sktab],[data-sksub],[data-skfit],[data-sksel],[data-sksymset],[data-skpre],[data-skfont],[data-skmasc],[data-skpos],[data-skmus]');
+    if (!t) return;
+    const d = t.dataset;
+    if (d.sktab) { SKD.tab = d.sktab; skRender(); return; }
+    if (d.sksub) { SKD.sub = d.sksub; skRender(); return; }
+    if (d.skfit) { c[SKD.sub].fit = d.skfit; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
+    if (d.sksel != null) { SKD.sel = +d.sksel; skRender(); return; }
+    if (d.skfont) { c.font = d.skfont; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
+    if (d.skpos) { c.mascot.pos = d.skpos; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
+    if (d.skmasc) {
+      if (d.skmasc === 'img' && !c.mascot.ref) { toast('Wähle unten erst ein Bild aus.'); return; }
+      c.mascot.v = d.skmasc; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return;
+    }
+    if (d.skmus) { if (d.skmus === 'file' && !c.music.ref) { toast('Wähle erst eine Musikdatei.'); return; } c.music.src = d.skmus; skSave(); skRender(); if (typeof MUSIC !== 'undefined') MUSIC.sync('slot', true); return; }
+    if (d.sksymset) {
+      const pre = SK_PRESETS[d.sksymset].d(), olds = Object.values(c.sym).filter(s => s.k === 'img').map(s => s.v);
+      c.sym = d.sksymset === 'klassisch' ? {} : skNorm({ sym: pre.sym || {} }).sym; c.p = 'eigen'; skSave(true);
+      for (const r of olds) await mediaDrop(r);
+      skRender(); skAfter('symset'); return;
+    }
+    if (d.skpre) {
+      const k = d.skpre, custom = c.p === 'eigen' || skRefsOf(c).length > 0;
+      if (custom && SKD.armPreset !== k) { SKD.armPreset = k; skRender(); setTimeout(() => { if (SKD.armPreset === k) { SKD.armPreset = null; if (SKD.page && SKD.tab === 'vorlage') skRender(); } }, 4500); return; }
+      SKD.armPreset = null;
+      const olds = skRefsOf(c);
+      S.meta.skin[page] = skFromPreset(k); skSave(true);
+      for (const r of olds) await mediaDrop(r);
+      skRender(); skRefresh(); skAfter('symset'); return;
+    }
+    const a = d.sk;
+    if (a === 'done') { skClose(); return; }
+    if (a === 'pick') {
+      SKD.fileFor = d.id === 'sym' ? 'sym' : d.id;
+      const f = $('#sk-file'); if (f) f.accept = d.id === 'music' ? 'audio/*' : d.id === 'sym' ? 'image/*' : d.id === 'mascot' ? 'image/*' : 'image/*,video/*';
+      return;
+    }
+    if (a === 'mediaoff') {
+      const tg = d.id, old = c[tg].ref;
+      c[tg].k = null; c[tg].ref = null; c[tg].art = null; c.p = 'eigen'; skSave(true);
+      await mediaDrop(old); skRender(); skRefresh(); return;
+    }
+    if (a === 'artbg') { c.page.k = 'art'; c.page.art = 'scene'; c.page.ref = null; c.p = 'eigen'; skSave(true); skRender(); skRefresh(); return; }
+    if (a === 'mflip') { c.mascot.flip = !c.mascot.flip; skSave(); skRender(); skRefresh(); return; }
+    if (a === 'mfront') { c.mascot.front = !c.mascot.front; skSave(); skRender(); skRefresh(); return; }
+    if (a === 'musicon') { c.music.on = !c.music.on; skSave(); skRender(); if (typeof MUSIC !== 'undefined') MUSIC.sync('slot', true); return; }
+    if (a === 'symemo') {
+      const g = firstGlyph(($('#sk-symemo') || {}).value);
+      if (!g) { toast('Gib ein Emoji ein, z. B. 🐉'); return; }
+      const cur = c.sym[SKD.sel], old = cur && cur.k === 'img' ? cur.v : null;
+      c.sym[SKD.sel] = { k: 'emoji', v: g, ...(cur && cur.n ? { n: cur.n } : {}) }; c.p = 'eigen'; skSave(true);
+      if (old) await mediaDrop(old);
+      skRender(); skAfter('sym'); return;
+    }
+    if (a === 'symreset') {
+      const cur = c.sym[SKD.sel], old = cur && cur.k === 'img' ? cur.v : null;
+      delete c.sym[SKD.sel]; c.p = 'eigen'; skSave(true);
+      if (old) await mediaDrop(old);
+      skRender(); skAfter('sym'); return;
+    }
+    if (a === 'reset') {
+      const olds = skRefsOf(c);
+      S.meta.skin[page] = skFromPreset(SK_PRESETS[c.p] ? c.p : 'klassisch'); skSave(true);
+      for (const r of olds) await mediaDrop(r);
+      skRender(); skRefresh(); skAfter('symset'); return;
+    }
+  });
+  $('#skined').addEventListener('input', e => {
+    const t = e.target, page = SKD.page;
+    if (!page) return;
+    if (t.id === 'sk-symname') {
+      const c = skinOf(page), cur = c.sym[SKD.sel] || { k: 'def', v: '' };
+      const n = t.value.replace(/[<>&"']/g, '').slice(0, 18);
+      c.sym[SKD.sel] = { ...cur, n }; if (!n) delete c.sym[SKD.sel].n;
+      if (c.sym[SKD.sel].k === 'def' && !c.sym[SKD.sel].n) delete c.sym[SKD.sel];
+      c.p = 'eigen'; skSave(); return;
+    }
+    const path = t.dataset && t.dataset.skf;
+    if (!path) return;
+    const v = t.type === 'color' ? t.value : +t.value;
+    skSet(path, v);
+    const lab = $('#skined').querySelector(`[data-skv="${path}"]`); if (lab) { const st = +t.step || 1; lab.textContent = (+v).toFixed(st < 1 ? (st < 0.1 ? 2 : 1) : 0); }
+    skSave();
+    skRefresh();
+    // Vorschau im Designer nachfuehren
+    const pv = $('#sk-prev');
+    if (pv && /^(page|mach)\./.test(path)) { const m = skinOf(page)[SKD.sub]; const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(m)); const dm = pv.querySelector('.sk-prev-dim'); if (dm) dm.style.opacity = m.dim; pv.style.background = SKD.sub === 'mach' ? skRad(m) : skGrad(m); }
+    if (path === 'music.vol' && typeof MUSIC !== 'undefined') MUSIC.vol(+v);
+  });
+  document.addEventListener('change', e => {
+    if (e.target.id !== 'sk-file') return;
+    const f = e.target.files && e.target.files[0], tg = SKD.fileFor; e.target.value = '';
+    if (f && tg) skPickFile(f, tg === 'sym' ? 'sym' : tg);
+  });
+  // Bild ausrichten: ziehen und zoomen in der Vorschau
+  (() => {
+    const pts = new Map();
+    let pinch = 0;
+    const el = () => $('#sk-prev');
+    document.addEventListener('pointerdown', e => {
+      const pv = e.target.closest && e.target.closest('#sk-prev');
+      if (!pv) return;
+      try { pv.setPointerCapture(e.pointerId); } catch (x) { /* egal */ }
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = Math.hypot(a.x - b.x, a.y - b.y); }
+    });
+    document.addEventListener('pointermove', e => {
+      if (!pts.has(e.pointerId) || !SKD.page) return;
+      const pv = el(); if (!pv) return;
+      const prev = pts.get(e.pointerId), now = { x: e.clientX, y: e.clientY }; pts.set(e.pointerId, now);
+      const m = skinOf(SKD.page)[SKD.sub], r = pv.getBoundingClientRect();
+      if (pts.size === 1) {
+        m.x = skNum(m.x - (now.x - prev.x) / r.width * 100 / m.z, 0, 100, 50);
+        m.y = skNum(m.y - (now.y - prev.y) / r.height * 100 / m.z, 0, 100, 50);
+      } else if (pts.size === 2) {
+        const [a, b] = [...pts.values()], dd = Math.hypot(a.x - b.x, a.y - b.y);
+        if (pinch) m.z = skNum(m.z * dd / pinch, 1, 4, 1);
+        pinch = dd;
+      }
+      skinOf(SKD.page).p = 'eigen';
+      const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(m));
+      ['x', 'y', 'z'].forEach(k => { const inp = $('#skined').querySelector(`[data-skf="${SKD.sub}.${k}"]`); if (inp) { inp.value = m[k]; const lab = $('#skined').querySelector(`[data-skv="${SKD.sub}.${k}"]`); if (lab) lab.textContent = (+m[k]).toFixed(k === 'z' ? 2 : 0); } });
+      skSave(); skRefresh();
+    });
+    const up = e => { pts.delete(e.pointerId); pinch = 0; };
+    document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+    document.addEventListener('wheel', e => {
+      const pv = e.target.closest && e.target.closest('#sk-prev');
+      if (!pv || !SKD.page) return;
+      e.preventDefault();
+      const m = skinOf(SKD.page)[SKD.sub]; m.z = skNum(m.z * Math.exp(-e.deltaY * 0.0015), 1, 4, 1); skinOf(SKD.page).p = 'eigen';
+      const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(m));
+      const inp = $('#skined').querySelector(`[data-skf="${SKD.sub}.z"]`); if (inp) inp.value = m.z;
+      skSave(); skRefresh();
+    }, { passive: false });
+  })();
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && SKD.page && !$('#skined').hidden && $('#dlg').hidden) { skClose(); } });
+  ACTS.skedit = id => skOpen(SK_PAGES.includes(id) ? id : current);
+
+  // ---- Sichern und Wiederherstellen (Teil von "Alles sichern") ----
+  async function skExport(photos) {
+    const out = {};
+    for (const p of SK_PAGES) {
+      const c = JSON.parse(JSON.stringify(skinOf(p)));
+      for (const ref of skRefsOf(c)) {
+        try { const b = await BE.blobOf(ref); if (b) photos[ref] = await blobToDataURL(b); } catch (e) { console.warn('Design-Medium fehlt', ref, e); }
+      }
+      out[p] = c;
+    }
+    return out;
+  }
+  async function skImport(map, photos) {
+    if (!map || typeof map !== 'object') return;
+    const cache = new Map();
+    const take = async ref => {
+      if (!ref) return null;
+      if (cache.has(ref)) return cache.get(ref);
+      const du = photos && photos[ref];
+      let r = null;
+      if (typeof du === 'string' && /^data:(image|video|audio)\/[a-z0-9.+-]+;base64,/.test(du)) { try { r = await BE.putPhoto(dataURLToBlob(du)); } catch (e) { r = null; } }
+      cache.set(ref, r); return r;
+    };
+    for (const p of SK_PAGES) {
+      if (!map[p]) continue;
+      const c = skNorm(map[p]);
+      for (const k of ['page', 'mach']) if (c[k].ref) { const r = await take(c[k].ref); if (r) c[k].ref = r; else { c[k].k = null; c[k].ref = null; } }
+      if (c.mascot.ref) { const r = await take(c.mascot.ref); if (r) c.mascot.ref = r; else { c.mascot.ref = null; c.mascot.v = 'none'; } }
+      if (c.music.ref) { const r = await take(c.music.ref); if (r) c.music.ref = r; else { c.music.ref = null; c.music.src = 'irish'; } }
+      for (const i of Object.keys(c.sym)) if (c.sym[i].k === 'img') { const r = await take(c.sym[i].v); if (r) c.sym[i].v = r; else delete c.sym[i]; }
+      const old = skRefsOf(skinOf(p));
+      S.meta.skin[p] = c;
+      for (const r of old) if (!skAllRefs().has(r)) await mediaDrop(r);
+    }
+    saveMeta(true);
+  }
+  // ================= Musik im Slot: selbst komponierte irische Jig (WebAudio) oder eigene Datei =================
+  // 6/8-Takt in D-Dur, zwei Teile (A und B), gespielt als A A B B. Melodie wie eine Blechflöte, dazu Bass, Akkord-Schläge und Rahmentrommel.
+  const MUSIC = (() => {
+    const EIGHTH = 0.16;                                   // Sekunden pro Achtel (ca. 125 Schlaege je Minute)
+    const A = [[74, 78, 74, 81, 78, 74], [78, 76, 74, 71, 74, 76], [79, 78, 76, 74, 71, 67], [66, 69, 74, 78, 76, 74], [74, 78, 74, 81, 78, 74], [79, 76, 71, 74, 71, 67], [76, 73, 69, 73, 76, 81], [78, 76, 74, 74, -1, -1]];
+    const B = [[79, 83, 79, 74, 79, 83], [81, 78, 74, 78, 81, 78], [79, 76, 79, 83, 79, 76], [81, 78, 74, 69, 74, 78], [76, 79, 83, 79, 76, 71], [81, 76, 73, 69, 73, 76], [81, 76, 73, 76, 73, 69], [74, 78, 81, 78, 74, -1]];
+    const CH = {   // Bass (Grundton, Quinte) und Akkordtoene
+      D: { r: 50, f: 57, t: [62, 66, 69] }, G: { r: 43, f: 50, t: [55, 59, 62] }, A: { r: 45, f: 52, t: [57, 61, 64] }, E: { r: 40, f: 47, t: [52, 55, 59] },
+    };
+    const CHA = ['D', 'D', 'G', 'D', 'D', 'G', 'A', 'D'], CHB = ['G', 'D', 'G', 'D', 'E', 'A', 'A', 'D'];
+    const PARTS = [[A, CHA], [A, CHA], [B, CHB], [B, CHB]];
+    const STEPS = PARTS.length * 8 * 6;                    // 192 Achtel, dann von vorn
+    // Melodie-Ereignisse je Schritt vorberechnen
+    const MEL = new Array(STEPS).fill(null);
+    PARTS.forEach(([bars], pi) => bars.forEach((bar, bi) => {
+      let last = -1;
+      bar.forEach((n, k) => {
+        const idx = pi * 48 + bi * 6 + k;
+        if (n > 0) { MEL[idx] = { n, len: 1 }; last = idx; } else if (last >= 0) MEL[last].len++;
+      });
+    }));
+    const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+    function makeBus(c, dest) {
+      const out = c.createGain(); out.gain.value = 1;
+      const comp = c.createDynamicsCompressor();
+      out.connect(comp); comp.connect(dest);
+      // kleiner Hall: abklingendes Rauschen
+      const rate = c.sampleRate, n = Math.floor(rate * 1.1), buf = c.createBuffer(1, n, rate), ch = buf.getChannelData(0);
+      let s = 987654321;
+      for (let i = 0; i < n; i++) { s = (s * 1664525 + 1013904223) >>> 0; ch[i] = ((s / 4294967296) * 2 - 1) * Math.pow(1 - i / n, 2.6); }
+      const conv = c.createConvolver(); conv.buffer = buf;
+      const wet = c.createGain(); wet.gain.value = 0.22;
+      const inp = c.createGain(); inp.gain.value = 1;
+      inp.connect(out); inp.connect(conv); conv.connect(wet); wet.connect(out);
+      const lfo = c.createOscillator(), lg = c.createGain();
+      lfo.frequency.value = 5.1; lg.gain.value = 9;       // leichtes Vibrato in Cent
+      lfo.connect(lg); lfo.start();
+      return { inp, out, lg, lfo };
+    }
+    function note(c, bus, t, o) {
+      const e = c.createGain(), fl = c.createBiquadFilter();
+      fl.type = 'lowpass'; fl.frequency.value = o.lp || 3600;
+      e.gain.setValueAtTime(0.0001, t);
+      e.gain.exponentialRampToValueAtTime(o.g, t + (o.a || 0.012));
+      if (o.hold) e.gain.setValueAtTime(o.g * (o.sus || 0.8), t + o.dur * 0.7);
+      e.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
+      fl.connect(e); e.connect(bus.inp);
+      (o.waves || [[o.type || 'sine', 1, 0]]).forEach(([type, mul, det]) => {
+        const os = c.createOscillator(); os.type = type; os.frequency.setValueAtTime(hz(o.m) * mul, t); os.detune.value = det || 0;
+        if (o.vib) bus.lg.connect(os.detune);
+        os.connect(fl); os.start(t); os.stop(t + o.dur + 0.05);
+      });
+    }
+    function thump(c, bus, t, g, f = 110) {
+      const o = c.createOscillator(), e = c.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(f * 0.45, t + 0.16);
+      e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(g, t + 0.008); e.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+      o.connect(e); e.connect(bus.out); o.start(t); o.stop(t + 0.25);
+    }
+    function tap(c, bus, t, g) {
+      const n = Math.floor(c.sampleRate * 0.04), buf = c.createBuffer(1, n, c.sampleRate), ch = buf.getChannelData(0);
+      let s = 424242;
+      for (let i = 0; i < n; i++) { s = (s * 1664525 + 1013904223) >>> 0; ch[i] = ((s / 4294967296) * 2 - 1) * (1 - i / n); }
+      const src = c.createBufferSource(), fl = c.createBiquadFilter(), e = c.createGain();
+      src.buffer = buf; fl.type = 'bandpass'; fl.frequency.value = 1800; fl.Q.value = 0.8;
+      e.gain.value = g; src.connect(fl); fl.connect(e); e.connect(bus.out); src.start(t);
+    }
+    // Ein Achtel (Schritt i) der Jig planen
+    function scheduleStep(c, bus, t, i) {
+      const st = i % STEPS, bar = Math.floor(st / 6), inBar = st % 6, part = PARTS[Math.floor(bar / 8)], chord = CH[part[1][bar % 8]];
+      const m = MEL[st];
+      if (m) {
+        const prev = MEL[(st + STEPS - 1) % STEPS];
+        const dur = Math.max(0.08, m.len * EIGHTH * 0.93);
+        // "Cut": bei gleichem Ton kurz der Ton darueber, wie auf der Blechfloete
+        const same = st > 0 && ((!prev && MEL[st - 2] && MEL[st - 2].n === m.n && MEL[st - 1] === null) || (prev && prev.n === m.n));
+        if (same) note(c, bus, t - 0.045, { m: m.n + 2, dur: 0.045, g: 0.07, waves: [['triangle', 1, 0]], lp: 3800 });
+        note(c, bus, t, { m: m.n, dur, g: 0.15, a: 0.014, hold: m.len > 1, vib: m.len > 1, lp: 4200, waves: [['triangle', 1, 0], ['sine', 2, 3], ['sine', 1, -4]] });
+      }
+      if (inBar === 0) { note(c, bus, t, { m: chord.r, dur: 0.42, g: 0.2, type: 'triangle', lp: 700 }); thump(c, bus, t, 0.3, 120); }
+      if (inBar === 3) { note(c, bus, t, { m: chord.f, dur: 0.34, g: 0.15, type: 'triangle', lp: 700 }); thump(c, bus, t, 0.17, 105); }
+      if (inBar === 2 || inBar === 5) {
+        chord.t.forEach(n => note(c, bus, t, { m: n, dur: 0.11, g: 0.026, a: 0.006, waves: [['sawtooth', 1, 0], ['sawtooth', 1, 7]], lp: 1500 }));
+        tap(c, bus, t, 0.05);
+      }
+      if (inBar === 0 && bar % 8 === 0) note(c, bus, t, { m: chord.t[0] - 12, dur: 6 * EIGHTH * 8 * 0.98, g: 0.03, a: 0.25, waves: [['sawtooth', 1, -6], ['sawtooth', 1, 6]], lp: 520 });
+    }
+
+    // ----- Abspielen -----
+    let ctx = null, bus = null, master = null, timer = null, nextT = 0, step = 0, el = null, elUrl = null, playing = false, key = '', want = false, count = 0;
+    const cfg = () => skinOf('slot').music;
+    const soundOn = () => ((S.meta && S.meta.prefs) || {}).sound !== false;
+    const keyOf = () => { const m = cfg(); return m.src === 'file' && m.ref ? 'file:' + m.ref : 'irish'; };
+    const level = () => Math.max(0, Math.min(1, cfg().vol)) * 0.9;
+    function pump() {
+      if (!ctx || !playing) return;
+      while (nextT < ctx.currentTime + 0.7) { scheduleStep(ctx, bus, nextT, step); count++; step = (step + 1) % STEPS; nextT += EIGHTH; }
+    }
+    async function startFile(k) {
+      try {
+        const blob = await BE.blobOf(cfg().ref);
+        if (!blob || key !== k || !want) return;
+        if (elUrl) URL.revokeObjectURL(elUrl);
+        elUrl = URL.createObjectURL(blob);
+        el = new Audio(elUrl); el.loop = true; el.volume = level();
+        const p = el.play(); if (p && p.catch) p.catch(() => {});
+      } catch (e) { console.warn('Musikdatei', e); }
+    }
+    function start() {
+      if (playing) return;
+      key = keyOf(); playing = true;
+      if (key === 'irish') {
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) { playing = false; return; }
+          if (!ctx) {
+            ctx = new AC(); master = ctx.createGain(); master.connect(ctx.destination);
+            bus = makeBus(ctx, master);
+            try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* egal */ }
+          }
+          master.gain.value = level();
+          if (ctx.state === 'suspended') ctx.resume();
+          nextT = ctx.currentTime + 0.12; step = 0;
+          clearInterval(timer); timer = setInterval(pump, 110); pump();
+        } catch (e) { playing = false; }
+      } else startFile(key);
+    }
+    function stop() {
+      playing = false; clearInterval(timer); timer = null;
+      if (ctx && master) { try { master.gain.cancelScheduledValues(0); master.gain.value = 0; } catch (e) { /* egal */ } if (ctx.state === 'running') ctx.suspend().catch(() => {}); }
+      if (el) { try { el.pause(); } catch (e) { /* egal */ } el = null; }
+      if (elUrl) { URL.revokeObjectURL(elUrl); elUrl = null; }
+    }
+    function sync(page, force) {
+      want = page === 'slot' && !document.hidden && cfg().on && soundOn();
+      if (!want) { stop(); return; }
+      if (playing && key !== keyOf()) stop();
+      if (!playing) start();
+      else { if (master) master.gain.value = level(); if (el) el.volume = level(); if (ctx && ctx.state === 'suspended') ctx.resume(); }
+    }
+    function vol(v) { if (master && playing) master.gain.value = Math.max(0, Math.min(1, v)) * 0.9; if (el) el.volume = Math.max(0, Math.min(1, v)); }
+    // Erste Beruehrung: Browser und iPhone erlauben Ton erst nach einer Geste
+    document.addEventListener('pointerdown', () => { if (want && current === 'slot') { if (!playing) start(); else if (ctx && ctx.state === 'suspended') ctx.resume(); if (el && el.paused) { const p = el.play(); if (p && p.catch) p.catch(() => {}); } } }, { capture: true, passive: true });
+    document.addEventListener('visibilitychange', () => { sync(current); });
+    // Pruefung ohne Lautsprecher: Teil der Jig offline rendern
+    async function render(steps) {
+      const rate = 22050, secs = steps * EIGHTH + 1.2, oc = new OfflineAudioContext(1, Math.ceil(rate * secs), rate);
+      const m = oc.createGain(); m.connect(oc.destination);
+      const b = makeBus(oc, m);
+      for (let i = 0; i < steps; i++) scheduleStep(oc, b, 0.05 + i * EIGHTH, i);
+      const buf = await oc.startRendering();
+      return Array.from(buf.getChannelData(0));
+    }
+    return { sync, vol, stop, render, state: () => ({ playing, want, key, steps: count, ctx: ctx ? ctx.state : null }), STEPS, EIGHTH };
+  })();
+  window.__JB_MUSIC = { render: MUSIC.render, state: MUSIC.state, steps: MUSIC.STEPS };
+  // ================= Cases verstecken =================
+  // Ein verstecktes Case taucht nirgends mehr auf (Home, Case, Inventar, Sammlung, Community, Gacha, Widgets).
+  // Zum Verstecken: Cheat-Menue (Code 6906). Zum Zeigen: im Cheat-Fenster statt 6906 den eigenen Versteck-Code eingeben.
+  // Der Code wird nur als Pruefwert gespeichert (SHA-256, tausendfach wiederholt, mit Salz). Das ist ein Sichtschutz, kein Tresor.
+  const sha256 = (() => {
+    const K = [], H0 = [];
+    const isP = n => { for (let i = 2; i * i <= n; i++) if (n % i === 0) return false; return true; };
+    for (let c = 2, n = 0; n < 64; c++) if (isP(c)) { if (n < 8) H0[n] = ((Math.pow(c, 0.5) % 1) * 4294967296) | 0; K[n++] = ((Math.pow(c, 1 / 3) % 1) * 4294967296) | 0; }
+    const utf8 = s => Array.from(unescape(encodeURIComponent(s)), ch => ch.charCodeAt(0));
+    return function sha256(str) {
+      const b = utf8(String(str)), l = b.length;
+      b.push(0x80); while (b.length % 64 !== 56) b.push(0);
+      const hi = Math.floor(l * 8 / 4294967296), lo = (l * 8) >>> 0;
+      b.push(hi >>> 24 & 255, hi >>> 16 & 255, hi >>> 8 & 255, hi & 255, lo >>> 24 & 255, lo >>> 16 & 255, lo >>> 8 & 255, lo & 255);
+      const h = H0.slice(), w = new Array(64);
+      for (let o = 0; o < b.length; o += 64) {
+        for (let i = 0; i < 16; i++) w[i] = (b[o + i * 4] << 24) | (b[o + i * 4 + 1] << 16) | (b[o + i * 4 + 2] << 8) | b[o + i * 4 + 3];
+        for (let i = 16; i < 64; i++) {
+          const a = w[i - 15], c = w[i - 2];
+          const s0 = ((a >>> 7) | (a << 25)) ^ ((a >>> 18) | (a << 14)) ^ (a >>> 3), s1 = ((c >>> 17) | (c << 15)) ^ ((c >>> 19) | (c << 13)) ^ (c >>> 10);
+          w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+        }
+        let [a, bb, c, d, e, f, g, hh] = h;
+        for (let i = 0; i < 64; i++) {
+          const S1 = ((e >>> 6) | (e << 26)) ^ ((e >>> 11) | (e << 21)) ^ ((e >>> 25) | (e << 7)), ch = (e & f) ^ (~e & g), t1 = (hh + S1 + ch + K[i] + w[i]) | 0;
+          const S0 = ((a >>> 2) | (a << 30)) ^ ((a >>> 13) | (a << 19)) ^ ((a >>> 22) | (a << 10)), mj = (a & bb) ^ (a & c) ^ (bb & c), t2 = (S0 + mj) | 0;
+          hh = g; g = f; f = e; e = (d + t1) | 0; d = c; c = bb; bb = a; a = (t1 + t2) | 0;
+        }
+        h[0] = (h[0] + a) | 0; h[1] = (h[1] + bb) | 0; h[2] = (h[2] + c) | 0; h[3] = (h[3] + d) | 0; h[4] = (h[4] + e) | 0; h[5] = (h[5] + f) | 0; h[6] = (h[6] + g) | 0; h[7] = (h[7] + hh) | 0;
+      }
+      return h.map(x => (x >>> 0).toString(16).padStart(8, '0')).join('');
+    };
+  })();
+  const HID_ROUNDS = 12000;
+  const hidHash = (code, salt) => { let x = salt + ':' + code; for (let i = 0; i < HID_ROUNDS; i++) x = sha256(x + salt); return x; };
+  const HID = { open: false, arm: null, view: 'add', after: 'add' };   // open: bis zum Neuladen sichtbar
+
+  function hidMeta() {
+    let m = S.meta.hid;
+    if (!m || typeof m !== 'object') return null;
+    if (!/^[0-9a-f]{64}$/.test(String(m.h)) || typeof m.s !== 'string' || !m.s) { delete S.meta.hid; return null; }
+    if (!Array.isArray(m.ids)) m.ids = [];
+    return m;
+  }
+  function isHid(id) { if (HID.open) return false; const m = S.meta.hid; return !!(m && Array.isArray(m.ids) && m.ids.indexOf(id) >= 0); }
+  const hidCount = () => { const m = hidMeta(); return m ? m.ids.filter(id => caseById(id)).length : 0; };
+  const hidCandidates = () => S.cases.filter(c => !c.builtin);
+  function hidForget(id) {   // alle Merker auf ein Case loesen, das gerade verschwindet
+    if (UI.caseId === id) UI.caseId = null;
+    if (UI.collId === id) UI.collId = null;
+    if (typeof GA !== 'undefined' && GA.caseId === id) GA.caseId = null;
+  }
+  const hidSet = (id, on) => {
+    const m = hidMeta(); if (!m) return;
+    const has = m.ids.indexOf(id) >= 0;
+    if (on && !has) { m.ids.push(id); hidForget(id); } else if (!on && has) m.ids = m.ids.filter(x => x !== id);
+    saveMeta(true);
+  };
+  const hidRows = (list, hiddenNow) => list.length ? list.map(cs => `<div class="hid-row"><span class="hid-n"><b>${esc(cs.name)}</b><small>${cs.cards.length} Karten</small></span><button class="btn small${hiddenNow(cs) ? '' : ' primary'}" data-act="${hiddenNow(cs) ? 'hidshow' : 'hidhide'}" data-id="${cs.id}">${hiddenNow(cs) ? 'Zeigen' : 'Verstecken'}</button></div>`).join('') : '<p class="note" style="max-width:none">Du hast noch kein eigenes Case. Erstelle erst eins unter Community.</p>';
+
+  // ---- Code festlegen ----
+  function hidSetup(next) {
+    HID.after = next || 'add';
+    dlg(`<h3>Versteck-Code festlegen</h3>
+      <p class="note" style="max-width:none">Mit diesem Code holst du versteckte Cases zurück: Im Cheat-Fenster gibst du ihn statt 6906 ein. <b>Merk ihn dir gut, es gibt keine Wiederherstellung.</b></p>
+      <label class="field"><span>Code (mindestens 4 Zeichen)</span><input type="password" id="hid-c1" autocomplete="off" maxlength="40"></label>
+      <label class="field"><span>Code wiederholen</span><input type="password" id="hid-c2" autocomplete="off" maxlength="40"></label>
+      <p class="note" id="hid-msg" style="min-height:1.3em"></p>
+      <div class="row"><button class="btn" data-act="hidback">Abbrechen</button><button class="btn primary" data-act="hidsave">Speichern</button></div>`);
+    setTimeout(() => { const i = $('#hid-c1'); if (i) i.focus(); }, 60);
+  }
+  ACTS.hidsave = () => {
+    const a = ($('#hid-c1') || {}).value.trim(), b = ($('#hid-c2') || {}).value.trim(), msg = $('#hid-msg');
+    const err = a.length < 4 ? 'Der Code braucht mindestens 4 Zeichen.' : a !== b ? 'Die beiden Eingaben sind nicht gleich.' : a === CHEAT_CODE ? 'Wähle einen anderen Code als den Cheat-Code.' : '';
+    if (err) { msg.textContent = err; SFX.play('err'); return; }
+    busy('Code wird gesichert …');
+    setTimeout(() => {
+      const s = uid(12), old = hidMeta();
+      S.meta.hid = { s, h: hidHash(a, s), ids: old ? old.ids : [] };
+      saveMeta(true); busy(null); SFX.play('pop');
+      if (HID.after === 'manage') hidManage(); else hidAdd();
+    }, 30);
+  };
+  ACTS.hidback = () => { if (HID.after === 'manage') hidManage(); else cheatMenu(); };
+
+  // ---- Cheat-Menue (6906): Cases verstecken. Zeigt nur sichtbare Cases ----
+  function hidAdd() {
+    if (!hidMeta()) { hidSetup('add'); return; }
+    HID.view = 'add';
+    const list = hidCandidates().filter(c => !isHid(c.id));
+    dlg(`<h3>Cases verstecken</h3>
+      <p class="note" style="max-width:none">Ein verstecktes Case verschwindet überall in der App, auch aus der Sammlung. Zurückholen: im Cheat-Fenster statt 6906 deinen Versteck-Code eingeben.</p>
+      <div class="hid-list">${hidRows(list, () => false)}</div>
+      <p class="note" style="max-width:none">Das ist ein Sichtschutz für neugierige Blicke. Die Daten liegen weiter in diesem Browser und in Sicherungen.</p>
+      <button class="btn" data-act="hidmenuback">Zurück</button>`);
+  }
+  ACTS.hidmenuback = () => cheatMenu();
+  ACTS.hidhide = id => {
+    if (!hidMeta()) return;
+    const cs = caseById(id); if (!cs) return;
+    hidSet(id, true); SFX.play('pop'); toast(`${cs.name} ist jetzt versteckt.`); refresh();
+    if (HID.view === 'manage') hidManage(); else hidAdd();
+  };
+
+  // ---- Versteck-Code im Cheat-Fenster eingegeben: verwalten ----
+  function hidTry(code) {
+    const m = hidMeta();
+    if (!m) return false;
+    code = String(code || '').trim();
+    if (code.length < 4 || hidHash(code, m.s) !== m.h) return false;
+    hidManage();
+    return true;
+  }
+  function hidManage() {
+    const m = hidMeta();
+    if (!m) { closeDlg(); return; }
+    HID.view = 'manage';
+    const list = hidCandidates(), isH = id => m.ids.indexOf(id) >= 0, n = list.filter(c => isH(c.id)).length;
+    dlg(`<h3>Versteckte Cases verwalten</h3>
+      <p class="note" style="max-width:none">${n ? `${n} Case${n === 1 ? ' ist' : 's sind'} versteckt.` : 'Im Moment ist kein Case versteckt.'} ${HID.open ? 'Alle sind bis zum Neuladen sichtbar.' : ''}</p>
+      <div class="hid-list">${hidRows(list, c => isH(c.id))}</div>
+      <div class="row"><button class="btn small${HID.open ? '' : ' primary'}" data-act="hidopen">${HID.open ? 'Wieder verstecken' : 'Alle bis Neuladen anzeigen'}</button></div>
+      <div class="row"><button class="btn small" data-act="hidchange">Code ändern</button><button class="btn small danger" data-act="hidremove">${HID.arm === 'remove' ? 'Wirklich? Alle zeigen' : 'Schutz entfernen'}</button></div>
+      <button class="btn" data-act="dlgclose">Schließen</button>`);
+  }
+  ACTS.hidshow = id => { const cs = caseById(id); hidSet(id, false); SFX.play('pop'); if (cs) toast(`${cs.name} ist wieder sichtbar.`); refresh(); hidManage(); };
+  ACTS.hidopen = () => { HID.open = !HID.open; SFX.play('pop'); refresh(); hidManage(); };
+  ACTS.hidchange = () => hidSetup('manage');
+  ACTS.hidremove = () => {
+    if (HID.arm !== 'remove') { HID.arm = 'remove'; hidManage(); setTimeout(() => { if (HID.arm === 'remove') { HID.arm = null; if (HID.view === 'manage' && !$('#dlg').hidden && $('#dlg .hid-list')) hidManage(); } }, 4000); return; }
+    HID.arm = null; delete S.meta.hid; HID.open = false; saveMeta(true); SFX.play('back'); toast('Der Schutz ist entfernt, alle Cases sind sichtbar.'); closeDlg(); refresh();
+  };
+  CHEAT_EXTRA.push({ label: 'Cases verstecken', fn: hidAdd });
+
+  // ---- Sicherung ----
+  const hidExport = () => { const m = hidMeta(); return m ? { s: m.s, h: m.h, ids: m.ids.slice() } : null; };
+  function hidImport(w, idMap) {
+    if (!w || typeof w !== 'object' || !/^[0-9a-f]{64}$/.test(String(w.h)) || typeof w.s !== 'string' || !w.s || !Array.isArray(w.ids)) return;
+    const ids = w.ids.map(id => (idMap && idMap[id]) || null).filter(Boolean);
+    let m = hidMeta();
+    if (!m) m = S.meta.hid = { s: w.s, h: w.h, ids: [] };
+    ids.forEach(id => { if (m.ids.indexOf(id) < 0) m.ids.push(id); });
+    saveMeta(true);
+  }
+  window.__JB_HID = { sha256, hash: hidHash, isHid: id => isHid(id) };
+  // ================= Home: Widgets =================
+  // Der Home-Bildschirm besteht aus Widgets in einem Raster mit zwei Spalten. Jedes Widget ist halb oder ganz breit.
+  const HOME_MAX = 24;
+  const GAMES_HTML = `<div class="games" role="group" aria-label="Spiele">
+        <button class="gbtn" data-view="gacha" aria-label="Gacha"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="11.5"/><path d="M4.5 16h23"/><path d="M4.5 16a11.5 11.5 0 0 1 23 0" fill="var(--accent)" fill-opacity=".35"/><circle cx="16" cy="16" r="3" fill="var(--bg)"/></svg><small>Gacha</small></button>
+        <button class="gbtn" data-view="slot" aria-label="Slot"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6.5" width="25" height="19" rx="3.5"/><path d="M12 7v18M20 7v18"/><circle cx="7.8" cy="16" r="1.6" fill="currentColor"/><path d="M14.6 13.4l1.4-1.4 1.4 1.4M14.6 18.6l1.4 1.4 1.4-1.4"/><circle cx="24.2" cy="16" r="1.6" fill="currentColor"/></svg><small>Slot</small></button>
+      </div>`;
+  const HOME_TYPES = {
+    games: { n: 'Spiele', d: 'Knöpfe zu Gacha und Slot', s: 2 },
+    tok: { n: 'Startoken', d: 'Dein Kontostand', s: 1 },
+    free: { n: 'Gratis-Cases', d: 'Wie viele frei sind und wann das nächste kommt', s: 1 },
+    quick: { n: 'Schnellzugriff', d: 'Springe direkt zu Case, Inventar, Sammlung oder Community', s: 2 },
+    clock: { n: 'Uhr', d: 'Uhrzeit und Datum', s: 1 },
+    note: { n: 'Notiz', d: 'Ein eigener Text', s: 1 },
+    count: { n: 'Countdown', d: 'Tage bis zu einem Datum, das du wählst', s: 1 },
+    case: { n: 'Case', d: 'Eines deiner Cases mit Fortschritt und Knopf', s: 1 },
+    prog: { n: 'Sammlung', d: 'Fortschrittsbalken für ein Case', s: 1 },
+    best: { n: 'Bestes Stück', d: 'Deine wertvollste Karte', s: 1 },
+    media: { n: 'Foto, GIF oder Video', d: 'Ein eigenes Bild als Widget', s: 2 },
+  };
+  const HOME_OPTS = ['clock', 'note', 'count', 'case', 'prog', 'media'];   // Widgets mit Einstellungen
+  const HOME_DEFAULT = () => ({ title: 'Willkommen', w: [{ id: 'w1', t: 'games', s: 2 }, { id: 'w2', t: 'tok', s: 1 }, { id: 'w3', t: 'free', s: 1 }] });
+  const HOME = { edit: false, sel: null, armReset: false };
+  const hmNum = (v, lo, hi, d) => { v = +v; return Number.isFinite(v) ? Math.max(lo, Math.min(hi, v)) : d; };
+  const hmStr = (v, n) => (typeof v === 'string' ? v.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').slice(0, n) : '');
+  function homeNormW(w) {
+    if (!w || typeof w !== 'object' || !HOME_TYPES[w.t]) return null;
+    const o = { id: /^[A-Za-z0-9_-]{1,12}$/.test(String(w.id)) ? String(w.id) : uid(6), t: w.t, s: w.s === 1 || w.s === 2 ? w.s : HOME_TYPES[w.t].s };
+    if (w.t === 'clock') { o.h24 = w.h24 !== false; o.date = w.date !== false; }
+    if (w.t === 'note') o.text = hmStr(w.text, 400);
+    if (w.t === 'count') { o.name = hmStr(w.name, 30); o.date = /^\d{4}-\d{2}-\d{2}$/.test(String(w.date)) ? w.date : ''; }
+    if (w.t === 'case' || w.t === 'prog') o.c = typeof w.c === 'string' && w.c ? w.c.slice(0, 40) : '';
+    if (w.t === 'media') {
+      const m = w.m && typeof w.m === 'object' ? w.m : {};
+      const k = (m.k === 'img' || m.k === 'video') && typeof m.ref === 'string' && REF_RE.test(m.ref) ? m.k : null;
+      o.m = { k, ref: k ? m.ref : null, fit: ['cover', 'contain', 'fill'].includes(m.fit) ? m.fit : 'cover', x: hmNum(m.x, 0, 100, 50), y: hmNum(m.y, 0, 100, 50), z: hmNum(m.z, 1, 4, 1), blur: 0 };
+      o.cap = hmStr(w.cap, 60);
+    }
+    return o;
+  }
+  function homeNorm(h) {
+    h = h && typeof h === 'object' ? h : {};
+    const seen = new Set(), list = [];
+    (Array.isArray(h.w) ? h.w : HOME_DEFAULT().w).forEach(w => { const o = homeNormW(w); if (!o) return; while (seen.has(o.id)) o.id = uid(6); seen.add(o.id); if (list.length < HOME_MAX) list.push(o); });
+    return { title: hmStr(h.title, 28).trim() || 'Willkommen', w: list };
+  }
+  let HOME_SEEN = null;
+  function homeCfg() {
+    if (!S.meta.home || typeof S.meta.home !== 'object') S.meta.home = homeNorm(HOME_DEFAULT());
+    if (HOME_SEEN !== S.meta.home) { S.meta.home = homeNorm(S.meta.home); HOME_SEEN = S.meta.home; }
+    return S.meta.home;
+  }
+  const homeRefs = () => { const r = new Set(); if (S.meta.home && Array.isArray(S.meta.home.w)) S.meta.home.w.forEach(w => { if (w && w.m && w.m.ref) r.add(w.m.ref); }); return r; };
+  const homeSave = now => saveMeta(!!now);
+
+  // ---- Inhalte der Widgets ----
+  const WD = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'], WMN = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const clockText = w => { const d = new Date(), p = n => String(n).padStart(2, '0'); return w.h24 ? `${p(d.getHours())}:${p(d.getMinutes())}` : `${d.getHours() % 12 || 12}:${p(d.getMinutes())} ${d.getHours() < 12 ? 'AM' : 'PM'}`; };
+  const dateText = () => { const d = new Date(); return `${WD[d.getDay()]}, ${d.getDate()}. ${WMN[d.getMonth()]}`; };
+  const wOwned = w => { const own = ownedCases().filter(c => c.cards.length || w.t === 'case'); return own.find(c => c.id === w.c) || own[0] || null; };
+  const haveOf = cs => { const p = progOf(cs.id); return cs.cards.filter(c => p.counts[c.id] > 0).length; };
+  function bestCard() {
+    let best = null;
+    ownedCases().forEach(cs => { const p = progOf(cs.id); cs.cards.forEach(c => { if (p.counts[c.id] > 0) { const v = valueOf(c); if (!best || v > best.v) best = { cs, c, v }; } }); });
+    return best;
+  }
+  function daysTo(dateStr) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateStr)); if (!m) return null;
+    const t = new Date(+m[1], +m[2] - 1, +m[3]), n = new Date(); n.setHours(0, 0, 0, 0);
+    return Math.round((t - n) / 86400000);
+  }
+  const WBODY = {
+    games: () => GAMES_HTML,
+    tok: () => `<div class="tile"><span class="eyebrow">Startoken</span><b class="tile-big">${fmtTok(tokens())}</b><small class="muted">Karten verkaufen bringt Startoken.</small></div>`,
+    free: () => { const f = freeInfo(); return `<div class="tile"><span class="eyebrow">Gratis-Cases</span><b class="tile-big">${f.left} von ${FREE_PER_HOUR}</b><small class="muted" data-free="home">${esc(freeText())}</small><button class="btn primary small" data-act="gostandard">Zum Standard-Case</button></div>`; },
+    quick: () => `<div class="tile"><span class="eyebrow">Schnellzugriff</span><div class="chips">${[['case', 'Case'], ['inv', 'Inventar'], ['coll', 'Sammlung'], ['com', 'Community'], ['gacha', 'Gacha'], ['slot', 'Slot']].map(([v, n]) => `<button class="chip" data-view="${v}">${n}</button>`).join('')}</div></div>`,
+    clock: w => `<div class="tile"><span class="eyebrow" data-clock="d">${w.date ? esc(dateText()) : 'Uhr'}</span><b class="tile-big" data-clock="t" data-h24="${w.h24}">${esc(clockText(w))}</b></div>`,
+    note: w => `<div class="tile"><span class="eyebrow">Notiz</span><p class="w-note">${w.text ? esc(w.text) : '<span class="muted">Noch leer</span>'}</p></div>`,
+    count: w => { const n = daysTo(w.date), lab = !w.name ? 'Countdown' : w.name; return `<div class="tile"><span class="eyebrow">${esc(lab)}</span>${n == null ? '<small class="muted">Wähle ein Datum.</small>' : `<b class="tile-big">${n === 0 ? 'Heute' : Math.abs(n)}</b><small class="muted">${n === 0 ? 'ist es so weit' : n > 0 ? (n === 1 ? 'Tag noch' : 'Tage noch') : (n === -1 ? 'Tag her' : 'Tage her')}</small>`}</div>`; },
+    case: w => {
+      const cs = wOwned(w);
+      if (!cs) return `<div class="tile"><span class="eyebrow">Case</span><small class="muted">Noch kein Case im Inventar.</small></div>`;
+      const p = progOf(cs.id);
+      return `<div class="tile th-${cs.theme} w-case"><div class="case small">${caseInner(cs)}</div><b class="w-name">${esc(cs.name)}</b><small class="muted">${haveOf(cs)} von ${cs.cards.length} Karten · ${p.boosters} Booster</small><button class="btn primary small" data-act="wgo" data-id="${cs.id}" data-to="case">Öffnen</button></div>`;
+    },
+    prog: w => {
+      const cs = wOwned(w);
+      if (!cs) return `<div class="tile"><span class="eyebrow">Sammlung</span><small class="muted">Noch kein Case im Inventar.</small></div>`;
+      const h = haveOf(cs), t = Math.max(1, cs.cards.length);
+      return `<div class="tile"><span class="eyebrow">Sammlung</span><b class="w-name">${esc(cs.name)}</b><div class="w-bar"><i style="width:${(h / t * 100).toFixed(1)}%"></i></div><small class="muted">${h} von ${cs.cards.length} Karten</small><button class="btn small" data-act="wgo" data-id="${cs.id}" data-to="coll">Ansehen</button></div>`;
+    },
+    best: () => {
+      const b = bestCard();
+      if (!b) return `<div class="tile"><span class="eyebrow">Bestes Stück</span><small class="muted">Öffne Booster, dann zeigt sich hier deine wertvollste Karte.</small></div>`;
+      return `<div class="tile w-best"><span class="eyebrow">Bestes Stück</span><div class="cell" data-case="${esc(b.cs.id)}" data-card="${esc(b.c.id)}" style="width:min(100%,120px)">${thumbHTML(b.c)}</div><small class="muted">${esc(b.c.n)} · ${esc(fmtTok(b.v))}</small></div>`;
+    },
+    media: w => {
+      const src = w.m && w.m.ref && BE ? BE.src(w.m.ref) : '';
+      const box = src ? (w.m.k === 'video' ? `<video class="sk-m" src="${esc(src)}" style="${skMediaVars(w.m)}" autoplay muted loop playsinline webkit-playsinline></video>` : `<img class="sk-m" src="${esc(src)}" style="${skMediaVars(w.m)}" alt="" draggable="false">`) : '<span class="muted w-empty">Noch kein Bild</span>';
+      return `<div class="tile w-media"><div class="wm-box" style="aspect-ratio:${w.s === 2 ? '16/9' : '1/1'}">${box}</div>${w.cap ? `<small class="w-cap">${esc(w.cap)}</small>` : ''}</div>`;
+    },
+  };
+  function wHTML(w, i, n) {
+    const ed = HOME.edit;
+    const tools = ed ? `<div class="w-tools" role="group" aria-label="${esc(HOME_TYPES[w.t].n)} bearbeiten"><b>${esc(HOME_TYPES[w.t].n)}</b><span>
+        <button data-act="wup" data-id="${w.id}" aria-label="Nach oben" ${i === 0 ? 'disabled' : ''}>↑</button><button data-act="wdown" data-id="${w.id}" aria-label="Nach unten" ${i === n - 1 ? 'disabled' : ''}>↓</button>
+        <button data-act="wsize" data-id="${w.id}" aria-label="Breite ändern">${w.s === 2 ? '◧' : '▭'}</button>${HOME_OPTS.includes(w.t) ? `<button data-act="wopt" data-id="${w.id}" aria-label="Einstellungen">✎</button>` : ''}<button data-act="wdel" data-id="${w.id}" aria-label="Entfernen">✕</button></span></div>` : '';
+    return `<div class="widget wt-${w.t} ws-${w.s}${ed ? ' editing' : ''}" data-w="${w.id}"><div class="w-body">${WBODY[w.t](w)}</div>${tools}</div>`;
+  }
+  function homeRender() {
+    const h = homeCfg(), ed = HOME.edit, n = h.w.length;
+    $('#view-home').innerHTML = `<div><span class="eyebrow">Home</span>${ed ? `<label class="field" style="margin-top:6px"><span>Überschrift</span><input type="text" id="home-title" maxlength="28" value="${esc(h.title)}" autocomplete="off"></label>` : `<h2>${esc(h.title)}</h2>`}</div>
+      <div class="tiles wgrid">${n ? h.w.map((w, i) => wHTML(w, i, n)).join('') : '<div class="empty-note" style="grid-column:span 2"><b>Noch keine Widgets</b><span>Füge unten welche hinzu.</span></div>'}</div>
+      ${ed ? `<div class="row"><button class="btn primary" data-act="wadd">+ Widget hinzufügen</button></div>
+        <div class="row"><button class="btn small" data-act="skedit" data-id="home">Design anpassen</button><button class="btn small danger" data-act="homereset">${HOME.armReset ? 'Wirklich zurücksetzen?' : 'Auf Standard zurücksetzen'}</button></div>
+        <div class="row"><button class="btn" data-act="homedone">Fertig</button></div>`
+      : `<div class="row"><button class="btn" data-act="homeedit">Home anpassen</button><button class="btn" data-act="skedit" data-id="home">Design anpassen</button></div>`}`;
+    $$('#view-home video.sk-m').forEach(v => { v.muted = true; const p = v.play && v.play(); if (p && p.catch) p.catch(() => {}); });
+  }
+  const homeRefresh = () => { if (current === 'home') homeRender(); };
+  const wById = id => homeCfg().w.find(w => w.id === id);
+  ACTS.homeedit = () => { HOME.edit = true; HOME.armReset = false; homeRender(); SFX.play('pop'); };
+  ACTS.homedone = () => { HOME.edit = false; HOME.armReset = false; homeRender(); SFX.play('pop'); };
+  ACTS.homereset = () => {
+    if (!HOME.armReset) { HOME.armReset = true; homeRender(); setTimeout(() => { if (HOME.armReset) { HOME.armReset = false; if (HOME.edit) homeRefresh(); } }, 4000); return; }
+    HOME.armReset = false;
+    const old = [...homeRefs()];
+    S.meta.home = homeNorm(HOME_DEFAULT()); homeSave(true);
+    old.forEach(r => mediaDrop(r));
+    homeRender(); SFX.play('back');
+  };
+  const wMove = (id, d) => { const h = homeCfg(), i = h.w.findIndex(w => w.id === id), j = i + d; if (i < 0 || j < 0 || j >= h.w.length) return; [h.w[i], h.w[j]] = [h.w[j], h.w[i]]; homeSave(); homeRender(); SFX.play('pop'); };
+  ACTS.wup = id => wMove(id, -1);
+  ACTS.wdown = id => wMove(id, 1);
+  ACTS.wsize = id => { const w = wById(id); if (!w) return; w.s = w.s === 2 ? 1 : 2; homeSave(); homeRender(); SFX.play('pop'); };
+  ACTS.wdel = id => {
+    const h = homeCfg(), w = wById(id); if (!w) return;
+    const ref = w.m && w.m.ref;
+    h.w = h.w.filter(x => x.id !== id); homeSave(true); if (ref) mediaDrop(ref);
+    homeRender(); SFX.play('back');
+  };
+  ACTS.wgo = (id, el) => {
+    const to = el && el.dataset ? el.dataset.to : 'case';
+    if (to === 'coll') { UI.collId = id; UI.filter = 'all'; UI.dup = false; showView('coll'); } else { UI.caseId = id; showView('case'); }
+  };
+  ACTS.wadd = () => {
+    const h = homeCfg();
+    if (h.w.length >= HOME_MAX) { toast(`Mehr als ${HOME_MAX} Widgets passen nicht.`); return; }
+    dlg(`<h3>Widget hinzufügen</h3><div class="wadd-list">${Object.keys(HOME_TYPES).map(k => `<button class="wadd-row" data-act="waddt" data-id="${k}"><b>${esc(HOME_TYPES[k].n)}</b><small>${esc(HOME_TYPES[k].d)}</small></button>`).join('')}</div>
+      <button class="btn" data-act="dlgclose">Abbrechen</button>`);
+  };
+  ACTS.waddt = t => {
+    if (!HOME_TYPES[t]) return;
+    const h = homeCfg();
+    if (h.w.length >= HOME_MAX) return;
+    const w = homeNormW({ id: uid(6), t, s: HOME_TYPES[t].s });
+    h.w.push(w); homeSave(true); closeDlg(); homeRender(); SFX.play('pop');
+    if (['note', 'count', 'media'].includes(t)) ACTS.wopt(w.id);
+  };
+
+  // ---- Einstellungen eines Widgets ----
+  function wOptHTML(w) {
+    const own = ownedCases().filter(c => c.cards.length || w.t === 'case');
+    const caseSel = () => `<div class="field"><span>Case</span><div class="chips"><button class="chip${!w.c ? ' on' : ''}" data-act="wcase" data-id="${w.id}" data-c="">Automatisch</button>${own.map(c => `<button class="chip${w.c === c.id ? ' on' : ''}" data-act="wcase" data-id="${w.id}" data-c="${esc(c.id)}">${esc(c.name)}</button>`).join('')}</div></div>`;
+    if (w.t === 'clock') return `<div class="switch"><span>24-Stunden-Anzeige</span><button data-act="wflag" data-id="${w.id}" data-k="h24" aria-pressed="${w.h24}" aria-label="24-Stunden-Anzeige"></button></div><div class="switch"><span>Datum zeigen</span><button data-act="wflag" data-id="${w.id}" data-k="date" aria-pressed="${w.date}" aria-label="Datum zeigen"></button></div>`;
+    if (w.t === 'note') return `<label class="field"><span>Text</span><textarea id="wo-text" maxlength="400" rows="5">${esc(w.text)}</textarea></label>`;
+    if (w.t === 'count') return `<label class="field"><span>Name</span><input type="text" id="wo-name" maxlength="30" value="${esc(w.name)}" placeholder="z. B. Urlaub" autocomplete="off"></label><label class="field"><span>Datum</span><input type="date" id="wo-date" value="${esc(w.date)}"></label>`;
+    if (w.t === 'case' || w.t === 'prog') return caseSel();
+    if (w.t === 'media') {
+      const m = w.m;
+      return `<div class="row left"><label class="btn small" for="wo-file">Datei wählen</label><input type="file" id="wo-file" class="vh" accept="image/*,video/*" data-wid="${w.id}"><button class="btn small" data-act="wmoff" data-id="${w.id}" ${m.k ? '' : 'disabled'}>Entfernen</button></div>
+        <label class="field"><span>Bildtext</span><input type="text" id="wo-cap" maxlength="60" value="${esc(w.cap)}" autocomplete="off"></label>
+        ${m.k ? `<div class="field"><span>Anpassung</span><div class="chips">${[['cover', 'Füllen'], ['contain', 'Ganz'], ['fill', 'Strecken']].map(([k, n]) => `<button class="chip${m.fit === k ? ' on' : ''}" data-act="wfit" data-id="${w.id}" data-k="${k}">${n}</button>`).join('')}</div></div>
+        ${[['z', 'Zoom', 1, 4, 0.01], ['x', 'Position links–rechts', 0, 100, 1], ['y', 'Position oben–unten', 0, 100, 1]].map(([k, n, lo, hi, st]) => `<label class="field"><span>${n}</span><input type="range" min="${lo}" max="${hi}" step="${st}" value="${m[k]}" data-wrange="${k}" data-wid="${w.id}"></label>`).join('')}` : ''}`;
+    }
+    return '';
+  }
+  ACTS.wopt = id => {
+    const w = wById(id); if (!w) return;
+    dlg(`<h3>${esc(HOME_TYPES[w.t].n)}</h3>${wOptHTML(w)}<div class="row"><button class="btn primary" data-act="woptdone" data-id="${w.id}">Fertig</button></div>`);
+  };
+  const wApplyText = w => {
+    const g = id => { const e = $('#' + id); return e ? e.value : null; };
+    if (w.t === 'note' && g('wo-text') != null) w.text = hmStr(g('wo-text'), 400);
+    if (w.t === 'count') { if (g('wo-name') != null) w.name = hmStr(g('wo-name'), 30).trim(); if (g('wo-date') != null) w.date = /^\d{4}-\d{2}-\d{2}$/.test(g('wo-date')) ? g('wo-date') : ''; }
+    if (w.t === 'media' && g('wo-cap') != null) w.cap = hmStr(g('wo-cap'), 60);
+  };
+  ACTS.woptdone = id => { const w = wById(id); if (w) { wApplyText(w); homeSave(true); } closeDlg(); homeRefresh(); };
+  ACTS.wcase = (id, el) => { const w = wById(id); if (!w) return; wApplyText(w); w.c = (el && el.dataset.c) || ''; homeSave(); ACTS.wopt(id); homeRefresh(); };
+  ACTS.wflag = (id, el) => { const w = wById(id); if (!w || !el) return; w[el.dataset.k] = !w[el.dataset.k]; homeSave(); ACTS.wopt(id); homeRefresh(); };
+  ACTS.wfit = (id, el) => { const w = wById(id); if (!w || !el) return; wApplyText(w); w.m.fit = el.dataset.k; homeSave(); ACTS.wopt(id); homeRefresh(); };
+  ACTS.wmoff = async id => { const w = wById(id); if (!w) return; wApplyText(w); const old = w.m.ref; w.m.k = null; w.m.ref = null; homeSave(true); if (old) await mediaDrop(old); ACTS.wopt(id); homeRefresh(); };
+  document.addEventListener('input', e => {
+    const t = e.target;
+    if (t.id === 'home-title') { const h = homeCfg(); h.title = hmStr(t.value, 28); homeSave(); return; }
+    if (t.dataset && t.dataset.wrange) {
+      const w = wById(t.dataset.wid); if (!w || !w.m) return;
+      const k = t.dataset.wrange; w.m[k] = k === 'z' ? hmNum(t.value, 1, 4, 1) : hmNum(t.value, 0, 100, 50);
+      homeSave();
+      const box = $(`#view-home [data-w="${w.id}"] .sk-m`); if (box) box.setAttribute('style', skMediaVars(w.m));
+    }
+  });
+  document.addEventListener('change', async e => {
+    const t = e.target;
+    if (t.id === 'home-title') { const h = homeCfg(); h.title = hmStr(t.value, 28).trim() || 'Willkommen'; homeSave(true); return; }
+    if (t.id !== 'wo-file') return;
+    const f = t.files && t.files[0], w = wById(t.dataset.wid); t.value = '';
+    if (!f || !w) return;
+    if (f.size > SK_MAX_BYTES) { toast('Die Datei ist zu groß (höchstens 20 MB).'); return; }
+    wApplyText(w);
+    const video = isVideoFile(f), gif = f.type === 'image/gif';
+    busy('Wird gespeichert …');
+    try {
+      const blob = video || gif ? f : await skShrink(f, 1600, f.type === 'image/png');
+      const old = w.m.ref, ref = await BE.putPhoto(blob);
+      w.m.k = video ? 'video' : 'img'; w.m.ref = ref; homeSave(true);
+      if (old && old !== ref) await mediaDrop(old);
+      busy(null); ACTS.wopt(w.id); homeRefresh();
+    } catch (err) { busy(null); console.error(err); toast('Das konnte ich nicht speichern.'); }
+  });
+
+  // ---- Uhr-Widgets ticken lassen ----
+  setInterval(() => {
+    if (current !== 'home') return;
+    $$('#view-home [data-clock=t]').forEach(el => { const w = { h24: el.dataset.h24 === 'true' }; const s = clockText(w); if (el.textContent !== s) el.textContent = s; });
+    $$('#view-home [data-clock=d]').forEach(el => { if (/,/.test(el.textContent)) { const s = dateText(); if (el.textContent !== s) el.textContent = s; } });
+  }, 5000);
+
+  // ---- Sicherung ----
+  async function homeExport(photos) {
+    const h = JSON.parse(JSON.stringify(homeCfg()));
+    for (const w of h.w) if (w.m && w.m.ref) { try { const b = await BE.blobOf(w.m.ref); if (b) photos[w.m.ref] = await blobToDataURL(b); } catch (e) { console.warn('Widget-Medium fehlt', e); } }
+    return h;
+  }
+  async function homeImport(h, photos) {
+    if (!h || typeof h !== 'object') return;
+    const n = homeNorm(h);
+    for (const w of n.w) {
+      if (!(w.m && w.m.ref)) continue;
+      const du = photos && photos[w.m.ref];
+      let r = null;
+      if (typeof du === 'string' && /^data:(image|video)\/[a-z0-9.+-]+;base64,/.test(du)) { try { r = await BE.putPhoto(dataURLToBlob(du)); } catch (e) { r = null; } }
+      if (r) w.m.ref = r; else { w.m.ref = null; w.m.k = null; }
+    }
+    const old = [...homeRefs()];
+    S.meta.home = n; HOME_SEEN = null; homeSave(true);
+    for (const r of old) await mediaDrop(r);
+  }
   // ================= Slot: Oberflaeche =================
-  const SL_BETS = [30, 60, 150, 300, 600, 1500, 3000, 6000];   // Cent, alle durch 30 teilbar (Linieneinsatz = ganze Cent)
-  const SL_BUY_X = 30;                                          // Bonus kaufen = 30x Einsatz (Wert im Schnitt ca. 28x)
-  const SL = { grid: null, spinning: false, auto: false, abort: false, armBuy: false, timers: [] };
+  const SL_BETS = [30, 60, 150, 300, 600, 1500, 3000, 6000, 15000, 34500];   // Cent; ab 345☆ ist der teuerste Freispiel-Kauf auf 10.000.000☆ gedeckelt
+  const SL = { grid: null, spinning: false, auto: false, abort: false, timers: [] };
+  const SLB = { w: 0, t: 0, arm: false };                                       // Kauf-Menue: Start-Wilds, Stufe, "wirklich?"
   const slotSegments = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(undefined, { granularity: 'grapheme' }) : null;
   const firstGlyph = s => { s = String(s || '').trim(); if (!s) return ''; if (slotSegments) { for (const x of slotSegments.segment(s)) return x.segment; } return Array.from(s).slice(0, 2).join(''); };
 
   function slotCfg() {
+    skinOf('slot');   // uebernimmt alte Einstellungen (Hintergrund, Abdunkeln, Symbol) in den Designer
     const c = S.meta.slot && typeof S.meta.slot === 'object' ? S.meta.slot : (S.meta.slot = {});
     if (!SL_BETS.includes(c.bet)) c.bet = SL_BETS[0];
-    c.dim = Math.max(0, Math.min(0.85, Number.isFinite(+c.dim) ? +c.dim : 0.35));
-    if (!c.scatter || (c.scatter.k !== 'emoji' && c.scatter.k !== 'img') || typeof c.scatter.v !== 'string' || !c.scatter.v) c.scatter = { k: 'emoji', v: SLOTCORE.EMOJI[SLOTCORE.SCAT] };
-    if (c.bg && (!c.bg.ref || (c.bg.k !== 'img' && c.bg.k !== 'video'))) c.bg = null;
+    delete c.bg; delete c.dim; delete c.scatter;
     if (c.fs && !(c.fs.left > 0)) c.fs = null;
-    if (c.fs) { c.fs.left = Math.min(SLOTCORE.FREE_CAP, Math.round(c.fs.left)); c.fs.bet = SL_BETS.includes(c.fs.bet) ? c.fs.bet : c.bet; c.fs.won = Math.max(0, Math.round(c.fs.won) || 0); c.fs.total = Math.max(c.fs.left, Math.round(c.fs.total) || c.fs.left); }
+    if (c.fs) {
+      const f = c.fs;
+      f.left = Math.min(SLOTCORE.FREE_CAP, Math.round(f.left));
+      f.bet = SL_BETS.includes(f.bet) ? f.bet : c.bet;
+      f.won = Math.max(0, Math.round(f.won) || 0);
+      f.total = Math.max(f.left, Math.round(f.total) || f.left);
+      f.tier = Math.max(0, Math.min(SLOTCORE.TIERS.length - 1, Math.round(f.tier) || 0));
+      const seen = new Set();
+      f.wilds = (Array.isArray(f.wilds) ? f.wilds : []).filter(w => w && [1, 2, 3].includes(w.r) && Number.isFinite(+w.m) && !seen.has(w.r) && seen.add(w.r)).map(w => ({ r: w.r, m: Math.max(2, Math.min(50, Math.round(+w.m))) }));
+    }
     return c;
   }
   const symHTML = s => {
-    if (s === SLOTCORE.SCAT) {
-      const sc = slotCfg().scatter;
-      if (sc.k === 'img') { const u = BE && sc.v ? BE.src(sc.v) : ''; return u ? `<img src="${esc(u)}" alt="Freispiel-Symbol" draggable="false">` : esc(SLOTCORE.EMOJI[s]); }
-      return `<span>${esc(sc.v)}</span>`;
-    }
-    return `<span>${SLOTCORE.EMOJI[s]}</span>`;
+    const d = skSymDef('slot', s), nm = esc(skSymName('slot', s));
+    if (d.k === 'art') return `<img src="${esc(artURL(d.v))}" alt="${nm}" draggable="false">`;
+    if (d.k === 'img') { const u = BE && d.v ? BE.src(d.v) : ''; return u ? `<img src="${esc(u)}" alt="${nm}" draggable="false">` : `<span>${esc(SLOTCORE.EMOJI[s])}</span>`; }
+    return `<span>${esc(d.v)}</span>`;
   };
   const cellHTML = s => `<div class="sc s${s}" data-s="${s}">${symHTML(s)}</div>`;
   const rndSym = reel => { const w = SLOTCORE.WEIGHTS[reel], t = w.reduce((a, b) => a + b, 0); let r = Math.random() * t; for (let i = 0; i < w.length; i++) { r -= w[i]; if (r < 0) return i; } return 0; };
+  const rndPlain = reel => { let s; do { s = rndSym(reel); } while (s === SLOTCORE.SCAT || s === SLOTCORE.WILD); return s; };
   const slotBalance = () => fmtTok(Math.max(0, tokens() - DISPLAY_HOLD));
   const SET_HOLD = v => { DISPLAY_HOLD = v; };
+  const wmHTML = (m, cls) => `<i class="wm${cls ? ' ' + cls : ''}">×${m}</i>`;
+  const fsWilds = fs => (fs && fs.wilds ? fs.wilds : []);
 
-  function bgHTML(cfg) {
-    if (!cfg.bg || !BE) return '';
-    const u = BE.src(cfg.bg.ref);
-    if (!u) return '';
-    return cfg.bg.k === 'video' ? `<video src="${esc(u)}" autoplay muted loop playsinline webkit-playsinline></video>` : `<img src="${esc(u)}" alt="" draggable="false">`;
-  }
   function renderSlot() {
-    const cfg = slotCfg(), fs = cfg.fs;
-    if (!SL.grid) SL.grid = Array.from({ length: SLOTCORE.W }, (_, r) => Array.from({ length: SLOTCORE.H }, () => { let s; do { s = rndSym(r); } while (s === SLOTCORE.SCAT || s === SLOTCORE.WILD); return s; }));
+    const cfg = slotCfg(), fs = cfg.fs, sk = skinOf('slot');
+    const sticky = new Map(fsWilds(fs).map(w => [w.r, w.m]));
+    if (!SL.grid) SL.grid = Array.from({ length: SLOTCORE.W }, (_, r) => Array.from({ length: SLOTCORE.H }, () => rndPlain(r)));
     const bet = fs ? fs.bet : cfg.bet;
     $('#view-slot').innerHTML = `
-      <div class="sl-head"><button class="btn small" data-view="home">‹ Home</button><h2>Slot</h2><button class="btn small" data-act="slotinfo">Gewinntabelle</button></div>
-      <div class="sl-machine" id="sl-machine" style="--dim:${cfg.dim}">
-        <div class="sl-bg" id="sl-bg">${bgHTML(cfg)}</div><div class="sl-dim"></div>
+      <div class="sl-head"><button class="btn small" data-view="home">‹ Home</button><h2>Slot</h2>
+        <span class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sl-ico" id="sl-mus" data-act="slotmusic" aria-pressed="${sk.music.on}" aria-label="Musik an oder aus" title="Musik">♪</button><button class="btn small" data-act="slotinfo">Gewinntabelle</button></span></div>
+      <div class="sl-machine${fs ? ' fs-on' : ''}" id="sl-machine" style="${skMachStyle(sk)}">
+        <div class="sl-bg" id="sl-bg" style="background:${skRad(sk.mach)}"></div><div class="sl-dim"></div>
         <div class="sl-frame">
           <div class="sl-fs" id="sl-fs" ${fs ? '' : 'hidden'}></div>
-          <div class="sl-reels" id="sl-reels">${SL.grid.map(col => `<div class="reel"><div class="strip">${col.map(cellHTML).join('')}</div></div>`).join('')}<svg class="sl-lines" id="sl-lines" aria-hidden="true"></svg></div>
+          <div class="sl-reels" id="sl-reels">${SL.grid.map((col, r) => `<div class="reel${sticky.has(r) ? ' stick' : ''}" data-r="${r}"><div class="strip">${(sticky.has(r) ? Array(SLOTCORE.H).fill(SLOTCORE.WILD) : col).map(cellHTML).join('')}</div>${sticky.has(r) ? wmHTML(sticky.get(r)) : ''}</div>`).join('')}<svg class="sl-lines" id="sl-lines" aria-hidden="true"></svg></div>
         </div>
         <div class="sl-win" id="sl-win" aria-live="polite"></div>
       </div>
@@ -3495,26 +4910,12 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
       <div class="sl-ctrl">
         <button class="btn sl-side" data-act="slotauto" id="sl-auto" aria-pressed="${SL.auto}">Auto</button>
         <button class="sl-spin" id="sl-spin" data-act="slotspin" aria-label="Drehen"><span id="sl-spin-t">DREHEN</span></button>
-        <button class="btn sl-side" data-act="slotbuy" id="sl-buy">${fs ? 'Läuft' : `Freispiele kaufen<small>${esc(fmtTok(SL_BUY_X * cfg.bet))}</small>`}</button>
+        <button class="btn sl-side" data-act="slotbuy" id="sl-buy">${fs ? 'Läuft' : 'Freispiele kaufen<small>ab ' + esc(fmtTok(SLOTCORE.buyCost(cfg.bet, 0, 0))) + '</small>'}</button>
       </div>
-      <details class="sl-custom" id="sl-custom">
-        <summary>Anpassen: Hintergrund und Freispiel-Symbol</summary>
-        <div class="sl-cust-body">
-          <div class="field"><span>Hintergrund (Foto, GIF oder Video)</span>
-            <div class="row left"><label class="btn small" for="sl-bg-file">Datei wählen</label><input type="file" id="sl-bg-file" class="vh" accept="image/*,video/*">
-            <button class="btn small" data-act="slotbgoff" ${cfg.bg ? '' : 'disabled'}>Entfernen</button></div></div>
-          <label class="field"><span>Abdunkeln</span><input type="range" id="sl-dim" min="0" max="85" value="${Math.round(cfg.dim * 100)}"></label>
-          <div class="field"><span>Freispiel-Symbol</span>
-            <div class="sl-sym-row"><div class="sc s9 sl-sym-prev" id="sl-sym-prev">${symHTML(SLOTCORE.SCAT)}</div>
-              <input type="text" id="sl-sym-emoji" maxlength="12" placeholder="Emoji, z. B. 🐉" autocomplete="off" aria-label="Emoji für das Freispiel-Symbol">
-              <button class="btn small" data-act="slotsymemoji">Übernehmen</button></div>
-            <div class="row left"><label class="btn small" for="sl-sym-file">Eigenes Foto</label><input type="file" id="sl-sym-file" class="vh" accept="image/*">
-              <button class="btn small" data-act="slotsymreset">Zurücksetzen</button></div></div>
-        </div>
-      </details>
+      <div class="row"><button class="btn" data-act="skedit" data-id="slot">Design anpassen</button></div>
       <p class="note">Spielgeld: Hier spielst du nur mit deinen Startoken, nicht mit echtem Geld. 3 oder mehr Freispiel-Symbole starten Freispiele.</p>`;
+    skLayer($('#sl-bg'), sk.mach);
     paintSlotFs(); paintSpinBtn();
-    const v = $('#sl-bg video'); if (v) { v.muted = true; const p = v.play && v.play(); if (p && p.catch) p.catch(() => {}); }
   }
   RENDER.slot = renderSlot;
   const slotEl = id => $('#' + id);
@@ -3522,7 +4923,10 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     const cfg = slotCfg(), fs = cfg.fs, el = slotEl('sl-fs');
     if (!el) return;
     el.hidden = !fs;
-    if (fs) el.innerHTML = `<b>Freispiele</b><span>${fs.left} übrig · Gewinne ×${SLOTCORE.FREE_MULT}</span><span class="sl-fs-won">${esc(fmtTok(fs.won))}</span>`;
+    if (fs) {
+      const w = fsWilds(fs), sum = w.reduce((a, x) => a + x.m, 0);
+      el.innerHTML = `<b>${fs.left} Freispiele</b><span>${w.length ? `${w.length} Wild${w.length > 1 ? 's' : ''} · ×${sum}` : 'noch kein Wild'}</span><span class="sl-fs-won">${esc(fmtTok(fs.won))}</span>`;
+    }
     el.parentElement.parentElement.classList.toggle('fs-on', !!fs);
   }
   function paintSpinBtn() {
@@ -3530,7 +4934,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     if (!t) return;
     t.textContent = SL.spinning ? '…' : cfg.fs ? `FREISPIEL ${cfg.fs.left}` : 'DREHEN';
     b.disabled = SL.spinning;
-    ['sl-buy'].forEach(id => { const x = slotEl(id); if (x) x.disabled = SL.spinning || !!cfg.fs; });
+    const buy = slotEl('sl-buy'); if (buy) buy.disabled = SL.spinning || !!cfg.fs;
     $$('.sl-bet button').forEach(x => { x.disabled = SL.spinning || !!cfg.fs; });
     const a = slotEl('sl-auto'); if (a) a.setAttribute('aria-pressed', String(SL.auto));
   }
@@ -3540,13 +4944,14 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     const b = slotEl('sl-bal'); if (b) b.textContent = slotBalance();
     const l = slotEl('sl-last'); if (l) l.textContent = fmtTok(SL.lastWin || 0);
     const cfg = slotCfg(), bt = slotEl('sl-bet'); if (bt) bt.textContent = fmtTok(cfg.fs ? cfg.fs.bet : cfg.bet);
-    const buy = slotEl('sl-buy'); if (buy && !cfg.fs) buy.innerHTML = SL.armBuy ? `Wirklich?<small>${esc(fmtTok(SL_BUY_X * cfg.bet))}</small>` : `Freispiele kaufen<small>${esc(fmtTok(SL_BUY_X * cfg.bet))}</small>`;
+    const buy = slotEl('sl-buy'); if (buy && !cfg.fs) buy.innerHTML = `Freispiele kaufen<small>ab ${esc(fmtTok(SLOTCORE.buyCost(cfg.bet, 0, 0)))}</small>`;
   }
 
   // --- Drehen ---
-  function animateReels(grid) {
+  function animateReels(grid, skip) {
     const reels = $$('#sl-reels .reel'), done = [];
     reels.forEach((reel, i) => {
+      if (skip && skip.has(i)) return;   // klebende Wild-Walzen bleiben stehen
       const strip = reel.querySelector('.strip'), K = 9 + i * 3;
       const fill = Array.from({ length: K }, () => rndSym(i));
       strip.style.transition = 'none';
@@ -3567,6 +4972,27 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
       }));
     });
     return Promise.all(done);
+  }
+  // Neue Wilds ziehen sich von oben nach unten durch die ganze Walze und bekommen ihren Multiplikator
+  async function expandWilds(fresh) {
+    for (const f of fresh) {
+      const reel = $$('#sl-reels .reel')[f.r];
+      if (!reel || SL.abort) return;
+      SFX.play('wild');
+      const cells = reel.querySelectorAll('.sc');
+      for (let k = 0; k < SLOTCORE.H; k++) {
+        if (SL.abort || !reel.isConnected) return;
+        if (f.rows.includes(k)) continue;
+        const cell = cells[k]; if (!cell) continue;
+        cell.className = 'sc s' + SLOTCORE.WILD + ' fresh'; cell.dataset.s = SLOTCORE.WILD; cell.innerHTML = symHTML(SLOTCORE.WILD);
+        await slotWait(120);
+      }
+      reel.classList.add('stick');
+      reel.insertAdjacentHTML('beforeend', wmHTML(f.m));
+      SFX.play('wmult', { m: f.m });
+      paintSlotFs();
+      await slotWait(380);
+    }
   }
   function showWins(ev, grid) {
     const reels = $$('#sl-reels .reel'), svg = slotEl('sl-lines'), box = slotEl('sl-reels');
@@ -3590,10 +5016,13 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     svg.innerHTML = html;
     hit.forEach(key => { const [r, k] = key.split(',').map(Number); const c = reels[r].querySelectorAll('.sc')[k]; if (c) c.classList.add('hit'); });
     $$('#sl-reels .sc').forEach(c => { if (!c.classList.contains('hit')) c.classList.add('dimmed'); });
+    // Multiplikator-Plaketten der beteiligten Wild-Walzen pulsieren lassen
+    if (ev.wins.some(w => w.m)) $$('#sl-reels .wm').forEach(b => { b.classList.remove('up'); void b.offsetWidth; b.classList.add('up'); });
   }
   function clearWins() {
     const svg = slotEl('sl-lines'); if (svg) svg.innerHTML = '';
-    $$('#sl-reels .sc').forEach(c => c.classList.remove('hit', 'dimmed'));
+    $$('#sl-reels .sc').forEach(c => c.classList.remove('hit', 'dimmed', 'fresh'));
+    $$('#sl-reels .wm').forEach(b => b.classList.remove('up'));
     const w = slotEl('sl-win'); if (w) { w.className = 'sl-win'; w.textContent = ''; }
   }
   async function countUp(el, total, bet) {
@@ -3606,42 +5035,51 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     }
     el.querySelector('b').textContent = '+' + fmtTok(total);
   }
-  function slotRng() { const g = window.__JB_SLOT_GRID; if (g) { window.__JB_SLOT_GRID = null; return g; } return SLOTCORE.spin(Math.random); }
 
   async function slotSpin() {
     if (SL.spinning) return;
     const cfg = slotCfg(), free = !!cfg.fs;
     const bet = free ? cfg.fs.bet : cfg.bet;
     if (!free && tokens() < bet) { SL.auto = false; paintSpinBtn(); toast(`Zu wenig Startoken: Einsatz ${fmtTok(bet)}.`); SFX.play('err'); return; }
-    SL.spinning = true; SL.abort = false; SL.armBuy = false;
+    SL.spinning = true; SL.abort = false;
     clearWins(); paintSpinBtn();
     // Bezahlen und Ergebnis sofort festschreiben: so geht nichts verloren, auch wenn die Seite waehrend der Animation schliesst
     if (!free) addTokens(-bet);
-    const grid = slotRng();
-    const ev = SLOTCORE.evaluate(grid, bet, free ? SLOTCORE.FREE_MULT : 1);
-    let started = 0, finished = null;
-    if (free) { cfg.fs.left--; cfg.fs.won += ev.total; }
-    if (ev.spins) {
-      started = ev.spins;
-      if (free) { cfg.fs.left = Math.min(SLOTCORE.FREE_CAP, cfg.fs.left + ev.spins); cfg.fs.total += ev.spins; }
-      else cfg.fs = { left: ev.spins, bet, won: 0, total: ev.spins };
+    const over = window.__JB_SLOT_GRID || null; window.__JB_SLOT_GRID = null;
+    let grid, ev, fresh = [], land, finished = null, started = 0;
+    const skip = new Set();
+    if (free) {
+      cfg.fs.wilds.forEach(w => skip.add(w.r));
+      const res = SLOTCORE.freeSpin(cfg.fs, Math.random, bet, over, window.__JB_SLOT_MULT);
+      grid = res.grid; ev = res.ev; fresh = res.fresh;
+      cfg.fs.won += ev.total;
+      if (ev.spins) { started = ev.spins; cfg.fs.total += ev.spins; }
+      // So sieht die Walze beim Stoppen aus: nur die gelandeten Wilds, der Rest fuellt sich danach auf
+      land = grid.map((col, r) => { const f = fresh.find(x => x.r === r); return f ? col.map((s, k) => (f.rows.includes(k) ? SLOTCORE.WILD : rndPlain(r))) : col; });
+      if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; }
+    } else {
+      grid = over || SLOTCORE.spin(Math.random);
+      ev = SLOTCORE.evaluate(grid, bet, 1);
+      land = grid;
+      if (ev.spins) { started = ev.spins; cfg.fs = Object.assign(SLOTCORE.freeStart(Math.random, ev.spins, 0, 0), { bet, won: 0, total: ev.spins }); }
     }
-    if (cfg.fs && cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; }
     if (ev.total) addTokens(ev.total);
     SET_HOLD(ev.total);
     SL.lastWin = ev.total;
     saveMeta(true);
     updateStats(); slotUpdateNums();
     SFX.play('spin');
-    await animateReels(grid);
+    await animateReels(land, skip);
+    if (SL.abort) return;
+    await expandWilds(fresh);
     if (SL.abort) return;
     SL.grid = grid;
     // Ergebnis zeigen
     if (ev.total > 0) {
       showWins(ev, grid);
-      const w = slotEl('sl-win'), ratio = ev.total / bet;
+      const w = slotEl('sl-win'), ratio = ev.total / bet, mm = ev.wins.reduce((a, x) => Math.max(a, x.m || 0), 0);
       w.className = 'sl-win show' + (ratio >= 25 ? ' mega' : ratio >= 10 ? ' big' : '');
-      w.innerHTML = `<small>${ratio >= 25 ? 'MEGA-GEWINN' : ratio >= 10 ? 'GROSSER GEWINN' : ev.scatterPay && !ev.lineTotal ? 'FREISPIEL-SYMBOLE' : 'GEWINN'}</small><b>+${fmtTok(0)}</b>`;
+      w.innerHTML = `<small>${ratio >= 25 ? 'MEGA-GEWINN' : ratio >= 10 ? 'GROSSER GEWINN' : ev.scatterPay && !ev.lineTotal ? 'FREISPIEL-SYMBOLE' : 'GEWINN'}</small>${mm ? `<small class="wmx">Wild ×${mm}</small>` : ''}<b>+${fmtTok(0)}</b>`;
       SFX.play(ratio >= 10 ? 'win3' : ratio >= 3 ? 'win2' : 'win1');
       await countUp(w, ev.total, bet);
     }
@@ -3659,9 +5097,13 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
       SFX.play(finished.won ? 'win3' : 'lose');
       await slotWait(1500);
       if (SL.abort) return;
+      SL.grid = grid.map((col, r) => (col.every(s => s === SLOTCORE.WILD) ? col.map(() => rndPlain(r)) : col));
+      SL.spinning = false;
+      renderSlot(); slotUpdateNums();
+    } else {
+      SL.spinning = false;
+      paintSlotFs(); paintSpinBtn(); slotUpdateNums();
     }
-    SL.spinning = false;
-    paintSlotFs(); paintSpinBtn(); slotUpdateNums();
     if (SL.auto && !SL.abort) { await slotWait(ev.total ? 500 : 250); if (SL.auto && !SL.abort && current === 'slot') slotSpin(); }
   }
   ACTS.slotspin = () => { SL.auto = false; slotSpin(); };
@@ -3674,144 +5116,115 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     if (SL.spinning || cfg.fs) return;
     const i = SL_BETS.indexOf(cfg.bet) + (+id || 0);
     cfg.bet = SL_BETS[Math.max(0, Math.min(SL_BETS.length - 1, i))];
-    saveMeta(); SL.armBuy = false; slotUpdateNums(); SFX.play('pop');
+    saveMeta(); slotUpdateNums(); SFX.play('pop');
   };
+  ACTS.slotmusic = () => {
+    const sk = skinOf('slot'); sk.music.on = !sk.music.on; saveMeta();
+    const b = slotEl('sl-mus'); if (b) b.setAttribute('aria-pressed', String(sk.music.on));
+    if (typeof MUSIC !== 'undefined') MUSIC.sync('slot', true);
+    SFX.play('pop');
+  };
+
+  // --- Freispiele kaufen ---
+  const BUY_WILDS = [['0', 'Ohne Wild'], ['1', '1 Wild'], ['2', '2 Wilds']];
+  function buyDlg() {
+    const cfg = slotCfg(), bet = cfg.bet, T = SLOTCORE.TIERS, cost = SLOTCORE.buyCost(bet, SLB.w, SLB.t), pay = SLOTCORE.SCATTER_PAY[0] * bet;
+    const can = tokens() >= cost, capped = cost >= SLOTCORE.BUY_CAP;
+    const desc = SLB.w === 0 ? 'Du startest ohne Wild. Wilds landen erst während der Freispiele.' : `${SLB.w === 1 ? 'Ein Wild' : 'Zwei Wilds'} ${SLB.w === 1 ? 'liegt' : 'liegen'} von Anfang an auf ${SLB.w === 1 ? 'einer zufälligen Walze' : 'zwei zufälligen Walzen'} (2 bis 4) und bleiben bis zum Ende.`;
+    dlg(`<h3>Freispiele kaufen</h3>
+      <p class="note" style="max-width:none">${SLOTCORE.FREE_SPINS[0]} Freispiele zu deinem Einsatz von ${esc(fmtTok(bet))}. Wilds bleiben kleben, füllen die ganze Walze und zählen mit ihrem Multiplikator. Dazu zahlt der Kauf sofort ${esc(fmtTok(pay))} (der Gewinn für 3 Freispiel-Symbole).</p>
+      <div class="buy-opt"><span class="eyebrow">Wilds zum Start</span>
+        <div class="seg" role="group" aria-label="Wilds zum Start">${BUY_WILDS.map(([k, n]) => `<button data-act="slotbuyw" data-id="${k}" aria-pressed="${SLB.w === +k}">${n}</button>`).join('')}</div>
+        <p class="note" style="max-width:none">${esc(desc)}</p></div>
+      <div class="buy-opt"><span class="eyebrow">Multiplikator der Wilds</span>
+        <div class="seg" role="group" aria-label="Multiplikator">${T.map((t, i) => `<button data-act="slotbuyt" data-id="${i}" aria-pressed="${SLB.t === i}">${esc(t.n.replace('Zufall 2–50×', 'Zufall').replace('mind. ', '≥').replace('immer 50×', '50×'))}</button>`).join('')}</div>
+        <p class="note" style="max-width:none">${SLB.t === 0 ? 'Jedes neue Wild bekommt einen zufälligen Multiplikator von 2× bis 50×, meistens klein.' : SLB.t === 3 ? 'Jedes Wild hat immer 50×.' : `Jedes Wild hat mindestens ${T[SLB.t].min}× und höchstens 50×.`}</p></div>
+      <div class="buy-sum"><div><span class="eyebrow">Preis</span><br><b id="buy-cost">${esc(fmtTok(cost))}</b></div><small>${capped ? 'Höchstpreis erreicht' : esc(SLOTCORE.BUY_X[SLB.w][SLB.t].toLocaleString('de-DE') + '× Einsatz')}</small></div>
+      <p class="note" id="buy-msg" style="min-height:1.3em">${can ? '' : `Dir fehlen ${esc(fmtTok(cost - tokens()))}.`}</p>
+      <div class="row"><button class="btn" data-act="dlgclose">Abbrechen</button><button class="btn primary" id="buy-go" data-act="slotbuygo" ${can ? '' : 'disabled'}>${SLB.arm ? 'Wirklich kaufen?' : 'Kaufen'}</button></div>`);
+  }
   ACTS.slotbuy = () => {
     const cfg = slotCfg();
     if (SL.spinning || cfg.fs) return;
-    const cost = SL_BUY_X * cfg.bet;
+    SLB.arm = false; buyDlg();
+  };
+  ACTS.slotbuyw = id => { SLB.w = Math.max(0, Math.min(2, +id || 0)); SLB.arm = false; buyDlg(); SFX.play('pop'); };
+  ACTS.slotbuyt = id => { SLB.t = Math.max(0, Math.min(SLOTCORE.TIERS.length - 1, +id || 0)); SLB.arm = false; buyDlg(); SFX.play('pop'); };
+  ACTS.slotbuygo = () => {
+    const cfg = slotCfg();
+    if (SL.spinning || cfg.fs) return;
+    const cost = SLOTCORE.buyCost(cfg.bet, SLB.w, SLB.t);
     if (tokens() < cost) { toast(`Zu wenig Startoken: ${fmtTok(cost)} nötig.`); SFX.play('err'); return; }
-    if (!SL.armBuy) { SL.armBuy = true; slotUpdateNums(); setTimeout(() => { if (SL.armBuy) { SL.armBuy = false; slotUpdateNums(); } }, 3500); return; }
-    SL.armBuy = false;
+    if (!SLB.arm) { SLB.arm = true; buyDlg(); setTimeout(() => { if (SLB.arm) { SLB.arm = false; if (!$('#dlg').hidden && $('#buy-go')) buyDlg(); } }, 4000); return; }
+    SLB.arm = false;
+    closeDlg();
     addTokens(-cost);
     const pay = SLOTCORE.SCATTER_PAY[0] * cfg.bet;
     addTokens(pay);
-    cfg.fs = { left: SLOTCORE.FREE_SPINS[0], bet: cfg.bet, won: pay, total: SLOTCORE.FREE_SPINS[0] };
+    cfg.fs = Object.assign(SLOTCORE.freeStart(Math.random, SLOTCORE.FREE_SPINS[0], SLB.w, SLB.t), { bet: cfg.bet, won: pay, total: SLOTCORE.FREE_SPINS[0] });
     saveMeta(true); updateStats(); SFX.play('scatter');
     SL.lastWin = pay;
-    paintSlotFs(); paintSpinBtn(); slotUpdateNums();
-    toast(`${SLOTCORE.FREE_SPINS[0]} Freispiele gekauft.`);
+    clearWins(); renderSlot();
+    toast(`${SLOTCORE.FREE_SPINS[0]} Freispiele gekauft${cfg.fs.wilds.length ? ` · ${cfg.fs.wilds.length} Wild${cfg.fs.wilds.length > 1 ? 's' : ''} liegen schon` : ''}.`);
   };
   LEAVE.slot = () => {
-    SL.abort = true; SL.auto = false; SL.spinning = false; SL.armBuy = false;
+    SL.abort = true; SL.auto = false; SL.spinning = false; SLB.arm = false;
     SL.timers.forEach(clearTimeout); SL.timers = [];
     SET_HOLD(0); updateStats();
-    const v = $('#sl-bg video'); if (v && v.pause) v.pause();
+    $$('#sl-bg video').forEach(v => { if (v.pause) v.pause(); });
   };
   CHEAT_EXTRA.push({ label: 'Slot: +10 Freispiele', fn: () => {
     const cfg = slotCfg();
-    cfg.fs = cfg.fs ? { ...cfg.fs, left: Math.min(SLOTCORE.FREE_CAP, cfg.fs.left + 10), total: cfg.fs.total + 10 } : { left: 10, bet: cfg.bet, won: 0, total: 10 };
+    if (cfg.fs) { cfg.fs.left = Math.min(SLOTCORE.FREE_CAP, cfg.fs.left + 10); cfg.fs.total += 10; }
+    else cfg.fs = Object.assign(SLOTCORE.freeStart(Math.random, 10, 0, 0), { bet: cfg.bet, won: 0, total: 10 });
     saveMeta(true); toast('10 Freispiele gutgeschrieben.');
+  } });
+  CHEAT_EXTRA.push({ label: 'Slot: Max-Freispiele (2 Wilds · 50×)', fn: () => {
+    const cfg = slotCfg();
+    cfg.fs = Object.assign(SLOTCORE.freeStart(Math.random, 10, 2, 3), { bet: cfg.bet, won: 0, total: 10 });
+    saveMeta(true); toast('10 Freispiele mit 2 Wilds und 50× gutgeschrieben.');
   } });
 
   // --- Gewinntabelle ---
   ACTS.slotinfo = () => {
-    const cfg = slotCfg(), lb = (cfg.fs ? cfg.fs.bet : cfg.bet) / SLOTCORE.LINES.length;
+    const cfg = slotCfg(), bet = cfg.fs ? cfg.fs.bet : cfg.bet, lb = bet / SLOTCORE.LINES.length;
     dlg(`<h3>Gewinntabelle</h3>
-      <p class="note">Auszahlung pro Gewinnlinie bei deinem Einsatz von ${esc(fmtTok(cfg.fs ? cfg.fs.bet : cfg.bet))}. Es zählen 30 feste Linien von links nach rechts.</p>
-      <table class="pt"><thead><tr><th></th><th></th><th>3×</th><th>4×</th><th>5×</th></tr></thead><tbody>${[7, 6, 5, 4, 3, 2, 1, 0].map(s => `<tr><td class="sc-i">${symHTML(s)}</td><td>${SLOTCORE.NAMES[s]}</td>${SLOTCORE.PAYS[s].map(p => `<td>${esc(fmtTok(Math.round(p * lb)))}</td>`).join('')}</tr>`).join('')}</tbody></table>
+      <p class="note">Auszahlung pro Gewinnlinie bei deinem Einsatz von ${esc(fmtTok(bet))}. Es zählen 30 feste Linien von links nach rechts.</p>
+      <table class="pt"><thead><tr><th></th><th></th><th>3×</th><th>4×</th><th>5×</th></tr></thead><tbody>${[7, 6, 5, 4, 3, 2, 1, 0].map(s => `<tr><td class="sc-i">${symHTML(s)}</td><td>${esc(skSymName('slot', s))}</td>${SLOTCORE.PAYS[s].map(p => `<td>${esc(fmtTok(Math.round(p * lb)))}</td>`).join('')}</tr>`).join('')}</tbody></table>
       <ul class="pt-list">
-        <li><span class="sc-i">${symHTML(SLOTCORE.WILD)}</span> <b>Wild</b> ersetzt jedes Symbol außer dem Freispiel-Symbol und erscheint auf den Walzen 2 bis 4.</li>
-        <li><span class="sc-i">${symHTML(SLOTCORE.SCAT)}</span> <b>Freispiel-Symbol</b> irgendwo: 3× zahlt ${esc(fmtTok(SLOTCORE.SCATTER_PAY[0] * (cfg.fs ? cfg.fs.bet : cfg.bet)))} und gibt ${SLOTCORE.FREE_SPINS[0]} Freispiele, 4× ${SLOTCORE.FREE_SPINS[1]}, 5× ${SLOTCORE.FREE_SPINS[2]}.</li>
-        <li>In Freispielen zählen alle Linien ×${SLOTCORE.FREE_MULT}. Neue Freispiel-Symbole geben weitere Freispiele.</li>
+        <li><span class="sc-i">${symHTML(SLOTCORE.WILD)}</span> <b>${esc(skSymName('slot', SLOTCORE.WILD))}</b> ersetzt jedes Symbol außer dem Freispiel-Symbol und erscheint auf den Walzen 2 bis 4.</li>
+        <li><span class="sc-i">${symHTML(SLOTCORE.SCAT)}</span> <b>${esc(skSymName('slot', SLOTCORE.SCAT))}</b> irgendwo: 3× zahlt ${esc(fmtTok(SLOTCORE.SCATTER_PAY[0] * bet))} und gibt ${SLOTCORE.FREE_SPINS[0]} Freispiele, 4× ${SLOTCORE.FREE_SPINS[1]}, 5× ${SLOTCORE.FREE_SPINS[2]}.</li>
+        <li><b>In den Freispielen</b> bleibt jedes Wild kleben, füllt die ganze Walze aus und bekommt einen zufälligen Multiplikator von 2× bis 50× (kleine kommen öfter). Läuft eine Gewinnlinie über mehrere Wild-Walzen, werden deren Multiplikatoren addiert. Neue Freispiel-Symbole geben weitere Freispiele.</li>
+        <li><b>Freispiele kaufen</b> kannst du mit 0, 1 oder 2 Wilds zum Start und mit einer Stufe für den Multiplikator. Der teuerste Kauf kostet höchstens 10.000.000☆.</li>
         <li>Rückzahlung im Schnitt ca. 96 %. Das ist Spielgeld, kein echtes Geld.</li>
       </ul>
       <button class="btn" data-act="dlgclose">Schließen</button>`);
   };
 
-  // --- Anpassen: Hintergrund und Freispiel-Symbol ---
-  const SL_MAX_BYTES = 20 * 1024 * 1024;
-  async function slotSetBg(file) {
-    if (file.size > SL_MAX_BYTES) { toast('Die Datei ist zu groß (höchstens 20 MB).'); return; }
-    const video = /^video\//.test(file.type) || /\.(mp4|mov|m4v|webm)$/i.test(file.name || ''), gif = file.type === 'image/gif';
-    busy('Hintergrund wird gespeichert …');
-    try {
-      const blob = video || gif ? file : await shrink(file);
-      const cfg = slotCfg(), old = cfg.bg && cfg.bg.ref;
-      const ref = await BE.putPhoto(blob);
-      cfg.bg = { k: video ? 'video' : 'img', ref };
-      saveMeta(true);
-      if (old && !slotRefUsed(old)) { try { await BE.dropPhoto(old); } catch (e) { /* egal */ } }
-      busy(null); renderSlot(); const d = $('#sl-custom'); if (d) d.open = true;
-    } catch (e) { busy(null); console.error(e); toast('Das konnte ich nicht speichern.'); }
-  }
-  const slotRefUsed = ref => S.cases.some(c => c.cards.some(x => x.p === ref));
-  async function slotShrinkSym(file) {
-    let bmp;
-    try { bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) { bmp = await loadImg(file); }
-    const W = bmp.width || bmp.naturalWidth, H = bmp.height || bmp.naturalHeight;
-    if (!W || !H) throw new Error('leer');
-    const s = Math.min(1, 320 / Math.max(W, H)), cw = Math.max(1, Math.round(W * s)), ch = Math.max(1, Math.round(H * s));
-    const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
-    cv.getContext('2d').drawImage(bmp, 0, 0, cw, ch);
-    if (bmp.close) bmp.close();
-    const out = await new Promise((res, rej) => cv.toBlob(b => (b ? res(b) : rej(new Error('toBlob'))), 'image/png'));
-    cv.width = cv.height = 0;
-    return out;
-  }
-  async function slotSetSymImg(file) {
-    busy('Symbol wird gespeichert …');
-    try {
-      const blob = await slotShrinkSym(file), cfg = slotCfg(), old = cfg.scatter.k === 'img' ? cfg.scatter.v : null;
-      const ref = await BE.putPhoto(blob);
-      cfg.scatter = { k: 'img', v: ref };
-      saveMeta(true);
-      if (old && !slotRefUsed(old)) { try { await BE.dropPhoto(old); } catch (e) { /* egal */ } }
-      busy(null); SL.grid = null; renderSlot(); const d = $('#sl-custom'); if (d) d.open = true;
-    } catch (e) { busy(null); console.error(e); toast('Das Bild kann ich nicht lesen.'); }
-  }
-  async function slotSymSet(cfgNew) {
-    const cfg = slotCfg(), old = cfg.scatter.k === 'img' ? cfg.scatter.v : null;
-    cfg.scatter = cfgNew; saveMeta(true);
-    if (old) { try { await BE.dropPhoto(old); } catch (e) { /* egal */ } }
-    renderSlot(); const d = $('#sl-custom'); if (d) d.open = true;
-  }
-  ACTS.slotsymemoji = () => {
-    const g = firstGlyph(($('#sl-sym-emoji') || {}).value);
-    if (!g) { toast('Gib ein Emoji ein, z. B. 🐉'); return; }
-    slotSymSet({ k: 'emoji', v: g });
-  };
-  ACTS.slotsymreset = () => slotSymSet({ k: 'emoji', v: SLOTCORE.EMOJI[SLOTCORE.SCAT] });
-  ACTS.slotbgoff = async () => {
-    const cfg = slotCfg(), old = cfg.bg && cfg.bg.ref;
-    cfg.bg = null; saveMeta(true);
-    if (old && !slotRefUsed(old)) { try { await BE.dropPhoto(old); } catch (e) { /* egal */ } }
-    renderSlot(); const d = $('#sl-custom'); if (d) d.open = true;
-  };
-  document.addEventListener('change', e => {
-    const t = e.target;
-    if (t.id === 'sl-bg-file') { const f = t.files && t.files[0]; t.value = ''; if (f) slotSetBg(f); }
-    else if (t.id === 'sl-sym-file') { const f = t.files && t.files[0]; t.value = ''; if (f) slotSetSymImg(f); }
-  });
-  document.addEventListener('input', e => {
-    if (e.target.id !== 'sl-dim') return;
-    const cfg = slotCfg(); cfg.dim = Math.max(0, Math.min(0.85, +e.target.value / 100));
-    const m = slotEl('sl-machine'); if (m) m.style.setProperty('--dim', cfg.dim);
-    saveMeta();
-  });
-
-  // Sicherung: Slot-Einstellungen und Medien reisen mit "Alles sichern"
+  // Sicherung: Slot-Stand (Einsatz, laufende Freispiele) und Design reisen mit "Alles sichern"
   async function slotExport(photos) {
     const cfg = JSON.parse(JSON.stringify(slotCfg()));
-    const refs = [cfg.bg && cfg.bg.ref, cfg.scatter.k === 'img' ? cfg.scatter.v : null].filter(Boolean);
-    for (const ref of refs) {
-      try { const b = await BE.blobOf(ref); if (b) photos[ref] = await blobToDataURL(b); } catch (e) { console.warn('Slot-Medium fehlt', ref, e); }
-    }
+    cfg.skin = await skExport(photos);
     return cfg;
   }
   async function slotImport(c, photos) {
     if (!c || typeof c !== 'object') return;
-    const cur = slotCfg(), next = { bet: SL_BETS.includes(c.bet) ? c.bet : cur.bet, dim: c.dim, scatter: cur.scatter, bg: cur.bg, fs: cur.fs };
-    const take = async ref => {
-      const du = photos && photos[ref];
-      if (typeof du !== 'string' || !/^data:(image|video)\/[a-z0-9.+-]+;base64,/.test(du)) return null;
-      try { return await BE.putPhoto(dataURLToBlob(du)); } catch (e) { return null; }
-    };
-    if (c.bg && c.bg.ref && (c.bg.k === 'img' || c.bg.k === 'video')) { const r = await take(c.bg.ref); if (r) next.bg = { k: c.bg.k, ref: r }; }
-    if (c.scatter && c.scatter.k === 'emoji' && typeof c.scatter.v === 'string') next.scatter = { k: 'emoji', v: firstGlyph(c.scatter.v) || SLOTCORE.EMOJI[SLOTCORE.SCAT] };
-    else if (c.scatter && c.scatter.k === 'img' && c.scatter.v) { const r = await take(c.scatter.v); if (r) next.scatter = { k: 'img', v: r }; }
-    if (c.fs && c.fs.left > 0 && !cur.fs) next.fs = { left: c.fs.left, bet: c.fs.bet, won: c.fs.won, total: c.fs.total };
-    S.meta.slot = next; slotCfg(); saveMeta(true);
+    const cur = slotCfg(), next = { bet: SL_BETS.includes(c.bet) ? c.bet : cur.bet, fs: cur.fs };
+    if (c.fs && c.fs.left > 0 && !cur.fs) next.fs = { left: c.fs.left, bet: c.fs.bet, won: c.fs.won, total: c.fs.total, tier: c.fs.tier, wilds: c.fs.wilds };
+    S.meta.slot = next; slotCfg();
+    if (c.skin) await skImport(c.skin, photos);
+    else if (c.bg || c.scatter || c.dim != null) {   // alte Sicherung (vor dem Designer)
+      const sk = skinOf('slot'), take = async ref => {
+        const du = photos && photos[ref];
+        if (typeof du !== 'string' || !/^data:(image|video)\/[a-z0-9.+-]+;base64,/.test(du)) return null;
+        try { return await BE.putPhoto(dataURLToBlob(du)); } catch (e) { return null; }
+      };
+      if (c.bg && c.bg.ref && (c.bg.k === 'img' || c.bg.k === 'video')) { const r = await take(c.bg.ref); if (r) { sk.mach.k = c.bg.k; sk.mach.ref = r; sk.p = 'eigen'; } }
+      if (Number.isFinite(+c.dim)) sk.mach.dim = skNum(c.dim, 0, 0.9, 0.35);
+      if (c.scatter && c.scatter.k === 'emoji' && typeof c.scatter.v === 'string') { sk.sym[9] = { k: 'emoji', v: firstGlyph(c.scatter.v) || SLOTCORE.EMOJI[9] }; sk.p = 'eigen'; }
+      else if (c.scatter && c.scatter.k === 'img' && c.scatter.v) { const r = await take(c.scatter.v); if (r) { sk.sym[9] = { k: 'img', v: r }; sk.p = 'eigen'; } }
+    }
+    saveMeta(true);
   }
   // ================= Gacha: Karten ziehen und im Upgrader verspielen =================
   const GA = { mode: 'pull', caseId: null, stake: {}, target: null, filter: 'all', spinning: false, armUp: false };
@@ -3848,15 +5261,24 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 
   function renderGacha() {
     const el = $('#view-gacha'), own = ownedCases().filter(c => c.cards.length), cs = gcase();
-    if (!cs) { el.innerHTML = emptyHTML('Noch kein Case mit Karten', 'Hol dir ein Case ins Inventar, dann kannst du hier Karten ziehen.', 'Zur Community'); return; }
+    if (!cs) { el.innerHTML = `<div class="sl-head"><button class="btn small" data-view="home">‹ Home</button><h2>Gacha</h2><span></span></div>` + emptyHTML('Noch kein Case mit Karten', 'Hol dir ein Case ins Inventar, dann kannst du hier Karten ziehen.', 'Zur Community') + `<div class="row"><button class="btn" data-act="skedit" data-id="gacha">Design anpassen</button></div>`; return; }
     GA.caseId = cs.id;
     el.innerHTML = `<div class="sl-head"><button class="btn small" data-view="home">‹ Home</button><h2>Gacha</h2><span></span></div>
       ${caseChips(own, cs.id, 'gacase')}
       <div class="seg" role="group" aria-label="Gacha-Modus"><button data-act="gamode" data-id="pull" aria-pressed="${GA.mode === 'pull'}">Ziehen</button><button data-act="gamode" data-id="up" aria-pressed="${GA.mode === 'up'}">Upgrader</button></div>
-      <div id="ga-body">${GA.mode === 'pull' ? gachaPullHTML(cs) : ''}</div>`;
+      <div id="ga-body">${GA.mode === 'pull' ? gachaPullHTML(cs) : ''}</div>
+      <div class="row"><button class="btn" data-act="skedit" data-id="gacha">Design anpassen</button></div>`;
     if (GA.mode === 'up') paintUpgrader();
+    gaSkin();
   }
   RENDER.gacha = renderGacha;
+  // Gacha-Maschine: eigener Hintergrund aus dem Designer (nur wenn gesetzt, sonst bleibt der Look des Cases)
+  function gaSkin() {
+    const m = skinOf('gacha').mach, bg = $('#ga-bg'), dim = $('#ga-bgdim');
+    if (!bg || !dim) return;
+    bg.hidden = dim.hidden = !m.k;
+    if (m.k) { skLayer(bg, m); dim.style.opacity = m.dim; }
+  }
 
   function gachaPullHTML(cs) {
     const price = gachaPrice(cs), st = gstate(cs.id), x = gachaCtx(cs);
@@ -3864,7 +5286,7 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     const rates = RARITIES.filter(r => x.p[r.k]).map(r => `<div class="prog r-${r.k}"><span class="dot"></span><span>${r.n}</span><span class="ga-rate">${fmtPct(w[x.avail.indexOf(r.k)] / tot * 100)} %</span><span class="pc">${x.p[r.k].length} Motive</span></div>`).join('');
     const pity = (keys, n, label) => keys.length ? `<div class="ga-pity"><span>${label}</span><span class="bar"><i style="width:${Math.min(100, (st[n] || 0) / (n === 'e' ? PITY_E : PITY_L) * 100)}%"></i></span><b>noch ${Math.max(1, (n === 'e' ? PITY_E : PITY_L) - (st[n] || 0))}</b></div>` : '';
     const can1 = tokens() >= price, can10 = tokens() >= price * 9;
-    return `<div class="ga-machine th-${cs.theme}"><div class="ga-ball"><i></i><i></i></div><div><b class="ga-name">${esc(cs.name)}</b><small class="muted">Jeder Zug eine Karte aus diesem Case. ${st.n ? st.n + ' Züge bisher.' : ''}</small></div></div>
+    return `<div class="ga-machine th-${cs.theme}" id="ga-machine"><div class="ga-bg" id="ga-bg"></div><div class="ga-bgdim" id="ga-bgdim"></div><div class="ga-ball"><i></i><i></i></div><div><b class="ga-name">${esc(cs.name)}</b><small class="muted">Jeder Zug eine Karte aus diesem Case. ${st.n ? st.n + ' Züge bisher.' : ''}</small></div></div>
       <section><div class="sec-head"><h3>Chancen</h3><span class="eyebrow">pro Zug</span></div><div class="prog-list ga-rates">${rates}</div></section>
       <section class="ga-pities">${pity(x.e, 'e', 'Epic oder besser garantiert')}${pity(x.l, 'l', 'Legendary oder besser garantiert')}</section>
       <div class="ga-buy">
@@ -4314,7 +5736,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
       app: 'jopenbox', v: 1,
       cases: list.map(cs => withProg ? { case: serializeCase(cs), prog: progOf(cs.id) } : { case: serializeCase(cs) }),
       photos,
-      ...(wallet ? { wallet: { c: MONEY_VER, tokens: tokens(), standard: progOf('standard'), slot: await slotExport(photos) } } : {}),
+      ...(wallet ? { wallet: { c: MONEY_VER, tokens: tokens(), standard: progOf('standard'), slot: await slotExport(photos), home: await homeExport(photos), ...(hidExport() ? { hid: hidExport() } : {}) } } : {}),
     };
   }
   async function saveFile(filename, text) {
@@ -4382,18 +5804,20 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     const photos = pkg.photos && typeof pkg.photos === 'object' ? pkg.photos : {};
     const entries = pkg.cases.filter(en => en && en.case).slice(0, 50);
     let n = 0;
+    const idMap = {};
     try {
       for (const entry of entries) {
         busy(`Importiere ${n + 1}/${entries.length} …`, 0);
         const src = normCase(entry && entry.case);
         const cs = { ...src, id: uid(8), demo: false, created: Date.now() + n };
         while (S.cases.some(c => c.id === cs.id)) cs.id = uid(8);
+        idMap[src.id] = cs.id;
         const refs = [...new Set(cs.cards.map(c => c.p).filter(Boolean))];
         const map = new Map();
         let k = 0, lastErr = null;
         await pool(refs, 3, async ref => {
           const du = photos[ref];
-          if (typeof du === 'string' && /^data:image\/(jpeg|png|webp|gif);base64,/.test(du)) {
+          if (typeof du === 'string' && /^data:(image\/(jpeg|png|webp|gif)|video\/(mp4|webm|quicktime|x-m4v));base64,/.test(du)) {
             try { map.set(ref, await BE.putPhoto(dataURLToBlob(du))); } catch (e) { lastErr = e; }
           }
           k++; busy(`Importiere ${n + 1}/${entries.length}: Fotos ${k}/${refs.length}`, k / Math.max(1, refs.length));
@@ -4426,6 +5850,8 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
         saveProg('standard');
       }
       if (w.slot) { try { await slotImport(w.slot, photos); } catch (e) { console.warn('Slot-Import', e); } }
+      try { await homeImport(w.home, photos); } catch (e) { console.warn('Home-Import', e); }
+      try { hidImport(w.hid, idMap); } catch (e) { console.warn('Versteck-Import', e); }
       saveMeta(true); restored = true;
     }
     busy(null); refresh();
@@ -4522,14 +5948,14 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
   const hideBroken = t => { t.style.display = 'none'; if (t.parentElement) t.parentElement.classList.add('missing'); };
   document.addEventListener('error', e => {
     const t = e.target;
-    if (!t || t.tagName !== 'IMG' || !t.closest('.c-art,.t-art')) return;
+    if (!t || (t.tagName !== 'IMG' && t.tagName !== 'VIDEO') || !t.closest('.c-art,.t-art')) return;
     const src = t.getAttribute('src') || '';
     if (!src || /^(blob|data):/.test(src)) { hideBroken(t); return; }
     const n = +(t.dataset.retry || 0);
     const base = t.dataset.base || (t.dataset.base = src);
     if (n < 3) {
       t.dataset.retry = String(n + 1);
-      setTimeout(() => { if (t.isConnected) t.src = base + (base.includes('?') ? '&' : '?') + 'r=' + Date.now(); }, 900 * (n + 1));
+      setTimeout(() => { if (t.isConnected) t.src = base.replace(/#.*$/, '') + (base.includes('?') ? '&' : '?') + 'r=' + Date.now() + (t.tagName === 'VIDEO' ? '#t=0.1' : ''); }, 900 * (n + 1));
       return;
     }
     hideBroken(t);
@@ -4608,16 +6034,17 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     } else if (t.id === 'sh-file') {
       const f = t.files && t.files[0]; t.value = '';
       if (!f || !SH) return;
-      busy('Foto wird verarbeitet …');
+      busy('Wird verarbeitet …');
       try {
-        const blob = await shrink(f), c = cur();
+        const { blob, m } = await prepMedia(f), c = cur();
         if (c) {
           if (c._url) URL.revokeObjectURL(c._url);
           c._blob = blob; c._url = URL.createObjectURL(blob); ED.dirty = true;
+          if (m) c.m = m; else delete c.m;
           c.z = 1; c.x = 0; c.y = 0;
           paintSheet();
         }
-      } catch (err) { toast('Das Bild kann ich nicht lesen.'); }
+      } catch (err) { toast(err && err.big ? 'Das Video ist größer als 15 MB.' : 'Das Bild kann ich nicht lesen.'); }
       busy(null);
     } else if (t.id === 'sh-name') {
       if (SH) { const c = cur(); if (c) { c.n = t.value.trim().slice(0, 28) || 'Karte'; t.value = c.n; paintSheet(); } }
