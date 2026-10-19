@@ -457,6 +457,7 @@ table.pt{width:100%;border-collapse:collapse;font:400 13px var(--mono)}
 
 /* Spiele-Knoepfe auf Home */
 .games{display:flex;gap:12px}
+.games .gbtn{flex:0 1 88px;width:auto;min-width:62px}
 .gbtn{width:88px;height:88px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(160deg,var(--surface-2),var(--surface));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:0;color:var(--fg);box-shadow:0 4px 14px -6px rgba(0,0,0,.5)}
 .gbtn svg{width:34px;height:34px}
 .gbtn small{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -569,6 +570,71 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .wadd-row{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .wadd-row b{font-weight:600}
 .wadd-row small{color:var(--muted);font-size:12.5px}
+/* Design-Speicher */
+.ds-list{display:flex;flex-direction:column;gap:8px}
+.ds-row{display:grid;grid-template-columns:34px 1fr;gap:6px 10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface-2)}
+.ds-sw{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);display:block;flex:none}
+.ds-n{display:flex;flex-direction:column;min-width:0}
+.ds-n b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.ds-n small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ds-act{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+.hid-row .ds-sw{margin-right:2px}
+/* Comics */
+.cx-tabs{margin:2px 0 10px}
+.cx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:14px 12px;margin-top:6px}
+.cx-book{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cx-cover{position:relative;display:block;width:100%;aspect-ratio:2/3;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:linear-gradient(160deg,var(--surface-2),var(--surface));padding:0}
+.cx-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s}
+.cx-cover.has img{opacity:1}
+.cx-ph{position:absolute;inset:0;display:grid;place-items:center;font:600 34px var(--display);color:var(--muted)}
+.cx-cover.has .cx-ph{display:none}
+.cx-bar{position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(0,0,0,.45)}
+.cx-bar b{display:block;height:100%;background:var(--accent)}
+.cx-t{display:flex;align-items:flex-start;justify-content:space-between;gap:4px;min-width:0}
+.cx-tt{display:flex;flex-direction:column;min-width:0;flex:1}
+.cx-tt b{font-size:13px;font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.cx-tt small{color:var(--muted);font:400 11px var(--mono)}
+.cx-more{padding:4px 10px;flex:none}
+.cx-cont{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);border-radius:14px;background:linear-gradient(160deg,var(--surface-2),var(--surface));padding:10px;margin-bottom:12px}
+.cx-cont-i{flex:none;width:52px;aspect-ratio:2/3;border-radius:8px;overflow:hidden;background:var(--surface);display:block}
+.cx-cont-i img{width:100%;height:100%;object-fit:cover;display:block}
+.cx-cont-t{display:flex;flex-direction:column;min-width:0}
+.cx-cont-t b{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cx-cont-t small{color:var(--muted);font:400 11px var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.cx-addr{display:flex;gap:8px}
+.cx-addr input{flex:1;min-width:0}
+.cx-marks{margin:2px 0}
+.cx-marks .chip{padding:0;overflow:hidden}
+.cx-mk{background:none;border:0;color:inherit;padding:6px 6px 6px 13px;font-size:13px;max-width:30ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cx-mx{background:none;border:0;color:var(--muted);padding:6px 11px 6px 4px;font-size:15px;line-height:1}
+.cx-frame{height:62vh;height:62dvh;min-height:300px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;margin:10px 0}
+.cx-frame iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+.cx-frame-e{height:100%;display:flex;flex-direction:column;gap:8px;align-items:flex-start;justify-content:center;padding:18px;background:var(--surface);color:var(--muted);font-size:14px}
+.cx-frame-e b{color:var(--fg)}
+.cx-h{font-size:17px;margin:14px 0 4px}
+/* Leser */
+.reader{position:fixed;inset:0;z-index:52;background:#05060a;color:#e9ebf2;-webkit-user-select:none;user-select:none;overflow:hidden}
+.rd-stage{position:absolute;inset:0;overflow:auto;display:flex;-webkit-overflow-scrolling:touch}
+.rd-img{margin:auto;display:block;max-width:100%;max-height:100%;object-fit:contain;flex:none}
+.rd-img.bad{display:none}
+.reader[data-fit=width] .rd-img{width:100%;max-height:none;height:auto}
+.reader.zoomed .rd-img{max-width:none;max-height:none;width:230%;height:auto}
+.rd-strip{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.rd-s{min-height:70vh;display:flex;justify-content:center;align-items:center;color:var(--muted);font-size:13px}
+.rd-s.on{min-height:0;display:block}
+.rd-s img{display:block;width:100%;height:auto}
+.rd-top,.rd-bot{position:absolute;left:0;right:0;z-index:2;display:flex;gap:10px;align-items:center;transition:opacity .2s}
+.rd-top{top:0;padding:calc(env(safe-area-inset-top,0px) + 8px) 12px 22px;justify-content:space-between;background:linear-gradient(rgba(5,6,10,.88),rgba(5,6,10,0))}
+.rd-title{flex:1;min-width:0;text-align:center;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rd-bot{bottom:0;flex-direction:column;align-items:stretch;padding:26px 12px calc(env(safe-area-inset-bottom,0px) + 10px);background:linear-gradient(rgba(5,6,10,0),rgba(5,6,10,.92))}
+.reader.noui .rd-top,.reader.noui .rd-bot{opacity:0;pointer-events:none}
+.rd-sl{display:flex;align-items:center;gap:12px}
+.rd-sl input{flex:1;min-width:0;accent-color:var(--accent)}
+.rd-sl span{font:500 12px var(--mono);color:#aeb4c4;min-width:64px;text-align:right}
+.rd-btns{display:flex;gap:6px;flex-wrap:wrap}
+.rd-btns button{flex:1 1 auto;border:1px solid #283044;background:#141822;color:#e9ebf2;border-radius:9px;padding:9px 10px;font-size:13px}
+.rd-btns button[hidden]{display:none}
+.reader[data-mode=strip] .rd-only-page{display:none}
 /* Cases verstecken */
 .hid-list{display:flex;flex-direction:column;gap:8px;max-height:44vh;overflow-y:auto}
 .hid-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface-2)}
@@ -723,6 +789,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     <section class="view" id="view-slot" hidden></section>
     <section class="view" id="view-lobby" hidden></section>
     <section class="view" id="view-game" hidden></section>
+    <section class="view" id="view-comics" hidden></section>
   </main>
   <nav class="tabs" role="tablist">
     <button role="tab" id="tab-home" data-view="home" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h4.5v-6h4v6h4.5V10"/></svg><span>Home</span></button>
@@ -735,6 +802,7 @@ body.skin-edit .stage{padding-bottom:54vh}
 </div>
 <div class="opener" id="opener" hidden></div>
 <div class="editor" id="editor" hidden></div>
+<div class="reader" id="reader" hidden></div>
 <div class="lightbox" id="lightbox" hidden></div>
 <div class="lightbox sheet" id="sheet" hidden></div>
 <div class="lightbox sheet" id="rand" hidden></div>
@@ -1441,7 +1509,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   let current = 'home';
   const TAB_IDS = ['home', 'case', 'inv', 'coll', 'com', 'set'];
   function showView(v) {
-    if (!RENDER[v]) v = 'home';
+    if (!RENDER[v] || (v === 'comics' && tabHidden('comics'))) v = 'home';
     if (current !== v && LEAVE[current]) { try { LEAVE[current](); } catch (e) { /* egal */ } }
     current = v;
     Object.keys(RENDER).forEach(k => { const el = $('#view-' + k); if (el) el.hidden = k !== v; });
@@ -3967,7 +4035,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     Object.values(c.sym).forEach(s => { if (s.k === 'img') r.push(s.v); });
     return r;
   };
-  const skAllRefs = () => { const r = new Set(); Object.values(S.meta.skin || {}).forEach(c => { if (c && c.page) skRefsOf(c).forEach(x => r.add(x)); }); return r; };
+  const skAllRefs = () => { const r = new Set(); Object.values(S.meta.skin || {}).forEach(c => { if (c && c.page) skRefsOf(c).forEach(x => r.add(x)); }); dsRefs().forEach(x => r.add(x)); return r; };
   const mediaUsed = ref => S.cases.some(c => c.cards.some(x => x.p === ref)) || skAllRefs().has(ref) || (typeof homeRefs === 'function' && homeRefs().has(ref));
   async function mediaDrop(ref) { if (ref && !mediaUsed(ref)) { try { await BE.dropPhoto(ref); } catch (e) { /* egal */ } } }
 
@@ -4072,10 +4140,10 @@ body.skin-edit .stage{padding-bottom:54vh}
   const skSymName = (page, s) => { const o = skinOf(page).sym[s]; return (o && o.n) || SLOTCORE.NAMES[s]; };
 
   // ---- Designer-Oberflaeche ----
-  const SKD = { page: null, tab: 'vorlage', sub: 'page', sel: 0, armPreset: null, fileFor: null };
+  const SKD = { page: null, tab: 'vorlage', sub: 'page', sel: 0, armPreset: null, armDs: null, armDel: null, fileFor: null };
   const SK_TABS = { slot: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['sym', 'Symbole'], ['farben', 'Farben'], ['mehr', 'Mehr']], gacha: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['farben', 'Farben'], ['mehr', 'Mehr']], home: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['farben', 'Farben'], ['mehr', 'Mehr']] };
   function skOpen(page) {
-    SKD.page = page; SKD.tab = 'vorlage'; SKD.sub = 'page'; SKD.sel = 0; SKD.armPreset = null;
+    SKD.page = page; SKD.tab = 'vorlage'; SKD.sub = 'page'; SKD.sel = 0; SKD.armPreset = null; SKD.armDs = null; SKD.armDel = null;
     const el = $('#skined');
     el.hidden = false;
     document.body.classList.add('skin-edit');
@@ -4147,10 +4215,11 @@ body.skin-edit .stage{padding-bottom:54vh}
         <p class="note" style="margin:0;max-width:none">Die irische Melodie ist selbst komponiert und wird beim Start erzeugt. Eigene Musik klappt nur in der Offline-App (GitHub oder Windows), nicht in der Claude-Version.</p>` : ''}`;
   }
   function skTabPreset(c) {
-    const cards = SK_PRESET_KEYS.map(k => { const p = SK_PRESETS[k]; return `<button class="sk-pre${c.p === k ? ' on' : ''}" data-skpre="${k}" style="background:linear-gradient(150deg,${p.sw[0]},${p.sw[1]})"><b>${p.n}</b></button>`; }).join('');
+    const cards = SK_PRESET_KEYS.filter(k => !dsPresetHidden(k) || c.p === k).map(k => { const p = SK_PRESETS[k]; return `<button class="sk-pre${c.p === k ? ' on' : ''}" data-skpre="${k}" style="background:linear-gradient(150deg,${p.sw[0]},${p.sw[1]})"><b>${p.n}</b></button>`; }).join('');
     return `<p class="note" style="margin:0;max-width:none">${SKD.armPreset ? `Du ersetzt dein eigenes Design durch „${esc(SK_PRESETS[SKD.armPreset].n)}“. Tippe nochmal auf die Vorlage zum Bestätigen.` : 'Eine Vorlage setzt Hintergrund, Farben' + (SKD.page === 'slot' ? ', Symbole' : '') + ' und Schrift. Danach kannst du alles einzeln ändern.'}</p>
       <div class="sk-pres">${cards}</div>
-      <div class="row left"><button class="btn small" data-sk="reset">Auf Vorlage „${esc((SK_PRESETS[c.p] || SK_PRESETS.klassisch).n)}“ zurücksetzen</button></div>`;
+      <div class="row left"><button class="btn small" data-sk="reset">Auf Vorlage „${esc((SK_PRESETS[c.p] || SK_PRESETS.klassisch).n)}“ zurücksetzen</button></div>
+      ${dsSection(c)}`;
   }
   function skRender() {
     const el = $('#skined'), page = SKD.page;
@@ -4372,10 +4441,12 @@ body.skin-edit .stage{padding-bottom:54vh}
       }
       out[p] = c;
     }
+    const lib = await dsExport(photos); if (lib) out.lib = lib;
     return out;
   }
   async function skImport(map, photos) {
     if (!map || typeof map !== 'object') return;
+    try { await dsImport(map.lib, photos); } catch (e) { console.warn('Design-Speicher-Import', e); }
     const cache = new Map();
     const take = async ref => {
       if (!ref) return null;
@@ -4609,9 +4680,11 @@ body.skin-edit .stage{padding-bottom:54vh}
   CHEAT_EXTRA.push({ label: 'Verstecke Cases', fn: hidManage });
 
   // ---- Sicherung ----
-  const hidExport = () => { const m = hidMeta(); return m && m.ids.length ? { ids: m.ids.slice() } : null; };
+  const hidExport = () => { const m = hidMeta(), tabs = Array.isArray(S.meta.htab) ? S.meta.htab.slice() : []; return (m && m.ids.length) || tabs.length ? { ids: m ? m.ids.slice() : [], ...(tabs.length ? { tabs } : {}) } : null; };
   function hidImport(w, idMap) {
-    if (!w || typeof w !== 'object' || !Array.isArray(w.ids)) return;
+    if (!w || typeof w !== 'object') return;
+    if (Array.isArray(w.tabs)) w.tabs.forEach(k => { if (typeof k === 'string') tabSetHidden(k, true); });
+    if (!Array.isArray(w.ids)) return;
     const ids = w.ids.map(id => (idMap && idMap[id]) || null).filter(Boolean);
     if (!ids.length) return;
     const m = hidMeta(true);
@@ -4623,12 +4696,16 @@ body.skin-edit .stage{padding-bottom:54vh}
   // Der Home-Bildschirm ist eine freie Flaeche: jedes Widget hat Ort (x in % der Breite, y in px), Groesse (w in %, h in px),
   // Reihenfolge = vorne/hinten, Hintergrund an/aus und Inhalts-Skalierung. Ziehen und Groesse aendern im Bearbeiten-Modus.
   const HOME_MAX = 24;
-  const GAMES_HTML = `<div class="games" role="group" aria-label="Spiele">
-        <button class="gbtn" data-view="gacha" aria-label="Gacha"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="11.5"/><path d="M4.5 16h23"/><path d="M4.5 16a11.5 11.5 0 0 1 23 0" fill="var(--accent)" fill-opacity=".35"/><circle cx="16" cy="16" r="3" fill="var(--bg)"/></svg><small>Gacha</small></button>
-        <button class="gbtn" data-view="lobby" aria-label="Slot"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6.5" width="25" height="19" rx="3.5"/><path d="M12 7v18M20 7v18"/><circle cx="7.8" cy="16" r="1.6" fill="currentColor"/><path d="M14.6 13.4l1.4-1.4 1.4 1.4M14.6 18.6l1.4 1.4 1.4-1.4"/><circle cx="24.2" cy="16" r="1.6" fill="currentColor"/></svg><small>Slot</small></button>
+  const GBTN = {
+    gacha: `<button class="gbtn" data-view="gacha" aria-label="Gacha"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="11.5"/><path d="M4.5 16h23"/><path d="M4.5 16a11.5 11.5 0 0 1 23 0" fill="var(--accent)" fill-opacity=".35"/><circle cx="16" cy="16" r="3" fill="var(--bg)"/></svg><small>Gacha</small></button>`,
+    lobby: `<button class="gbtn" data-view="lobby" aria-label="Slot"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6.5" width="25" height="19" rx="3.5"/><path d="M12 7v18M20 7v18"/><circle cx="7.8" cy="16" r="1.6" fill="currentColor"/><path d="M14.6 13.4l1.4-1.4 1.4 1.4M14.6 18.6l1.4 1.4 1.4-1.4"/><circle cx="24.2" cy="16" r="1.6" fill="currentColor"/></svg><small>Slot</small></button>`,
+    comics: `<button class="gbtn" data-view="comics" aria-label="Comics"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="3.5"/><path d="M4 15.5h24M16 5v10.5M20 15.5V27"/><circle cx="10" cy="10.2" r="1.6" fill="currentColor"/></svg><small>Comics</small></button>`,
+  };
+  const gamesHTML = () => `<div class="games" role="group" aria-label="Spiele">
+        ${Object.keys(GBTN).filter(k => !tabHidden(k)).map(k => GBTN[k]).join('\n        ')}
       </div>`;
   const HOME_TYPES = {
-    games: { n: 'Spiele', d: 'Knöpfe zu Gacha und Slot', s: 2 },
+    games: { n: 'Spiele', d: 'Knöpfe zu Gacha, Slot und Comics', s: 2 },
     tok: { n: 'Startoken', d: 'Dein Kontostand', s: 1 },
     free: { n: 'Gratis-Cases', d: 'Wie viele frei sind und wann das nächste kommt', s: 1 },
     quick: { n: 'Schnellzugriff', d: 'Springe direkt zu Case, Inventar, Sammlung oder Community', s: 2 },
@@ -4719,10 +4796,10 @@ body.skin-edit .stage{padding-bottom:54vh}
     return Math.round((t - n) / 86400000);
   }
   const WBODY = {
-    games: () => GAMES_HTML,
+    games: () => gamesHTML(),
     tok: () => `<div class="tile"><span class="eyebrow">Startoken</span><b class="tile-big">${fmtTok(tokens())}</b><small class="muted">Karten verkaufen bringt Startoken.</small></div>`,
     free: () => { const f = freeInfo(); return `<div class="tile"><span class="eyebrow">Gratis-Cases</span><b class="tile-big">${f.left} von ${FREE_PER_HOUR}</b><small class="muted" data-free="home">${esc(freeText())}</small><button class="btn primary small" data-act="gostandard">Zum Standard-Case</button></div>`; },
-    quick: () => `<div class="tile"><span class="eyebrow">Schnellzugriff</span><div class="chips">${[['case', 'Case'], ['inv', 'Inventar'], ['coll', 'Sammlung'], ['com', 'Community'], ['gacha', 'Gacha'], ['lobby', 'Slot']].map(([v, n]) => `<button class="chip" data-view="${v}">${n}</button>`).join('')}</div></div>`,
+    quick: () => `<div class="tile"><span class="eyebrow">Schnellzugriff</span><div class="chips">${[['case', 'Case'], ['inv', 'Inventar'], ['coll', 'Sammlung'], ['com', 'Community'], ['gacha', 'Gacha'], ['lobby', 'Slot'], ['comics', 'Comics']].filter(x => !tabHidden(x[0])).map(([v, n]) => `<button class="chip" data-view="${v}">${n}</button>`).join('')}</div></div>`,
     clock: w => `<div class="tile"><span class="eyebrow" data-clock="d">${w.date ? esc(dateText()) : 'Uhr'}</span><b class="tile-big" data-clock="t" data-h24="${w.h24}">${esc(clockText(w))}</b></div>`,
     note: w => `<div class="tile"><span class="eyebrow">Notiz</span><p class="w-note">${w.text ? esc(w.text) : '<span class="muted">Noch leer</span>'}</p></div>`,
     count: w => { const n = daysTo(w.date), lab = !w.name ? 'Countdown' : w.name; return `<div class="tile"><span class="eyebrow">${esc(lab)}</span>${n == null ? '<small class="muted">Wähle ein Datum.</small>' : `<b class="tile-big">${n === 0 ? 'Heute' : Math.abs(n)}</b><small class="muted">${n === 0 ? 'ist es so weit' : n > 0 ? (n === 1 ? 'Tag noch' : 'Tage noch') : (n === -1 ? 'Tag her' : 'Tage her')}</small>`}</div>`; },
@@ -4990,6 +5067,832 @@ body.skin-edit .stage{padding-bottom:54vh}
     S.meta.home = n; HOME_SEEN = null; homeSave(true);
     for (const r of old) await mediaDrop(r);
   }
+
+  // ================= Design-Speicher =================
+  // Das aktuelle Design einer Seite (Home, Gacha, Slot) laesst sich unter einem Namen ablegen und spaeter auf jede Seite anwenden.
+  // Gespeicherte Designs und eingebaute Vorlagen lassen sich verstecken. Zurueckholen: Cheat-Menue (Code 6906) -> "Verstecke Designs".
+  const DS_MAX = 40;
+  const DS = { fixed: null };
+
+  function dsMeta(create) {
+    let m = S.meta.dlib;
+    if (!m || typeof m !== 'object') { if (!create) return null; m = S.meta.dlib = { items: [], hid: [] }; }
+    if (!Array.isArray(m.items)) m.items = [];
+    if (!Array.isArray(m.hid)) m.hid = [];
+    if (DS.fixed !== m) {   // einmal pro Stand: Eintraege pruefen und auf gueltige Form bringen
+      DS.fixed = m;
+      m.items = m.items.filter(it => it && typeof it === 'object' && typeof it.id === 'string' && it.c && typeof it.c === 'object').slice(0, DS_MAX).map(it => ({
+        id: it.id.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 12) || uid(8),
+        n: typeof it.n === 'string' ? it.n.replace(/[<>&"']/g, '').slice(0, 24) : 'Design',
+        pg: SK_PAGES.includes(it.pg) ? it.pg : 'home', t: Number.isFinite(+it.t) ? +it.t : 0, c: skNorm(it.c),
+      }));
+      m.hid = m.hid.filter(x => typeof x === 'string').slice(0, 200);
+    }
+    return m;
+  }
+  const dsItems = () => { const m = dsMeta(); return m ? m.items : []; };
+  const dsIsHid = id => { const m = dsMeta(); return !!(m && m.hid.indexOf(id) >= 0); };
+  const dsPresetHidden = k => k !== 'klassisch' && dsIsHid('p:' + k);
+  function dsRefs() { const r = new Set(); dsItems().forEach(it => skRefsOf(it.c).forEach(x => r.add(x))); return r; }
+  function dsSetHid(id, on) {
+    const m = dsMeta(true), has = m.hid.indexOf(id) >= 0;
+    if (on && !has) m.hid.push(id); else if (!on && has) m.hid = m.hid.filter(x => x !== id);
+    saveMeta(true);
+  }
+  const dsDate = t => { if (!t) return ''; const d = new Date(t); return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.`; };
+  const dsSame = (a, b) => JSON.stringify(skNorm(a)) === JSON.stringify(skNorm(b));
+  const dsSwatch = c => `background:linear-gradient(150deg,${c.page.c2},${c.col.accent})`;
+
+  // ---- Bereich im Reiter "Vorlage" ----
+  function dsSection(c) {
+    const vis = dsItems().filter(it => !dsIsHid(it.id)), hidN = dsItems().length - vis.length;
+    const hidPre = SK_PRESET_KEYS.filter(dsPresetHidden).length;
+    const rows = vis.map(it => {
+      const armUse = SKD.armDs === it.id, armDel = SKD.armDel === it.id;
+      return `<div class="ds-row" data-ds-id="${it.id}"><i class="ds-sw" style="${dsSwatch(it.c)}"></i>
+        <span class="ds-n"><b>${esc(it.n)}</b><small>${esc(SK_NAMES[it.pg] || '')}${it.t ? ' · ' + dsDate(it.t) : ''}${dsSame(c, it.c) ? ' · gerade aktiv' : ''}</small></span>
+        <span class="ds-act"><button class="btn small${armUse ? ' primary' : ''}" data-ds="use" data-id="${it.id}">${armUse ? 'Wirklich ersetzen?' : 'Anwenden'}</button><button class="btn small" data-ds="hide" data-id="${it.id}">Verstecken</button><button class="btn small${armDel ? ' danger' : ''}" data-ds="del" data-id="${it.id}">${armDel ? 'Wirklich löschen?' : 'Löschen'}</button></span></div>`;
+    }).join('');
+    const hidable = SK_PRESET_KEYS.filter(k => k !== 'klassisch' && !dsPresetHidden(k));
+    return `<h4 class="set-sub">Meine Designs</h4>
+      <p class="note" style="margin:0;max-width:none">Speichere das Design, das du gerade siehst, unter einem Namen. So kannst du es später wieder anwenden, auch auf einer anderen Seite.</p>
+      <div class="row left" style="flex-wrap:nowrap"><input type="text" id="ds-name" maxlength="24" placeholder="Name, z. B. Nacht-Look" autocomplete="off" aria-label="Name des Designs" style="flex:1;min-width:0"><button class="btn small primary" data-ds="save">Speichern</button></div>
+      ${rows ? `<div class="ds-list">${rows}</div>` : '<p class="note" style="margin:0;max-width:none">Noch nichts gespeichert.</p>'}
+      ${hidable.length ? `<div class="field"><span>Vorlage verstecken</span>${skChips(hidable.map(k => [k, SK_PRESETS[k].n]), '', 'data-dspre')}</div>` : ''}
+      ${hidN || hidPre ? `<p class="note" style="margin:0;max-width:none">${hidN + hidPre} ${hidN + hidPre === 1 ? 'Design ist' : 'Designs sind'} versteckt. Zurückholen: Cheat-Menü (Code 6906) → Verstecke Designs.</p>` : ''}`;
+  }
+
+  // ---- Aktionen ----
+  async function dsSave() {
+    const page = SKD.page; if (!page) return;
+    const inp = $('#ds-name'), m = dsMeta(true);
+    if (m.items.length >= DS_MAX) { toast(`Du hast schon ${DS_MAX} Designs gespeichert. Lösche erst eins.`); return; }
+    const raw = inp ? inp.value : '';
+    const name = raw.replace(/[<>&"']/g, '').trim().slice(0, 24) || `${SK_NAMES[page]}-Design ${m.items.length + 1}`;
+    const copy = skNorm(JSON.parse(JSON.stringify(skinOf(page))));
+    m.items.unshift({ id: uid(8), n: name, pg: page, t: Date.now(), c: copy });
+    saveMeta(true); SFX.play('pop'); toast(`„${name}“ ist gespeichert.`);
+    SKD.armDs = null; SKD.armDel = null; skRender();
+  }
+  async function dsApply(id) {
+    const page = SKD.page, it = dsItems().find(x => x.id === id);
+    if (!page || !it) return;
+    const cur = skinOf(page);
+    const custom = (cur.p === 'eigen' || skRefsOf(cur).length > 0) && !dsItems().some(x => dsSame(cur, x.c));
+    if (custom && SKD.armDs !== id) {
+      SKD.armDs = id; skRender();
+      setTimeout(() => { if (SKD.armDs === id) { SKD.armDs = null; if (SKD.page && SKD.tab === 'vorlage') skRender(); } }, 4500);
+      return;
+    }
+    SKD.armDs = null;
+    const olds = skRefsOf(cur);
+    S.meta.skin[page] = skNorm(JSON.parse(JSON.stringify(it.c))); skSave(true);
+    for (const r of olds) await mediaDrop(r);
+    SFX.play('pop'); toast(`„${it.n}“ ist jetzt aktiv.`);
+    skRender(); skRefresh(); skAfter('symset');
+  }
+  async function dsDelete(id) {
+    const m = dsMeta(), it = m && m.items.find(x => x.id === id);
+    if (!it) return;
+    if (SKD.armDel !== id) {
+      SKD.armDel = id; skRender();
+      setTimeout(() => { if (SKD.armDel === id) { SKD.armDel = null; if (SKD.page && SKD.tab === 'vorlage') skRender(); } }, 3500);
+      return;
+    }
+    SKD.armDel = null;
+    const olds = skRefsOf(it.c);
+    m.items = m.items.filter(x => x.id !== id); m.hid = m.hid.filter(x => x !== id); saveMeta(true);
+    for (const r of olds) await mediaDrop(r);
+    SFX.play('back'); skRender();
+  }
+  $('#skined').addEventListener('click', e => {
+    const t = e.target.closest('[data-ds],[data-dspre]');
+    if (!t || !SKD.page) return;
+    if (t.dataset.dspre) { dsSetHid('p:' + t.dataset.dspre, true); SFX.play('pop'); toast(`Vorlage „${SK_PRESETS[t.dataset.dspre].n}“ ist versteckt.`); skRender(); return; }
+    const a = t.dataset.ds, id = t.dataset.id;
+    if (a === 'save') dsSave();
+    else if (a === 'use') dsApply(id);
+    else if (a === 'del') dsDelete(id);
+    else if (a === 'hide') { dsSetHid(id, true); SKD.armDs = null; SKD.armDel = null; SFX.play('pop'); toast('Das Design ist versteckt.'); skRender(); }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'ds-name') { e.preventDefault(); dsSave(); } });
+
+  // ---- Cheat-Menue: Verstecke Designs ----
+  function dsManage() {
+    const rows = [];
+    dsItems().forEach(it => rows.push({ id: it.id, n: it.n, s: `Gespeichert · ${SK_NAMES[it.pg] || ''}`, sw: dsSwatch(it.c) }));
+    SK_PRESET_KEYS.filter(k => k !== 'klassisch').forEach(k => rows.push({ id: 'p:' + k, n: SK_PRESETS[k].n, s: 'Vorlage', sw: `background:linear-gradient(150deg,${SK_PRESETS[k].sw[0]},${SK_PRESETS[k].sw[1]})` }));
+    rows.sort((a, b) => (dsIsHid(b.id) - dsIsHid(a.id)));
+    const n = rows.filter(r => dsIsHid(r.id)).length;
+    dlg(`<h3>Verstecke Designs</h3>
+      <p class="note" style="max-width:none">${n ? `${n} ${n === 1 ? 'Design ist' : 'Designs sind'} versteckt.` : 'Im Moment ist kein Design versteckt.'} Verstecken kannst du auch im Designer unter Vorlage.</p>
+      <div class="hid-list">${rows.map(r => { const h = dsIsHid(r.id); return `<div class="hid-row${h ? ' is-hid' : ''}"><i class="ds-sw" style="${r.sw}"></i><span class="hid-n"><b>${esc(r.n)}</b><small>${esc(r.s)} · ${h ? 'versteckt' : 'sichtbar'}</small></span><button class="btn small${h ? ' primary' : ''}" data-act="dsflip" data-id="${esc(r.id)}">${h ? 'Wieder zeigen' : 'Verstecken'}</button></div>`; }).join('')}</div>
+      <p class="note" style="max-width:none">Das ist ein Sichtschutz. Die Designs bleiben gespeichert und in Sicherungen.</p>
+      <button class="btn" data-act="hidmenuback">Zurück</button>`);
+  }
+  ACTS.dsflip = id => { dsSetHid(id, !dsIsHid(id)); SFX.play('pop'); dsManage(); if (SKD.page && SKD.tab === 'vorlage') skRender(); };
+  CHEAT_EXTRA.push({ label: 'Verstecke Designs', fn: dsManage });
+
+  // ---- Sicherung ----
+  async function dsExport(photos) {
+    const m = dsMeta();
+    if (!m || (!m.items.length && !m.hid.length)) return null;
+    const items = [];
+    for (const it of m.items) {
+      const c = JSON.parse(JSON.stringify(it.c));
+      for (const ref of skRefsOf(c)) {
+        if (photos[ref]) continue;
+        try { const b = await BE.blobOf(ref); if (b) photos[ref] = await blobToDataURL(b); } catch (e) { console.warn('Design-Medium fehlt', ref, e); }
+      }
+      items.push({ id: it.id, n: it.n, pg: it.pg, t: it.t, c });
+    }
+    return { items, hid: m.hid.slice() };
+  }
+  async function dsImport(lib, photos) {
+    if (!lib || typeof lib !== 'object' || !Array.isArray(lib.items)) return;
+    const m = dsMeta(true), cache = new Map();
+    const take = async ref => {
+      if (!ref) return null;
+      if (cache.has(ref)) return cache.get(ref);
+      const du = photos && photos[ref];
+      let r = null;
+      if (typeof du === 'string' && /^data:(image|video|audio)\/[a-z0-9.+-]+;base64,/.test(du)) { try { r = await BE.putPhoto(dataURLToBlob(du)); } catch (e) { r = null; } }
+      cache.set(ref, r); return r;
+    };
+    const idMap = {};
+    for (const raw of lib.items.slice(0, DS_MAX)) {
+      if (!raw || typeof raw !== 'object' || !raw.c) continue;
+      if (m.items.length >= DS_MAX) break;
+      const c = skNorm(raw.c);
+      for (const k of ['page', 'mach']) if (c[k].ref) { const r = await take(c[k].ref); if (r) c[k].ref = r; else { c[k].k = null; c[k].ref = null; } }
+      if (c.mascot.ref) { const r = await take(c.mascot.ref); if (r) c.mascot.ref = r; else { c.mascot.ref = null; c.mascot.v = 'none'; } }
+      if (c.music.ref) { const r = await take(c.music.ref); if (r) c.music.ref = r; else { c.music.ref = null; c.music.src = 'irish'; } }
+      for (const i of Object.keys(c.sym)) if (c.sym[i].k === 'img') { const r = await take(c.sym[i].v); if (r) c.sym[i].v = r; else delete c.sym[i]; }
+      const id = uid(8);
+      idMap[String(raw.id)] = id;
+      m.items.push({ id, n: typeof raw.n === 'string' ? raw.n.replace(/[<>&"']/g, '').slice(0, 24) : 'Design', pg: SK_PAGES.includes(raw.pg) ? raw.pg : 'home', t: Number.isFinite(+raw.t) ? +raw.t : 0, c });
+    }
+    (Array.isArray(lib.hid) ? lib.hid : []).forEach(x => {
+      const id = typeof x === 'string' ? (x.startsWith('p:') ? x : idMap[x]) : null;
+      if (id && m.hid.indexOf(id) < 0) m.hid.push(id);
+    });
+    saveMeta(true);
+  }
+  window.__JB_DS = { items: () => dsItems().map(it => ({ id: it.id, n: it.n, pg: it.pg, hid: dsIsHid(it.id) })), hiddenPresets: () => SK_PRESET_KEYS.filter(dsPresetHidden) };
+
+  // ================= Comics: Regal, Leser und Web-Fenster =================
+  // Eigene Comics (CBZ/ZIP mit Bildern oder einzelne Bilder) kommen in ein Regal und lassen sich in der App lesen.
+  // Die Seiten liegen in einer eigenen IndexedDB ("jopenbox-comics"), getrennt von den Karten, damit der App-Start schnell bleibt.
+  // Das Web-Fenster zeigt Webseiten an und kann Bilder oder CBZ-Dateien per Link laden, wenn die Seite das erlaubt.
+  const CX = { tab: 'shelf', dbP: null, mem: false, list: [], loaded: false, cov: new Map(), drawn: '', webUrl: '', frameUrl: '', optsId: null };
+  const CX_PAGE_MAX = 60 * 1024 * 1024, CX_PAGES_MAX = 3000;
+  const CX_TYPES = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif', avif: 'image/avif', bmp: 'image/bmp' };
+  const CX_EXT = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/avif': 'avif', 'image/bmp': 'bmp' };
+  const cxPad = n => String(n).padStart(5, '0');
+  const cxExtOf = name => { const m = /\.([a-z0-9]{2,5})$/i.exec(String(name || '').split(/[?#]/)[0]); return m ? m[1].toLowerCase() : ''; };
+  const cxMime = (name, type) => { const t = String(type || '').toLowerCase(); if (CX_EXT[t]) return t; return CX_TYPES[cxExtOf(name)] || ''; };
+  const cxNat = (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+  const cxTitleOf = name => String(name || '').replace(/[?#].*$/, '').replace(/^.*[\\/]/, '').replace(/\.[a-z0-9]{2,5}$/i, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+  const cxMB = b => (b / 1048576 >= 10 ? Math.round(b / 1048576) : Math.round(b / 104857.6) / 10).toString().replace('.', ',') + ' MB';
+
+  // ---- Hide: Bereiche auf Home (Gacha, Slot, Comics) ----
+  const TAB_LIST = [['gacha', 'Gacha'], ['lobby', 'Slot'], ['comics', 'Comics']];
+  const tabHidden = k => Array.isArray(S.meta.htab) && S.meta.htab.indexOf(k) >= 0;
+  function tabSetHidden(k, on) {
+    if (!TAB_LIST.some(x => x[0] === k)) return;
+    const a = Array.isArray(S.meta.htab) ? S.meta.htab.filter(x => typeof x === 'string') : [];
+    const has = a.indexOf(k) >= 0;
+    if (on && !has) a.push(k); else if (!on && has) a.splice(a.indexOf(k), 1);
+    S.meta.htab = a; saveMeta(true);
+  }
+  function tabManage() {
+    dlg(`<h3>Verstecke Bereiche</h3>
+      <p class="note" style="max-width:none">Ein versteckter Bereich verschwindet als Knopf von Home und aus dem Schnellzugriff. Hier holst du ihn zurück.</p>
+      <div class="hid-list">${TAB_LIST.map(([k, n]) => { const h = tabHidden(k); return `<div class="hid-row${h ? ' is-hid' : ''}"><span class="hid-n"><b>${n}</b><small>${h ? 'versteckt' : 'sichtbar'}</small></span><button class="btn small${h ? ' primary' : ''}" data-act="tabflip" data-id="${k}">${h ? 'Wieder zeigen' : 'Verstecken'}</button></div>`; }).join('')}</div>
+      <button class="btn" data-act="hidmenuback">Zurück</button>`);
+  }
+  ACTS.tabflip = id => {
+    const was = tabHidden(id);
+    tabSetHidden(id, !was); SFX.play('pop');
+    if (!was && (current === id || (id === 'lobby' && (current === 'game' || current === 'slot')))) showView('home'); else if (current === 'home') homeRender();
+    tabManage();
+  };
+  CHEAT_EXTRA.push({ label: 'Verstecke Bereiche', fn: tabManage });
+
+  // ---- Speicher (IndexedDB) ----
+  const cxMem = { meta: new Map(), pages: new Map() };
+  function cxDbOpen() {
+    if (CX.dbP) return CX.dbP;
+    CX.dbP = new Promise(res => {
+      if (!window.indexedDB) { res(null); return; }
+      let r; try { r = indexedDB.open('jopenbox-comics', 1); } catch (e) { res(null); return; }
+      r.onupgradeneeded = () => { const d = r.result; d.createObjectStore('meta'); d.createObjectStore('pages'); };
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => res(null); r.onblocked = () => res(null);
+    }).then(db => { if (!db) CX.mem = true; return db; });
+    return CX.dbP;
+  }
+  async function cxMetaAll() { const db = await cxDbOpen(); if (!db) return [...cxMem.meta.values()].map(x => JSON.parse(JSON.stringify(x))); return idbP(db.transaction('meta', 'readonly').objectStore('meta').getAll()); }
+  async function cxMetaPut(m) { const c = JSON.parse(JSON.stringify(m)), db = await cxDbOpen(); if (!db) { cxMem.meta.set(m.id, c); return; } await idbP(db.transaction('meta', 'readwrite').objectStore('meta').put(c, m.id)); }
+  async function cxMetaDel(id) { const db = await cxDbOpen(); if (!db) { cxMem.meta.delete(id); return; } await idbP(db.transaction('meta', 'readwrite').objectStore('meta').delete(id)); }
+  const cxKey = (id, n) => id + ':' + (typeof n === 'number' ? cxPad(n) : n);
+  async function cxPagePut(id, n, buf, type) { const db = await cxDbOpen(); if (!db) { cxMem.pages.set(cxKey(id, n), { b: buf, t: type }); return; } await idbP(db.transaction('pages', 'readwrite').objectStore('pages').put({ b: buf, t: type }, cxKey(id, n))); }
+  async function cxPageGet(id, n) { const db = await cxDbOpen(); if (!db) return cxMem.pages.get(cxKey(id, n)) || null; return (await idbP(db.transaction('pages', 'readonly').objectStore('pages').get(cxKey(id, n)))) || null; }
+  async function cxPagesDel(id) {
+    const db = await cxDbOpen();
+    if (!db) { [...cxMem.pages.keys()].filter(k => k.startsWith(id + ':')).forEach(k => cxMem.pages.delete(k)); return; }
+    await idbP(db.transaction('pages', 'readwrite').objectStore('pages').delete(IDBKeyRange.bound(id + ':', id + ':￿')));
+  }
+  function cxNormMeta(m) {
+    if (!m || typeof m !== 'object' || typeof m.id !== 'string') return null;
+    const n = clampInt(m.n, 0, CX_PAGES_MAX, 0);
+    return {
+      id: m.id, t: typeof m.t === 'string' && m.t.trim() ? m.t.slice(0, 80) : 'Comic', n,
+      added: Number.isFinite(+m.added) ? +m.added : 0, last: Number.isFinite(+m.last) ? +m.last : 0,
+      pos: clampInt(m.pos, 0, Math.max(0, n - 1), 0), rtl: !!m.rtl, mode: m.mode === 'strip' ? 'strip' : 'page', fit: m.fit === 'width' ? 'width' : 'contain',
+      marks: Array.isArray(m.marks) ? [...new Set(m.marks.map(Number).filter(x => Number.isInteger(x) && x >= 0 && x < n))].sort((a, b) => a - b).slice(0, 200) : [],
+      size: Math.max(0, Math.round(+m.size) || 0), done: !!m.done, cov: !!m.cov,
+    };
+  }
+  async function cxLoad() {
+    let all = [];
+    try { all = await cxMetaAll(); } catch (e) { console.warn('Comics laden', e); }
+    CX.list = all.map(cxNormMeta).filter(Boolean).sort((a, b) => (b.last || b.added) - (a.last || a.added));
+    CX.loaded = true;
+  }
+
+  // ---- ZIP lesen (CBZ) ----
+  async function zipEntries(file) {
+    const tailLen = Math.min(file.size, 65557 + 22);
+    const tail = new DataView(await file.slice(file.size - tailLen).arrayBuffer());
+    let e = -1;
+    for (let i = tail.byteLength - 22; i >= 0; i--) if (tail.getUint32(i, true) === 0x06054b50) { e = i; break; }
+    if (e < 0) throw new Error('kein Zip');
+    const cnt = tail.getUint16(e + 10, true), cdSize = tail.getUint32(e + 12, true), cdOff = tail.getUint32(e + 16, true);
+    if (cnt === 0xffff || cdSize === 0xffffffff || cdOff === 0xffffffff) throw new Error('zip64');
+    const cd = new DataView(await file.slice(cdOff, cdOff + cdSize).arrayBuffer());
+    const out = [], dec = new TextDecoder('utf-8');
+    let p = 0;
+    for (let i = 0; i < cnt && p + 46 <= cd.byteLength; i++) {
+      if (cd.getUint32(p, true) !== 0x02014b50) break;
+      const flags = cd.getUint16(p + 8, true), method = cd.getUint16(p + 10, true), csize = cd.getUint32(p + 20, true), usize = cd.getUint32(p + 24, true);
+      const nl = cd.getUint16(p + 28, true), el = cd.getUint16(p + 30, true), cl = cd.getUint16(p + 32, true), off = cd.getUint32(p + 42, true);
+      const name = dec.decode(new Uint8Array(cd.buffer, cd.byteOffset + p + 46, nl));
+      out.push({ name, method, csize, usize, off, enc: !!(flags & 1) });
+      p += 46 + nl + el + cl;
+    }
+    return out;
+  }
+  async function zipRead(file, en) {
+    if (en.enc) throw new Error('verschluesselt');
+    const hd = new DataView(await file.slice(en.off, en.off + 30).arrayBuffer());
+    if (hd.getUint32(0, true) !== 0x04034b50) throw new Error('Zip beschaedigt');
+    const start = en.off + 30 + hd.getUint16(26, true) + hd.getUint16(28, true);
+    const raw = file.slice(start, start + en.csize);
+    if (en.method === 0) return raw;
+    if (en.method === 8) {
+      if (typeof DecompressionStream === 'undefined' || !raw.stream) throw new Error('kein-entpacken');
+      return new Response(raw.stream().pipeThrough(new DecompressionStream('deflate-raw'))).blob();
+    }
+    throw new Error('Kompression ' + en.method);
+  }
+  async function cxSniff(file) {
+    const h = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+    const s = String.fromCharCode(...h);
+    if (s.startsWith('PK\x03\x04') || s.startsWith('PK\x05\x06')) return 'zip';
+    if (s.startsWith('Rar!')) return 'rar';
+    if (s.startsWith('%PDF')) return 'pdf';
+    if (s.startsWith('7z\xbc\xaf')) return '7z';
+    return '';
+  }
+
+  // ---- Importieren ----
+  async function cxCover(blob) {
+    try {
+      const bmp = await createImageBitmap(blob);
+      const W = bmp.width, H = bmp.height; if (!W || !H) return null;
+      const s = Math.min(1, 300 / W), cv = document.createElement('canvas');
+      cv.width = Math.max(1, Math.round(W * s)); cv.height = Math.max(1, Math.round(H * s));
+      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+      if (bmp.close) bmp.close();
+      const out = await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.8));
+      cv.width = cv.height = 0;
+      return out;
+    } catch (e) { return null; }
+  }
+  // items: [{ name, get(): Promise<Blob> }], bereits sortiert
+  async function cxStoreComic(title, items) {
+    if (items.length > CX_PAGES_MAX) items = items.slice(0, CX_PAGES_MAX);
+    const id = uid(8);
+    let n = 0, size = 0, first = null, skipped = 0;
+    try {
+      for (let i = 0; i < items.length; i++) {
+        busy(`Seite ${i + 1} von ${items.length} wird gespeichert …`, i / items.length);
+        let blob;
+        try { blob = await items[i].get(); } catch (e) { if (e && e.cxFatal) throw e; skipped++; continue; }
+        const type = cxMime(items[i].name, blob.type);
+        if (!type || blob.size > CX_PAGE_MAX || !blob.size) { skipped++; continue; }
+        const buf = await blob.arrayBuffer();
+        await cxPagePut(id, n, buf, type);
+        size += buf.byteLength; n++;
+        if (n === 1) first = new Blob([buf], { type });
+      }
+      if (!n) { const e = new Error('keine Bilder'); e.cxNoImg = true; throw e; }
+      let cov = false;
+      const cb = await cxCover(first);
+      if (cb) { await cxPagePut(id, 'cover', await cb.arrayBuffer(), 'image/jpeg'); cov = true; }
+      const m = cxNormMeta({ id, t: title || 'Comic', n, added: Date.now(), last: 0, pos: 0, size, cov });
+      await cxMetaPut(m);
+      CX.list.unshift(m);
+      try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { /* egal */ }
+      return { m, skipped };
+    } catch (e) {
+      try { await cxPagesDel(id); } catch (x) { /* egal */ }
+      throw e;
+    }
+  }
+  function cxErrText(e) {
+    const msg = String((e && e.message) || e || '');
+    if (e && e.name === 'QuotaExceededError') return 'Der Speicher ist voll. Lösche andere Comics oder Fotos und versuche es nochmal.';
+    if (e && e.cxNoImg) return 'In dieser Datei habe ich keine Bilder gefunden.';
+    if (msg === 'zip64') return 'Dieses Archiv ist größer als 4 GB. Das kann die App nicht lesen.';
+    if (msg === 'verschluesselt') return 'Das Archiv ist mit Passwort geschützt. Das kann ich nicht öffnen.';
+    if (msg === 'kein-entpacken') return 'Dein Browser kann dieses Archiv nicht entpacken (Safari ab Version 16.4 nötig).';
+    if (msg === 'kein Zip' || msg === 'Zip beschaedigt') return 'Diese Datei ist kein gültiges CBZ oder ZIP.';
+    return 'Das konnte ich nicht speichern.';
+  }
+  async function cxFromZip(file, title) {
+    const all = await zipEntries(file);
+    const imgs = all.filter(en => !/\/$/.test(en.name) && !/(^|\/)(__MACOSX|\.)/.test(en.name) && !/(^|\/)\.[^/]*$/.test(en.name) && CX_TYPES[cxExtOf(en.name)] && !en.enc).sort((a, b) => cxNat(a.name, b.name));
+    if (!imgs.length) { const e = new Error('keine Bilder'); e.cxNoImg = true; throw e; }
+    return cxStoreComic(title || cxTitleOf(file.name) || 'Comic', imgs.map(en => ({ name: en.name, get: () => zipRead(file, en) })));
+  }
+  function cxReport(res, bad) {
+    busy(null);
+    if (CX.tab === 'shelf' && current === 'comics') renderComics(true);
+    const ok = res.length;
+    let t = ok ? (ok === 1 ? `„${res[0].m.t}“ ist im Regal (${res[0].m.n} Seiten).` : `${ok} Comics sind im Regal.`) : '';
+    const sk = res.reduce((s, r) => s + r.skipped, 0);
+    if (sk) t += ` ${sk} ${sk === 1 ? 'Datei' : 'Dateien'} im Archiv ${sk === 1 ? 'war' : 'waren'} keine Bilder.`;
+    if (bad.length) t += (t ? ' ' : '') + bad.slice(0, 2).join(' ');
+    if (t) toast(t);
+  }
+  async function cxImportFiles(files) {
+    files = [...files];
+    if (!files.length) return;
+    const res = [], bad = [], images = [];
+    try {
+      for (const f of files) {
+        const ext = cxExtOf(f.name), sniff = await cxSniff(f);
+        if (sniff === 'zip' || ext === 'cbz' || ext === 'zip') {
+          try { busy(`${f.name} wird gelesen …`); res.push(await cxFromZip(f)); } catch (e) { console.warn(e); bad.push(`„${f.name}“: ${cxErrText(e)}`); }
+        } else if (sniff === 'rar' || ext === 'cbr' || ext === 'rar') bad.push(`„${f.name}“ ist ein RAR-Archiv (CBR). Wandle es am PC in CBZ um, dann geht es.`);
+        else if (sniff === 'pdf' || ext === 'pdf') bad.push(`„${f.name}“ ist ein PDF. PDFs kann die App noch nicht lesen. Als CBZ oder Bilderfolge geht es.`);
+        else if (sniff === '7z' || ext === '7z' || ext === 'cb7') bad.push(`„${f.name}“ ist ein 7z-Archiv. Wandle es in CBZ um.`);
+        else if (cxMime(f.name, f.type)) images.push(f);
+        else bad.push(`„${f.name}“ kenne ich nicht.`);
+      }
+      if (images.length) {
+        images.sort((a, b) => cxNat(a.name, b.name));
+        let title = cxTitleOf(images[0].name).replace(/[\s._-]*\d+$/, '').trim();
+        if (!title) title = 'Bilder vom ' + dsDate(Date.now());
+        try { res.push(await cxStoreComic(title, images.map(f => ({ name: f.name, get: async () => f })))); } catch (e) { console.warn(e); bad.push(cxErrText(e)); }
+      }
+    } finally { cxReport(res, bad); }
+  }
+
+  // ---- Per Link laden (nur wenn die Seite das Abrufen aus Apps erlaubt) ----
+  function cxNormUrl(s) {
+    s = String(s || '').trim();
+    if (!s || /\s/.test(s) || /^(javascript|data|file|blob|mailto|tel|about|ftp|vbscript):/i.test(s)) return '';
+    if (!/^https?:\/\//i.test(s)) s = 'https://' + s.replace(/^\/+/, '');
+    let u; try { u = new URL(s); } catch (e) { return ''; }
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return '';
+    if (!u.hostname || (!u.hostname.includes('.') && u.hostname !== 'localhost')) return '';
+    return u.href;
+  }
+  async function cxFetchBlob(url) {
+    let u = url;
+    if (location.protocol === 'https:' && u.startsWith('http:')) u = 'https:' + u.slice(5);
+    let r;
+    try { r = await fetch(u, { mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer' }); } catch (e) { const x = new Error('cors'); x.cxFatal = true; throw x; }
+    if (!r.ok) { const x = new Error('http ' + r.status); x.cxFatal = r.status === 401 || r.status === 403 || r.status === 404; x.status = r.status; throw x; }
+    return r.blob();
+  }
+  function cxLinkErr(e, url) {
+    const msg = String((e && e.message) || '');
+    if (msg === 'cors') return 'Diese Seite erlaubt kein Laden aus einer App (oder du bist offline). Lade die Datei im Browser herunter und nimm hier „Datei wählen“.';
+    if (e && e.status) return `Die Seite antwortet mit Fehler ${e.status}.`;
+    return cxErrText(e);
+  }
+  async function cxImportLinks(text, titleIn) {
+    const urls = [...new Set(String(text || '').split(/[\s,]+/).map(cxNormUrl).filter(Boolean))].slice(0, 400);
+    if (!urls.length) { toast('Füge zuerst Links ein, einen pro Zeile.'); return; }
+    const res = [], bad = [];
+    try {
+      busy('Wird geladen …');
+      if (urls.length === 1 && /\.(cbz|zip)$/i.test(new URL(urls[0]).pathname)) {
+        const blob = await cxFetchBlob(urls[0]);
+        const f = new File([blob], cxTitleOf(urls[0]) + '.cbz', { type: 'application/zip' });
+        res.push(await cxFromZip(f, titleIn.trim().slice(0, 80) || cxTitleOf(urls[0]) || 'Comic'));
+      } else {
+        const started = [];
+        const start = i => { if (i >= urls.length) return null; if (!started[i]) { started[i] = cxFetchBlob(urls[i]); started[i].catch(() => {}); } return started[i]; };
+        const items = urls.map((u, i) => ({ name: new URL(u).pathname, get: async () => { start(i + 1); start(i + 2); const p = start(i); const b = await p; started[i] = null; return b; } }));
+        res.push(await cxStoreComic(titleIn.trim().slice(0, 80) || cxTitleOf(urls[0]).replace(/[\s._-]*\d+$/, '').trim() || 'Comic aus dem Web', items));
+      }
+      const t = $('#cx-links'); if (t) t.value = '';
+    } catch (e) { console.warn(e); bad.push(e && e.cxNoImg ? 'Die Links zeigen nicht auf Bilder oder eine CBZ-Datei, sondern auf Webseiten.' : cxLinkErr(e)); }
+    cxReport(res, bad);
+  }
+
+  // ---- CBZ-Datei erzeugen (ohne Kompression, Bilder sind schon komprimiert) ----
+  const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  async function cxBuildCbz(m) {
+    const parts = [], cds = [], enc = new TextEncoder();
+    let off = 0;
+    for (let i = 0; i < m.n; i++) {
+      busy(`CBZ wird gepackt (${i + 1}/${m.n})`, i / Math.max(1, m.n));
+      const r = await cxPageGet(m.id, i);
+      if (!r) continue;
+      const u8 = new Uint8Array(r.b), name = enc.encode(`${cxPad(cds.length + 1)}.${CX_EXT[r.t] || 'jpg'}`), crc = crc32(u8);
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(12, 0x21, true);
+      lh.setUint32(14, crc, true); lh.setUint32(18, u8.length, true); lh.setUint32(22, u8.length, true); lh.setUint16(26, name.length, true);
+      parts.push(lh.buffer, name, u8);
+      cds.push({ name, crc, size: u8.length, off }); off += 30 + name.length + u8.length;
+      if (off > 3.9e9) throw new Error('zu gross');
+    }
+    const cdStart = off;
+    cds.forEach(c => {
+      const h = new DataView(new ArrayBuffer(46));
+      h.setUint32(0, 0x02014b50, true); h.setUint16(4, 20, true); h.setUint16(6, 20, true); h.setUint16(8, 0x0800, true); h.setUint16(14, 0x21, true);
+      h.setUint32(16, c.crc, true); h.setUint32(20, c.size, true); h.setUint32(24, c.size, true); h.setUint16(28, c.name.length, true); h.setUint32(42, c.off, true);
+      parts.push(h.buffer, c.name); off += 46 + c.name.length;
+    });
+    const e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true); e.setUint16(8, cds.length, true); e.setUint16(10, cds.length, true); e.setUint32(12, off - cdStart, true); e.setUint32(16, cdStart, true);
+    parts.push(e.buffer);
+    return new Blob(parts, { type: 'application/vnd.comicbook+zip' });
+  }
+  async function cxSaveFile(filename, blob) {
+    let dl = null;
+    try { if (window.claude && typeof claude.use === 'function') dl = await claude.use('downloads'); } catch (e) { dl = null; }
+    if (dl) {
+      try { await dl.save({ filename, data: blob }); toast('Datei gespeichert.'); return; } catch (e) { if (e && e.code === 'declined') return; }
+    }
+    offerFile(filename, blob, ['application/vnd.comicbook+zip', 'application/zip']);
+  }
+
+  // ---- Regal ----
+  function cxCoverURL(id) {
+    if (CX.cov.has(id)) return Promise.resolve(CX.cov.get(id));
+    return cxPageGet(id, 'cover').then(r => { if (!r) return ''; const u = URL.createObjectURL(new Blob([r.b], { type: r.t })); CX.cov.set(id, u); return u; }).catch(() => '');
+  }
+  function cxFillCovers() {
+    document.querySelectorAll('#view-comics img[data-cov]').forEach(im => {
+      cxCoverURL(im.dataset.cov).then(u => { if (u && im.isConnected) { im.src = u; const c = im.closest('.cx-cover'); if (c) c.classList.add('has'); } });
+    });
+  }
+  function cxBookHTML(m) {
+    const pct = m.n > 1 ? Math.round(Math.min(1, (m.done ? m.n - 1 : m.pos) / (m.n - 1)) * 100) : (m.done ? 100 : 0);
+    const state = m.done ? 'Fertig' : m.pos > 0 ? `Seite ${m.pos + 1} von ${m.n}` : `${m.n} Seiten`;
+    return `<div class="cx-book"><button class="cx-cover" data-act="cxread" data-id="${m.id}" aria-label="${esc(m.t)} lesen"><img data-cov="${m.id}" alt="" draggable="false"><span class="cx-ph" aria-hidden="true">${esc(m.t.slice(0, 1).toUpperCase())}</span>${pct ? `<i class="cx-bar"><b style="width:${pct}%"></b></i>` : ''}</button>
+      <div class="cx-t"><span class="cx-tt"><b>${esc(m.t)}</b><small>${esc(state)}</small></span><button class="btn small cx-more" data-act="cxopts" data-id="${m.id}" aria-label="Optionen für ${esc(m.t)}">⋯</button></div></div>`;
+  }
+  function cxShelfHTML() {
+    const cont = CX.list.filter(m => m.last && !m.done && m.pos > 0).sort((a, b) => b.last - a.last)[0];
+    const total = CX.list.reduce((s, m) => s + m.size, 0);
+    return `${cont ? `<button class="cx-cont" data-act="cxread" data-id="${cont.id}"><span class="cx-cont-i"><img data-cov="${cont.id}" alt="" draggable="false"></span><span class="cx-cont-t"><small>Weiterlesen</small><b>${esc(cont.t)}</b><small>Seite ${cont.pos + 1} von ${cont.n}</small></span></button>` : ''}
+      <div class="row left"><label class="btn primary small" for="cx-file">Datei wählen</label><input type="file" id="cx-file" class="vh" multiple><button class="btn small" data-act="cxtab" data-id="web">Aus dem Web</button></div>
+      <p class="note" style="max-width:none">CBZ- oder ZIP-Dateien mit Bildern, oder einfach mehrere Bilder auf einmal. Die Seiten werden nach Dateinamen sortiert.</p>
+      ${CX.list.length ? `<div class="cx-grid">${CX.list.map(cxBookHTML).join('')}</div>` : '<div class="empty-note"><b>Noch keine Comics</b><span>Wähle eine CBZ-Datei oder mehrere Bilder aus. Danach liegt das Comic hier im Regal und du kannst es in der App lesen.</span></div>'}
+      <p class="note" style="max-width:none">${CX.mem ? 'Dieser Browser speichert nichts dauerhaft (privater Modus?). Die Comics bleiben nur, bis du die App schließt. ' : ''}Comics liegen nur auf diesem Gerät in diesem Browser${total ? ` (zusammen ${esc(cxMB(total))})` : ''} und sind nicht in „Alles sichern“ enthalten. Sichere wichtige Comics einzeln über ⋯ → „Als CBZ sichern“.</p>`;
+  }
+  // ---- Web-Fenster ----
+  function cxWebMeta() {
+    let w = S.meta.cweb;
+    if (!w || typeof w !== 'object') w = S.meta.cweb = { marks: [], last: '' };
+    if (!Array.isArray(w.marks)) w.marks = [];
+    w.marks = w.marks.filter(x => x && typeof x.id === 'string' && typeof x.u === 'string' && cxNormUrl(x.u)).slice(0, 40).map(x => ({ id: x.id.slice(0, 12), t: String(x.t || '').slice(0, 40), u: x.u }));
+    if (typeof w.last !== 'string') w.last = '';
+    return w;
+  }
+  const cxHost = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } };
+  function cxWebHTML() {
+    const w = cxWebMeta(), cur = CX.frameUrl, marked = cur && w.marks.some(x => x.u === cur);
+    return `<div class="cx-addr"><input type="text" id="cx-url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Adresse, z. B. archive.org" value="${esc(CX.webUrl)}" aria-label="Adresse"><button class="btn small primary" data-act="cxgo">Los</button></div>
+      <div class="row left"><button class="btn small" data-act="cxext" ${cur ? '' : 'disabled'}>Extern öffnen</button><button class="btn small" data-act="cxmark" ${cur ? '' : 'disabled'}>${marked ? '★ Gemerkt' : '☆ Merken'}</button>${cur ? '<button class="btn small" data-act="cxclose">Schließen</button>' : ''}</div>
+      ${w.marks.length ? `<div class="chips cx-marks">${w.marks.map(x => `<span class="chip"><button class="cx-mk" data-act="cxgomark" data-id="${x.id}">${esc(x.t || cxHost(x.u))}</button><button class="cx-mx" data-act="cxdelmark" data-id="${x.id}" aria-label="Lesezeichen ${esc(x.t || cxHost(x.u))} entfernen">×</button></span>`).join('')}</div>` : ''}
+      <div class="cx-frame">${cur ? `<iframe id="cx-iframe" src="${esc(cur)}" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads" referrerpolicy="no-referrer" title="Webseite"></iframe>` : '<div class="cx-frame-e"><b>Web-Fenster</b><span>Gib oben eine Adresse ein oder tippe ein Lesezeichen an. Frei verfügbare Comics gibt es zum Beispiel beim Internet Archive (archive.org) oder im Digital Comic Museum.</span></div>'}</div>
+      <p class="note" style="max-width:none">Manche Seiten verbieten die Anzeige in fremden Apps. Dann bleibt das Fenster leer oder zeigt einen Hinweis. Nutze dann „Extern öffnen“. Was du dort siehst, kann die App nicht automatisch speichern, das verbietet der Browser aus Sicherheitsgründen.</p>
+      <h3 class="cx-h">Von dort speichern</h3>
+      <p class="note" style="max-width:none">Füge Links zu Bildern (eine Seite pro Zeile) oder zu einer CBZ-Datei ein. Das klappt nur, wenn die Seite das Laden aus Apps erlaubt. Sonst: Datei im Browser laden oder ein Bild lange drücken und sichern, dann im Regal „Datei wählen“.</p>
+      <textarea id="cx-links" rows="4" placeholder="https://…/seite1.jpg&#10;https://…/seite2.jpg" aria-label="Links"></textarea>
+      <div class="row left" style="flex-wrap:nowrap"><input type="text" id="cx-ltitle" maxlength="80" placeholder="Titel (optional)" autocomplete="off" aria-label="Titel" style="flex:1;min-width:0"><button class="btn small primary" data-act="cxlinks">Als Comic speichern</button></div>
+      <p class="note" style="max-width:none">Nutze nur Inhalte, die du lesen und speichern darfst.</p>`;
+  }
+  function renderComics(force) {
+    const el = $('#view-comics');
+    if (!el) return;
+    if (!CX.loaded) { if (!el.innerHTML) el.innerHTML = '<div class="empty-note">Lädt …</div>'; cxLoad().then(() => { if (current === 'comics') renderComics(true); }); return; }
+    // Beim Aktualisieren von aussen bleibt das Web-Fenster stehen, damit die Seite nicht neu lädt
+    if (!force && CX.tab === 'web' && CX.drawn === 'web') return;
+    CX.drawn = CX.tab;
+    const y = $('#stage').scrollTop;
+    el.innerHTML = `<div class="sl-head"><button class="btn small" data-view="home">‹ Home</button><h2>Comics</h2><button class="btn small" data-act="cxmenu" aria-label="Mehr">⋯</button></div>
+      <div class="chips cx-tabs"><button class="chip${CX.tab === 'shelf' ? ' on' : ''}" data-act="cxtab" data-id="shelf">Regal</button><button class="chip${CX.tab === 'web' ? ' on' : ''}" data-act="cxtab" data-id="web">Web</button></div>
+      ${CX.tab === 'web' ? cxWebHTML() : cxShelfHTML()}`;
+    if (CX.tab === 'shelf') cxFillCovers();
+    $('#stage').scrollTop = y;
+  }
+  RENDER.comics = renderComics;
+  VIEW_TAB.comics = 'home';
+  LEAVE.comics = () => { CX.drawn = ''; };
+
+  ACTS.cxtab = id => { CX.tab = id === 'web' ? 'web' : 'shelf'; renderComics(true); };
+  ACTS.cxmenu = () => {
+    const total = CX.list.reduce((s, m) => s + m.size, 0);
+    dlg(`<h3>Comics</h3>
+      <p class="note" style="max-width:none">${CX.list.length} ${CX.list.length === 1 ? 'Comic' : 'Comics'}${total ? ' · ' + esc(cxMB(total)) : ''}. ${CX.mem ? 'Gerade wird nichts dauerhaft gespeichert.' : 'Die Comics liegen nur auf diesem Gerät.'}</p>
+      <div class="row"><button class="btn small" data-act="cxhide">Diesen Bereich verstecken</button></div>
+      <p class="note" style="max-width:none">Versteckt verschwindet der Knopf von Home. Zurückholen: Cheat-Menü (Code 6906) → Verstecke Bereiche.</p>
+      <button class="btn" data-act="dlgclose">Schließen</button>`);
+  };
+  ACTS.cxhide = () => { tabSetHidden('comics', true); closeDlg(); SFX.play('pop'); toast('Comics sind versteckt.'); showView('home'); };
+  ACTS.cxopts = id => {
+    const m = CX.list.find(x => x.id === id); if (!m) return;
+    CX.optsId = id;
+    dlg(`<h3>${esc(m.t)}</h3>
+      <label class="field"><span>Titel</span><input type="text" id="cx-title" maxlength="80" value="${esc(m.t)}" autocomplete="off"></label>
+      <div class="row"><button class="btn small primary" data-act="cxrename" data-id="${m.id}">Titel speichern</button></div>
+      <p class="note" style="max-width:none">${m.n} Seiten · ${esc(cxMB(m.size))}${m.marks.length ? ` · ${m.marks.length} Lesezeichen` : ''}</p>
+      <div class="row"><button class="btn small" data-act="cxexport" data-id="${m.id}">Als CBZ sichern</button><button class="btn small" data-act="cxreset" data-id="${m.id}">Von vorn lesen</button></div>
+      <div class="row"><button class="btn small danger" data-act="cxdel" data-id="${m.id}">Löschen</button></div>
+      <button class="btn" data-act="dlgclose">Schließen</button>`);
+  };
+  ACTS.cxrename = async id => {
+    const m = CX.list.find(x => x.id === id), inp = $('#cx-title'); if (!m || !inp) return;
+    m.t = inp.value.replace(/[<>]/g, '').trim().slice(0, 80) || m.t;
+    await cxMetaPut(m); closeDlg(); renderComics(true); toast('Titel gespeichert.');
+  };
+  ACTS.cxreset = async id => {
+    const m = CX.list.find(x => x.id === id); if (!m) return;
+    m.pos = 0; m.done = false; m.last = 0; await cxMetaPut(m); closeDlg(); renderComics(true); toast('Das Comic beginnt wieder bei Seite 1.');
+  };
+  ACTS.cxexport = async id => {
+    const m = CX.list.find(x => x.id === id); if (!m) return;
+    closeDlg();
+    try {
+      busy('CBZ wird gepackt …', 0);
+      const blob = await cxBuildCbz(m);
+      busy(null);
+      await cxSaveFile((m.t.replace(/[^\p{L}\p{N} ._-]+/gu, '').trim() || 'comic') + '.cbz', blob);
+    } catch (e) { busy(null); console.error(e); toast('Die Datei konnte nicht erstellt werden.'); }
+  };
+  ACTS.cxdel = async (id, el) => {
+    const m = CX.list.find(x => x.id === id); if (!m) return;
+    if (el && el.dataset.armed !== '1') {
+      el.dataset.armed = '1'; el.textContent = 'Wirklich löschen?';
+      setTimeout(() => { if (el.isConnected) { el.dataset.armed = ''; el.textContent = 'Löschen'; } }, 3000);
+      return;
+    }
+    closeDlg();
+    try {
+      await cxPagesDel(id); await cxMetaDel(id);
+      CX.list = CX.list.filter(x => x.id !== id);
+      const u = CX.cov.get(id); if (u) { URL.revokeObjectURL(u); CX.cov.delete(id); }
+      SFX.play('back'); toast('Comic gelöscht.');
+    } catch (e) { console.error(e); toast('Das Löschen hat nicht geklappt.'); }
+    renderComics(true);
+  };
+  document.addEventListener('change', e => {
+    if (e.target.id !== 'cx-file') return;
+    const fs = [...(e.target.files || [])]; e.target.value = '';
+    if (fs.length) cxImportFiles(fs);
+  });
+
+  // ---- Web-Aktionen ----
+  function cxGo(raw) {
+    const u = cxNormUrl(raw);
+    if (!u) { toast('Gib eine Adresse ein, z. B. archive.org'); return; }
+    CX.webUrl = u; CX.frameUrl = location.protocol === 'https:' && u.startsWith('http:') ? 'https:' + u.slice(5) : u;
+    const w = cxWebMeta(); w.last = CX.frameUrl; saveMeta();
+    renderComics(true);
+  }
+  ACTS.cxgo = () => { const i = $('#cx-url'); cxGo(i ? i.value : CX.webUrl); };
+  ACTS.cxext = () => { if (CX.frameUrl) window.open(CX.frameUrl, '_blank', 'noopener'); };
+  ACTS.cxclose = () => { CX.frameUrl = ''; CX.webUrl = ''; renderComics(true); };
+  ACTS.cxmark = () => {
+    const w = cxWebMeta(), u = CX.frameUrl; if (!u) return;
+    const i = w.marks.findIndex(x => x.u === u);
+    if (i >= 0) { w.marks.splice(i, 1); toast('Lesezeichen entfernt.'); }
+    else { if (w.marks.length >= 40) { toast('Du hast schon 40 Lesezeichen.'); return; } w.marks.push({ id: uid(8), t: cxHost(u).slice(0, 40), u }); toast('Lesezeichen gespeichert.'); }
+    saveMeta(true); renderComics(true);
+  };
+  ACTS.cxgomark = id => { const x = cxWebMeta().marks.find(m => m.id === id); if (x) cxGo(x.u); };
+  ACTS.cxdelmark = id => { const w = cxWebMeta(); w.marks = w.marks.filter(m => m.id !== id); saveMeta(true); renderComics(true); };
+  ACTS.cxlinks = () => { const t = $('#cx-links'), ti = $('#cx-ltitle'); cxImportLinks(t ? t.value : '', ti ? ti.value : ''); };
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'cx-url') { e.preventDefault(); ACTS.cxgo(); } });
+
+  // ================= Leser =================
+  const RDR = { id: null, m: null, i: 0, urls: new Map(), reqs: new Map(), zoom: false, ui: true, tok: 0, saveT: 0, obs: null, scrollRaf: 0, open: false };
+  const rdEl = () => $('#reader');
+  async function rdUrl(i) {
+    if (RDR.urls.has(i)) return RDR.urls.get(i);
+    if (RDR.reqs.has(i)) return RDR.reqs.get(i);
+    const id = RDR.id;
+    const p = (async () => {
+      const r = await cxPageGet(id, i);
+      if (!r) throw new Error('fehlt');
+      const u = URL.createObjectURL(new Blob([r.b], { type: r.t }));
+      if (RDR.id !== id) { URL.revokeObjectURL(u); throw new Error('zu'); }
+      RDR.urls.set(i, u); return u;
+    })();
+    RDR.reqs.set(i, p);
+    p.then(() => RDR.reqs.delete(i), () => RDR.reqs.delete(i));
+    return p;
+  }
+  function rdTrim(keep) { RDR.urls.forEach((u, i) => { if (!keep.has(i)) { URL.revokeObjectURL(u); RDR.urls.delete(i); } }); }
+  function rdSaveNow() {
+    clearTimeout(RDR.saveT);
+    const m = RDR.m; if (!m) return;
+    m.pos = RDR.i; m.last = Date.now(); m.done = RDR.i >= m.n - 1 && m.n > 1;
+    cxMetaPut(m).catch(e => console.warn('Fortschritt', e));
+  }
+  function rdSaveSoon() { clearTimeout(RDR.saveT); RDR.saveT = setTimeout(rdSaveNow, 700); }
+  function rdBuild() {
+    const m = RDR.m;
+    rdEl().innerHTML = `<div class="rd-top"><button class="btn small" data-rd="close">‹ Regal</button><b class="rd-title">${esc(m.t)}</b><button class="btn small rd-only-page" data-rd="zoom" id="rd-zoom">Zoom</button></div>
+      <div class="rd-stage" id="rd-stage"><img class="rd-img" id="rd-img" alt="" draggable="false"></div>
+      <div class="rd-strip" id="rd-strip" hidden></div>
+      <div class="rd-bot"><div class="rd-sl"><input type="range" id="rd-range" min="1" max="${Math.max(2, m.n)}" value="1" aria-label="Seite"><span id="rd-cnt"></span></div>
+        <div class="rd-btns"><button data-rd="mark" id="rd-mark">☆ Merken</button><button data-rd="marks" id="rd-marks">Liste</button><button data-rd="dir" id="rd-dir" class="rd-only-page"></button><button data-rd="mode" id="rd-mode"></button><button data-rd="fit" id="rd-fit" class="rd-only-page"></button></div></div>`;
+  }
+  function rdLabels() {
+    const m = RDR.m, R = rdEl(); if (!m || !R) return;
+    R.dataset.mode = m.mode === 'strip' ? 'strip' : 'page'; R.dataset.fit = m.fit; R.classList.toggle('zoomed', RDR.zoom && m.mode !== 'strip'); R.classList.toggle('noui', !RDR.ui);
+    const set = (id, t) => { const b = $('#' + id); if (b) b.textContent = t; };
+    set('rd-dir', m.rtl ? '← lesen' : '→ lesen'); set('rd-mode', m.mode === 'strip' ? 'Streifen' : 'Seiten'); set('rd-fit', m.fit === 'width' ? 'Breite' : 'Ganz');
+    set('rd-zoom', RDR.zoom ? 'Zoom aus' : 'Zoom');
+    const marked = m.marks.includes(RDR.i);
+    set('rd-mark', marked ? '★ Gemerkt' : '☆ Merken');
+    const ml = $('#rd-marks'); if (ml) ml.hidden = !m.marks.length;
+    set('rd-cnt', `${RDR.i + 1} / ${m.n}`);
+    const r = $('#rd-range'); if (r) { r.value = String(RDR.i + 1); r.style.direction = m.rtl ? 'rtl' : 'ltr'; }
+  }
+  async function rdShow(i) {
+    const m = RDR.m; if (!m) return;
+    i = Math.max(0, Math.min(m.n - 1, i)); RDR.i = i; RDR.zoom = false;
+    const tok = ++RDR.tok;
+    rdLabels();
+    const img = $('#rd-img'), stage = $('#rd-stage');
+    try {
+      const u = await rdUrl(i);
+      if (tok !== RDR.tok || !img) return;
+      img.src = u;
+      try { await img.decode(); } catch (e) { /* egal */ }
+      if (stage) { stage.scrollTop = 0; stage.scrollLeft = 0; }
+      img.classList.remove('bad');
+    } catch (e) { if (tok === RDR.tok && img) { img.removeAttribute('src'); img.classList.add('bad'); toast('Diese Seite fehlt.'); } }
+    if (tok !== RDR.tok) return;
+    [i + 1, i - 1, i + 2].forEach(j => { if (j >= 0 && j < m.n) rdUrl(j).catch(() => {}); });
+    rdTrim(new Set([i - 2, i - 1, i, i + 1, i + 2, i + 3]));
+    rdSaveSoon();
+  }
+  function rdSlotLoad(slot) {
+    const i = +slot.dataset.i;
+    if (slot.dataset.l === '1') return;
+    slot.dataset.l = '1';
+    rdUrl(i).then(u => {
+      if (slot.dataset.l !== '1' || !slot.isConnected) return;
+      let im = slot.querySelector('img');
+      if (!im) { im = document.createElement('img'); im.alt = ''; im.draggable = false; im.onload = () => { slot.style.height = ''; slot.classList.add('on'); }; slot.appendChild(im); }
+      im.src = u;
+    }).catch(() => { if (slot.isConnected && slot.dataset.l === '1') { slot.textContent = 'Seite fehlt'; } });
+  }
+  function rdSlotFree(slot) {
+    if (slot.dataset.l !== '1') return;
+    const im = slot.querySelector('img'), i = +slot.dataset.i;
+    if (im) { slot.style.height = im.clientHeight + 'px'; im.remove(); }
+    slot.dataset.l = '';
+    const u = RDR.urls.get(i); if (u) { URL.revokeObjectURL(u); RDR.urls.delete(i); }
+  }
+  function rdStripBuild() {
+    const host = $('#rd-strip'), m = RDR.m;
+    if (RDR.obs) { RDR.obs.disconnect(); RDR.obs = null; }
+    host.innerHTML = Array.from({ length: m.n }, (_, i) => `<div class="rd-s" data-i="${i}"></div>`).join('');
+    RDR.obs = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) rdSlotLoad(en.target); else rdSlotFree(en.target); }), { root: host, rootMargin: '120% 0px' });
+    host.querySelectorAll('.rd-s').forEach(s => RDR.obs.observe(s));
+    const s = host.querySelector(`.rd-s[data-i="${RDR.i}"]`);
+    if (s) { rdSlotLoad(s); host.scrollTop = s.offsetTop; }
+    host.onscroll = () => {
+      if (RDR.scrollRaf) return;
+      RDR.scrollRaf = requestAnimationFrame(() => {
+        RDR.scrollRaf = 0;
+        const slots = host.children, probe = host.scrollTop + host.clientHeight * 0.3;
+        let lo = 0, hi = slots.length - 1;
+        while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (slots[mid].offsetTop <= probe) lo = mid; else hi = mid - 1; }
+        if (lo !== RDR.i) { RDR.i = lo; rdLabels(); rdSaveSoon(); }
+      });
+    };
+  }
+  function rdApplyMode(goto) {
+    const m = RDR.m, strip = m.mode === 'strip';
+    $('#rd-stage').hidden = strip; $('#rd-strip').hidden = !strip;
+    RDR.zoom = false; rdLabels();
+    if (strip) { ++RDR.tok; rdTrim(new Set()); rdStripBuild(); }
+    else { if (RDR.obs) { RDR.obs.disconnect(); RDR.obs = null; } $('#rd-strip').innerHTML = ''; rdShow(goto != null ? goto : RDR.i); }
+  }
+  async function rdOpen(id) {
+    const m = CX.list.find(x => x.id === id);
+    if (!m || !m.n) return;
+    RDR.id = id; RDR.m = m; RDR.urls = new Map(); RDR.reqs = new Map(); RDR.zoom = false; RDR.ui = true; RDR.open = true;
+    if (m.done) { m.done = false; m.pos = 0; }
+    RDR.i = Math.max(0, Math.min(m.n - 1, m.pos || 0));
+    rdBuild();
+    rdEl().hidden = false; document.body.classList.add('rd-open');
+    rdApplyMode(RDR.i);
+  }
+  function rdClose() {
+    if (!RDR.open) return;
+    rdSaveNow();
+    RDR.open = false; RDR.tok++;
+    if (RDR.obs) { RDR.obs.disconnect(); RDR.obs = null; }
+    RDR.urls.forEach(u => URL.revokeObjectURL(u)); RDR.urls = new Map(); RDR.reqs = new Map();
+    const R = rdEl(); R.hidden = true; R.innerHTML = '';
+    document.body.classList.remove('rd-open');
+    RDR.m = null; RDR.id = null;
+    if (current === 'comics') renderComics(true);
+  }
+  function rdTurn(d) {
+    const m = RDR.m; if (!m) return;
+    const j = RDR.i + d;
+    if (j < 0) { toast('Das ist die erste Seite.'); return; }
+    if (j >= m.n) { toast('Das war die letzte Seite.'); rdSaveNow(); return; }
+    RDR.ui = false; rdShow(j);
+  }
+  function rdTap(e) {
+    const m = RDR.m, st = $('#rd-stage'); if (!m || !st) return;
+    if (RDR.zoom) { RDR.ui = !RDR.ui; rdLabels(); return; }
+    const r = st.getBoundingClientRect(), x = (e.clientX - r.left) / Math.max(1, r.width);
+    if (x < 0.3) rdTurn(m.rtl ? 1 : -1); else if (x > 0.7) rdTurn(m.rtl ? -1 : 1); else { RDR.ui = !RDR.ui; rdLabels(); }
+  }
+  function rdGo(i) {
+    const m = RDR.m; if (!m) return;
+    i = Math.max(0, Math.min(m.n - 1, i));
+    if (m.mode === 'strip') {
+      RDR.i = i; const host = $('#rd-strip'), s = host.querySelector(`.rd-s[data-i="${i}"]`);
+      if (s) { rdSlotLoad(s); host.scrollTop = s.offsetTop; } rdLabels(); rdSaveSoon();
+    } else rdShow(i);
+  }
+  function rdAct(a) {
+    const m = RDR.m; if (!m) return;
+    if (a === 'close') rdClose();
+    else if (a === 'zoom') { RDR.zoom = !RDR.zoom; rdLabels(); }
+    else if (a === 'mark') { const k = m.marks.indexOf(RDR.i); if (k >= 0) m.marks.splice(k, 1); else { m.marks.push(RDR.i); m.marks.sort((x, y) => x - y); } rdSaveNow(); rdLabels(); SFX.play('pop'); }
+    else if (a === 'marks') {
+      dlg(`<h3>Lesezeichen</h3><div class="hid-list">${m.marks.map(p => `<div class="hid-row"><span class="hid-n"><b>Seite ${p + 1}</b></span><button class="btn small" data-rd="jump" data-p="${p}">Hin</button></div>`).join('') || '<p class="note">Noch keine.</p>'}</div><button class="btn" data-act="dlgclose">Schließen</button>`);
+    }
+    else if (a === 'dir') { m.rtl = !m.rtl; rdSaveNow(); rdLabels(); toast(m.rtl ? 'Manga: von rechts nach links.' : 'Von links nach rechts.'); }
+    else if (a === 'mode') { m.mode = m.mode === 'strip' ? 'page' : 'strip'; rdSaveNow(); rdApplyMode(RDR.i); }
+    else if (a === 'fit') { m.fit = m.fit === 'width' ? 'contain' : 'width'; RDR.zoom = false; rdSaveNow(); rdLabels(); const st = $('#rd-stage'); if (st) { st.scrollTop = 0; st.scrollLeft = 0; } }
+  }
+  // Ereignisse im Leser
+  document.addEventListener('click', e => {
+    const R = rdEl();
+    if (!R || R.hidden || !R.contains(e.target)) { if (e.target.closest && e.target.closest('[data-rd="jump"]') && RDR.m) { const t = e.target.closest('[data-rd]'); closeDlg(); rdGo(+t.dataset.p); } return; }
+    const t = e.target.closest('[data-rd]');
+    if (t) { rdAct(t.dataset.rd); return; }
+    if (e.target.closest('.rd-top,.rd-bot')) return;
+    if (e.target.closest('#rd-stage')) rdTap(e);
+    else if (e.target.closest('#rd-strip')) { RDR.ui = !RDR.ui; rdLabels(); }
+  });
+  document.addEventListener('input', e => { if (e.target.id === 'rd-range' && RDR.m) rdGo(+e.target.value - 1); });
+  document.addEventListener('keydown', e => {
+    if (!RDR.open || !$('#dlg').hidden) return;
+    const m = RDR.m, paged = m && m.mode !== 'strip';
+    if (e.key === 'Escape') { e.preventDefault(); rdClose(); return; }
+    if (!paged) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); rdTurn(m.rtl ? -1 : 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); rdTurn(m.rtl ? 1 : -1); }
+    else if (e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); rdTurn(1); }
+    else if (e.key === 'PageUp') { e.preventDefault(); rdTurn(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); rdShow(0); }
+    else if (e.key === 'End') { e.preventDefault(); rdShow(m.n - 1); }
+  });
+  (() => {   // Wischen zum Blättern
+    let x0 = 0, y0 = 0, on = false;
+    document.addEventListener('touchstart', e => { const st = e.target.closest && e.target.closest('#rd-stage'); on = !!st && !RDR.zoom && e.touches.length === 1; if (on) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, { passive: true });
+    document.addEventListener('touchend', e => {
+      if (!on || !RDR.m) return; on = false;
+      const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6) rdTurn((dx < 0) !== !!RDR.m.rtl ? 1 : -1);
+    }, { passive: true });
+  })();
+  ACTS.cxread = id => rdOpen(id);
+  window.__JB_CX = { CX, RDR, list: () => CX.list.map(m => ({ ...m })), hidden: tabHidden };
   // ================= Slot: Oberflaeche =================
   const SL_BETS = [30, 60, 150, 300, 600, 1500, 3000, 6000, 15000, 34500];   // Cent; ab 345☆ ist der teuerste Freispiel-Kauf auf 10.000.000☆ gedeckelt
   const SL = { grid: null, spinning: false, auto: false, abort: false, timers: [] };
@@ -7067,7 +7970,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
   }
   // Ohne Claude-Anbindung: Die Datei wird erst nach einem frischen Tipp gesichert,
   // weil iOS Teilen und Download nur direkt nach einer Berührung erlaubt.
-  function offerFile(filename, blob) {
+  function offerFile(filename, blob, types) {
     const b = $('#busy');
     const mb = (Math.max(0.1, blob.size / 1048576)).toFixed(1).replace('.', ',');
     b.hidden = false;
@@ -7075,7 +7978,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
       <button class="btn primary" id="sv-go">Sichern</button><button class="btn small" id="sv-x">Schließen</button></div>`;
     $('#sv-x').onclick = () => busy(null);
     $('#sv-go').onclick = async () => {
-      for (const type of ['application/json', 'text/plain']) {
+      for (const type of (types || ['application/json', 'text/plain'])) {
         try {
           const f = new File([blob], filename, { type });
           if (navigator.canShare && navigator.canShare({ files: [f] })) {
