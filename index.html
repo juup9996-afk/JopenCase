@@ -612,6 +612,21 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .cx-frame-e{height:100%;display:flex;flex-direction:column;gap:8px;align-items:flex-start;justify-content:center;padding:18px;background:var(--surface);color:var(--muted);font-size:14px}
 .cx-frame-e b{color:var(--fg)}
 .cx-h{font-size:17px;margin:14px 0 4px}
+.cx-crumb{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 12px}
+.cx-crumb b{flex:1;min-width:0;text-align:center;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cx-sort{margin:4px 0 2px}
+.cx-fgrid{position:absolute;inset:8px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:4px;overflow:hidden;border-radius:6px}
+.cx-cover .cx-fgrid img{position:static;inset:auto;width:100%;height:100%;opacity:1;object-fit:cover;border-radius:4px;background:var(--surface)}
+.cx-fico{position:absolute;right:6px;bottom:6px;font-size:18px;background:rgba(0,0,0,.6);border-radius:8px;padding:1px 5px;line-height:1.3}
+.cx-book.sel .cx-cover{outline:3px solid var(--accent);outline-offset:-3px}
+.cx-chk{position:absolute;top:6px;left:6px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.5);color:#1a1608;font-weight:700;display:grid;place-items:center;font-size:14px;line-height:1}
+.cx-chk.on{background:var(--accent);border-color:var(--accent)}
+.cx-selbar{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;background:var(--surface-2);border:1px solid var(--accent);border-radius:12px;padding:8px 10px;margin:0 0 10px;flex-wrap:wrap}
+.cx-selbar b{flex:1 1 90px;min-width:0}
+.cx-sug{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px dashed var(--accent);border-radius:12px;padding:10px 12px;margin:2px 0 12px;font-size:13.5px}
+.cx-sug span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.cx-sug .btn{flex:none}
+.cx-hint{color:var(--muted);font-size:13px;margin:0;max-width:none}
 /* Leser */
 .reader{position:fixed;inset:0;z-index:52;background:#05060a;color:#e9ebf2;-webkit-user-select:none;user-select:none;overflow:hidden}
 .rd-stage{position:absolute;inset:0;overflow:auto;display:flex;-webkit-overflow-scrolling:touch}
@@ -5244,7 +5259,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   // Eigene Comics (CBZ/ZIP mit Bildern oder einzelne Bilder) kommen in ein Regal und lassen sich in der App lesen.
   // Die Seiten liegen in einer eigenen IndexedDB ("jopenbox-comics"), getrennt von den Karten, damit der App-Start schnell bleibt.
   // Das Web-Fenster zeigt Webseiten an und kann Bilder oder CBZ-Dateien per Link laden, wenn die Seite das erlaubt.
-  const CX = { tab: 'shelf', dbP: null, mem: false, list: [], loaded: false, cov: new Map(), drawn: '', webUrl: '', frameUrl: '', optsId: null };
+  const CX = { tab: 'shelf', dbP: null, mem: false, list: [], loaded: false, cov: new Map(), drawn: '', webUrl: '', frameUrl: '', optsId: null, folders: [], fo: '', selMode: false, sel: new Set(), moveIds: [] };
   const CX_PAGE_MAX = 60 * 1024 * 1024, CX_PAGES_MAX = 3000;
   const CX_TYPES = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif', avif: 'image/avif', bmp: 'image/bmp' };
   const CX_EXT = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/avif': 'avif', 'image/bmp': 'bmp' };
@@ -5312,12 +5327,16 @@ body.skin-edit .stage{padding-bottom:54vh}
       pos: clampInt(m.pos, 0, Math.max(0, n - 1), 0), rtl: !!m.rtl, mode: m.mode === 'strip' ? 'strip' : 'page', fit: m.fit === 'width' ? 'width' : 'contain',
       marks: Array.isArray(m.marks) ? [...new Set(m.marks.map(Number).filter(x => Number.isInteger(x) && x >= 0 && x < n))].sort((a, b) => a - b).slice(0, 200) : [],
       size: Math.max(0, Math.round(+m.size) || 0), done: !!m.done, cov: !!m.cov,
+      fo: typeof m.fo === 'string' ? m.fo.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 12) : '',
     };
   }
   async function cxLoad() {
     let all = [];
     try { all = await cxMetaAll(); } catch (e) { console.warn('Comics laden', e); }
-    CX.list = all.map(cxNormMeta).filter(Boolean).sort((a, b) => (b.last || b.added) - (a.last || a.added));
+    const fr = all.find(x => x && x.id === '_folders');
+    CX.folders = fr && Array.isArray(fr.f) ? fr.f.filter(f => f && typeof f.id === 'string' && typeof f.n === 'string').slice(0, 60).map(f => ({ id: f.id.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 12), n: cxFolderName(f.n) || 'Ordner' })) : [];
+    CX.list = all.filter(x => x && x.id !== '_folders').map(cxNormMeta).filter(Boolean).map(m => { if (m.fo && !CX.folders.some(f => f.id === m.fo)) m.fo = ''; return m; }).sort((a, b) => (b.last || b.added) - (a.last || a.added));
+    if (CX.fo && !CX.folders.some(f => f.id === CX.fo)) CX.fo = '';
     CX.loaded = true;
   }
 
@@ -5401,7 +5420,7 @@ body.skin-edit .stage{padding-bottom:54vh}
       let cov = false;
       const cb = await cxCover(first);
       if (cb) { await cxPagePut(id, 'cover', await cb.arrayBuffer(), 'image/jpeg'); cov = true; }
-      const m = cxNormMeta({ id, t: title || 'Comic', n, added: Date.now(), last: 0, pos: 0, size, cov });
+      const m = cxNormMeta({ id, t: title || 'Comic', n, added: Date.now(), last: 0, pos: 0, size, cov, fo: CX.fo && CX.folders.some(f => f.id === CX.fo) ? CX.fo : '' });
       await cxMetaPut(m);
       CX.list.unshift(m);
       try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { /* egal */ }
@@ -5555,20 +5574,77 @@ body.skin-edit .stage{padding-bottom:54vh}
       cxCoverURL(im.dataset.cov).then(u => { if (u && im.isConnected) { im.src = u; const c = im.closest('.cx-cover'); if (c) c.classList.add('has'); } });
     });
   }
+  // ---- Ordner, Sortierung, Auswahl ----
+  const CX_SORTS = [['last', 'Zuletzt gelesen'], ['name', 'Name'], ['added', 'Neu']];
+  const cxSortMode = () => { const k = S.meta.cxs && S.meta.cxs.sort; return CX_SORTS.some(x => x[0] === k) ? k : 'last'; };
+  function cxSorted(list) {
+    const a = list.slice(), k = cxSortMode();
+    if (k === 'name') a.sort((x, y) => cxNat(x.t, y.t));
+    else if (k === 'added') a.sort((x, y) => y.added - x.added);
+    else a.sort((x, y) => (y.last || y.added) - (x.last || x.added));
+    return a;
+  }
+  const cxFolderOf = id => CX.folders.find(f => f.id === id);
+  const cxFolderName = v => String(v || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 40);
+  const cxFoldersSave = () => cxMetaPut({ id: '_folders', f: CX.folders });
+  async function cxNewFolder(n) {
+    const ex = CX.folders.find(f => f.n.toLowerCase() === n.toLowerCase());
+    if (ex) return ex;
+    if (CX.folders.length >= 60) { toast('Mehr als 60 Ordner gehen nicht.'); return null; }
+    const f = { id: uid(8), n };
+    CX.folders.push(f); await cxFoldersSave();
+    return f;
+  }
+  // Serie aus dem Titel: ohne Klammern und ohne Nummer am Ende ("Serie Band 3" -> "Serie")
+  function cxSeries(t) {
+    const s = String(t || '').replace(/[\[\(\{][^\]\)\}]*[\]\)\}]/g, ' ').replace(/_/g, ' ').replace(/\s+/g, ' ').trim();
+    const re = /[\s.:_-]*(?:(?:band|bd|vol|volume|teil|part|kapitel|chapter|ch|ep|episode|issue|heft|nr|no|tome|book|buch)\.?\s*)?#?\s*\d+(?:\s*[-–]\s*\d+)?\s*$/i;
+    let r = s;
+    for (let i = 0; i < 2; i++) r = r.replace(re, '').trim();
+    r = r.replace(/[\s.:,_-]+$/, '').trim();
+    return r.length >= 3 ? r : '';
+  }
+  function cxAutoPlan() {
+    const g = new Map();
+    CX.list.filter(m => !m.fo).forEach(m => {
+      const k = cxSeries(m.t); if (!k) return;
+      const key = k.toLowerCase();
+      if (!g.has(key)) g.set(key, { name: cxFolderName(k), ids: [] });
+      g.get(key).ids.push(m.id);
+    });
+    return [...g.values()].filter(x => x.ids.length >= 2 && x.name).sort((a, b) => cxNat(a.name, b.name));
+  }
   function cxBookHTML(m) {
     const pct = m.n > 1 ? Math.round(Math.min(1, (m.done ? m.n - 1 : m.pos) / (m.n - 1)) * 100) : (m.done ? 100 : 0);
     const state = m.done ? 'Fertig' : m.pos > 0 ? `Seite ${m.pos + 1} von ${m.n}` : `${m.n} Seiten`;
-    return `<div class="cx-book"><button class="cx-cover" data-act="cxread" data-id="${m.id}" aria-label="${esc(m.t)} lesen"><img data-cov="${m.id}" alt="" draggable="false"><span class="cx-ph" aria-hidden="true">${esc(m.t.slice(0, 1).toUpperCase())}</span>${pct ? `<i class="cx-bar"><b style="width:${pct}%"></b></i>` : ''}</button>
-      <div class="cx-t"><span class="cx-tt"><b>${esc(m.t)}</b><small>${esc(state)}</small></span><button class="btn small cx-more" data-act="cxopts" data-id="${m.id}" aria-label="Optionen für ${esc(m.t)}">⋯</button></div></div>`;
+    const sel = CX.selMode && CX.sel.has(m.id);
+    return `<div class="cx-book${sel ? ' sel' : ''}"><button class="cx-cover" data-act="${CX.selMode ? 'cxpick' : 'cxread'}" data-id="${m.id}" aria-label="${esc(m.t)}${CX.selMode ? (sel ? ' abwählen' : ' auswählen') : ' lesen'}"><img data-cov="${m.id}" alt="" draggable="false"><span class="cx-ph" aria-hidden="true">${esc(m.t.slice(0, 1).toUpperCase())}</span>${pct ? `<i class="cx-bar"><b style="width:${pct}%"></b></i>` : ''}${CX.selMode ? `<span class="cx-chk${sel ? ' on' : ''}" aria-hidden="true">${sel ? '✓' : ''}</span>` : ''}</button>
+      <div class="cx-t"><span class="cx-tt"><b>${esc(m.t)}</b><small>${esc(state)}</small></span>${CX.selMode ? '' : `<button class="btn small cx-more" data-act="cxopts" data-id="${m.id}" aria-label="Optionen für ${esc(m.t)}">⋯</button>`}</div></div>`;
+  }
+  function cxFolderHTML(f) {
+    const ms = cxSorted(CX.list.filter(m => m.fo === f.id));
+    return `<div class="cx-book cx-fold"><button class="cx-cover" data-act="cxfopen" data-id="${f.id}" aria-label="Ordner ${esc(f.n)} öffnen"><span class="cx-fgrid">${ms.slice(0, 4).map(m => `<img data-cov="${m.id}" alt="" draggable="false">`).join('')}</span><span class="cx-fico" aria-hidden="true">📁</span></button>
+      <div class="cx-t"><span class="cx-tt"><b>${esc(f.n)}</b><small>${ms.length} ${ms.length === 1 ? 'Comic' : 'Comics'}</small></span></div></div>`;
   }
   function cxShelfHTML() {
-    const cont = CX.list.filter(m => m.last && !m.done && m.pos > 0).sort((a, b) => b.last - a.last)[0];
+    const inF = CX.fo ? cxFolderOf(CX.fo) : null;
+    if (CX.fo && !inF) CX.fo = '';
+    const books = cxSorted(CX.list.filter(m => (inF ? m.fo === inF.id : !m.fo)));
+    const folders = inF ? [] : CX.folders.slice().sort((a, b) => cxNat(a.n, b.n));
+    const cont = inF ? null : CX.list.filter(m => m.last && !m.done && m.pos > 0).sort((a, b) => b.last - a.last)[0];
     const total = CX.list.reduce((s, m) => s + m.size, 0);
-    return `${cont ? `<button class="cx-cont" data-act="cxread" data-id="${cont.id}"><span class="cx-cont-i"><img data-cov="${cont.id}" alt="" draggable="false"></span><span class="cx-cont-t"><small>Weiterlesen</small><b>${esc(cont.t)}</b><small>Seite ${cont.pos + 1} von ${cont.n}</small></span></button>` : ''}
-      <div class="row left"><label class="btn primary small" for="cx-file">Datei wählen</label><input type="file" id="cx-file" class="vh" multiple><button class="btn small" data-act="cxtab" data-id="web">Aus dem Web</button></div>
-      <p class="note" style="max-width:none">CBZ- oder ZIP-Dateien mit Bildern, oder einfach mehrere Bilder auf einmal. Die Seiten werden nach Dateinamen sortiert.</p>
-      ${CX.list.length ? `<div class="cx-grid">${CX.list.map(cxBookHTML).join('')}</div>` : '<div class="empty-note"><b>Noch keine Comics</b><span>Wähle eine CBZ-Datei oder mehrere Bilder aus. Danach liegt das Comic hier im Regal und du kannst es in der App lesen.</span></div>'}
-      <p class="note" style="max-width:none">${CX.mem ? 'Dieser Browser speichert nichts dauerhaft (privater Modus?). Die Comics bleiben nur, bis du die App schließt. ' : ''}Comics liegen nur auf diesem Gerät in diesem Browser${total ? ` (zusammen ${esc(cxMB(total))})` : ''} und sind nicht in „Alles sichern“ enthalten. Sichere wichtige Comics einzeln über ⋯ → „Als CBZ sichern“.</p>`;
+    const plan = inF || CX.selMode ? [] : cxAutoPlan();
+    const items = [...folders.map(cxFolderHTML), ...books.map(cxBookHTML)];
+    const empty = inF
+      ? '<div class="empty-note"><b>Dieser Ordner ist leer</b><span>Tippe bei einem Comic auf ⋯ und wähle „Ordner“, oder benutze „Auswählen“, um mehrere auf einmal zu verschieben.</span></div>'
+      : '<div class="empty-note"><b>Noch keine Comics</b><span>Wähle eine CBZ-Datei oder mehrere Bilder aus. Danach liegt das Comic hier im Regal und du kannst es in der App lesen.</span></div>';
+    return `${inF ? `<div class="cx-crumb"><button class="btn small" data-act="cxfclose">‹ Regal</button><b>📁 ${esc(inF.n)}</b><button class="btn small" data-act="cxfopts" data-id="${inF.id}" aria-label="Ordner-Optionen">⋯</button></div>` : ''}
+      ${cont ? `<button class="cx-cont" data-act="cxread" data-id="${cont.id}"><span class="cx-cont-i"><img data-cov="${cont.id}" alt="" draggable="false"></span><span class="cx-cont-t"><small>Weiterlesen</small><b>${esc(cont.t)}</b><small>Seite ${cont.pos + 1} von ${cont.n}</small></span></button>` : ''}
+      ${CX.selMode ? `<div class="cx-selbar"><b>${CX.sel.size} ausgewählt</b><button class="btn small" data-act="cxselall">${books.length && books.every(m => CX.sel.has(m.id)) ? 'Keins' : 'Alle'}</button><button class="btn small primary" data-act="cxmovesel" ${CX.sel.size ? '' : 'disabled'}>Verschieben</button><button class="btn small" data-act="cxselmode">Fertig</button></div>` : `<div class="row left"><label class="btn primary small" for="cx-file">Datei wählen</label><input type="file" id="cx-file" class="vh" multiple><button class="btn small" data-act="cxtab" data-id="web">Aus dem Web</button>${inF ? '' : '<button class="btn small" data-act="cxnewfolder">+ Ordner</button>'}${CX.list.length > 1 ? '<button class="btn small" data-act="cxselmode">Auswählen</button>' : ''}</div>`}
+      ${CX.list.length > 1 ? `<div class="chips cx-sort" role="group" aria-label="Sortierung">${CX_SORTS.map(([k, n]) => `<button class="chip${cxSortMode() === k ? ' on' : ''}" data-act="cxsort" data-id="${k}">${n}</button>`).join('')}</div>` : ''}
+      ${plan.length ? `<div class="cx-sug"><span>${plan.length === 1 ? '1 Serie gefunden' : plan.length + ' Serien gefunden'}: ${esc(plan.slice(0, 3).map(g => g.name).join(', '))}${plan.length > 3 ? ' …' : ''}</span><button class="btn small" data-act="cxauto">Ordnen</button></div>` : ''}
+      ${items.length ? `<div class="cx-grid">${items.join('')}</div>` : empty}
+      <p class="note" style="max-width:none">${CX.mem ? 'Dieser Browser speichert nichts dauerhaft (privater Modus?). Die Comics bleiben nur, bis du die App schließt. ' : ''}Comics und Ordner liegen nur auf diesem Gerät in diesem Browser${total ? ` (zusammen ${esc(cxMB(total))})` : ''} und sind nicht in „Alles sichern“ enthalten. Sichere wichtige Comics einzeln über ⋯ → „Als CBZ sichern“.</p>`;
   }
   // ---- Web-Fenster ----
   function cxWebMeta() {
@@ -5585,8 +5661,9 @@ body.skin-edit .stage{padding-bottom:54vh}
     return `<div class="cx-addr"><input type="text" id="cx-url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Adresse, z. B. archive.org" value="${esc(CX.webUrl)}" aria-label="Adresse"><button class="btn small primary" data-act="cxgo">Los</button></div>
       <div class="row left"><button class="btn small" data-act="cxext" ${cur ? '' : 'disabled'}>Extern öffnen</button><button class="btn small" data-act="cxmark" ${cur ? '' : 'disabled'}>${marked ? '★ Gemerkt' : '☆ Merken'}</button>${cur ? '<button class="btn small" data-act="cxclose">Schließen</button>' : ''}</div>
       ${w.marks.length ? `<div class="chips cx-marks">${w.marks.map(x => `<span class="chip"><button class="cx-mk" data-act="cxgomark" data-id="${x.id}">${esc(x.t || cxHost(x.u))}</button><button class="cx-mx" data-act="cxdelmark" data-id="${x.id}" aria-label="Lesezeichen ${esc(x.t || cxHost(x.u))} entfernen">×</button></span>`).join('')}</div>` : ''}
+      ${cur ? '<p class="cx-hint">Bleibt das Fenster weiß? Dann verbietet die Seite die Anzeige in Apps. Tippe oben auf „Extern öffnen“.</p>' : ''}
       <div class="cx-frame">${cur ? `<iframe id="cx-iframe" src="${esc(cur)}" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads" referrerpolicy="no-referrer" title="Webseite"></iframe>` : '<div class="cx-frame-e"><b>Web-Fenster</b><span>Gib oben eine Adresse ein oder tippe ein Lesezeichen an. Frei verfügbare Comics gibt es zum Beispiel beim Internet Archive (archive.org) oder im Digital Comic Museum.</span></div>'}</div>
-      <p class="note" style="max-width:none">Manche Seiten verbieten die Anzeige in fremden Apps. Dann bleibt das Fenster leer oder zeigt einen Hinweis. Nutze dann „Extern öffnen“. Was du dort siehst, kann die App nicht automatisch speichern, das verbietet der Browser aus Sicherheitsgründen.</p>
+      <p class="note" style="max-width:none">Manche Seiten verbieten die Anzeige in fremden Apps. Dann bleibt das Fenster weiß. Nutze dann „Extern öffnen“. Herunterladen geht im Fenster auf dem iPhone nicht: Lade Dateien außerhalb der App (zum Beispiel in Safari) und nimm sie danach im Regal mit „Datei wählen“. Was du im Fenster siehst, kann die App nicht automatisch speichern, das verbietet der Browser aus Sicherheitsgründen.</p>
       <h3 class="cx-h">Von dort speichern</h3>
       <p class="note" style="max-width:none">Füge Links zu Bildern (eine Seite pro Zeile) oder zu einer CBZ-Datei ein. Das klappt nur, wenn die Seite das Laden aus Apps erlaubt. Sonst: Datei im Browser laden oder ein Bild lange drücken und sichern, dann im Regal „Datei wählen“.</p>
       <textarea id="cx-links" rows="4" placeholder="https://…/seite1.jpg&#10;https://…/seite2.jpg" aria-label="Links"></textarea>
@@ -5609,9 +5686,9 @@ body.skin-edit .stage{padding-bottom:54vh}
   }
   RENDER.comics = renderComics;
   VIEW_TAB.comics = 'home';
-  LEAVE.comics = () => { CX.drawn = ''; };
+  LEAVE.comics = () => { CX.drawn = ''; CX.selMode = false; CX.sel = new Set(); };
 
-  ACTS.cxtab = id => { CX.tab = id === 'web' ? 'web' : 'shelf'; renderComics(true); };
+  ACTS.cxtab = id => { CX.tab = id === 'web' ? 'web' : 'shelf'; CX.selMode = false; CX.sel = new Set(); renderComics(true); };
   ACTS.cxmenu = () => {
     const total = CX.list.reduce((s, m) => s + m.size, 0);
     dlg(`<h3>Comics</h3>
@@ -5619,6 +5696,104 @@ body.skin-edit .stage{padding-bottom:54vh}
       <div class="row"><button class="btn small" data-act="cxhide">Diesen Bereich verstecken</button></div>
       <p class="note" style="max-width:none">Versteckt verschwindet der Knopf von Home. Zurückholen: Cheat-Menü (Code 6906) → Verstecke Bereiche.</p>
       <button class="btn" data-act="dlgclose">Schließen</button>`);
+  };
+  ACTS.cxsort = id => { if (!CX_SORTS.some(x => x[0] === id)) return; S.meta.cxs = { ...(S.meta.cxs && typeof S.meta.cxs === 'object' ? S.meta.cxs : {}), sort: id }; saveMeta(true); renderComics(true); };
+  ACTS.cxfopen = id => { if (!cxFolderOf(id)) return; CX.fo = id; CX.selMode = false; CX.sel = new Set(); renderComics(true); $('#stage').scrollTop = 0; };
+  ACTS.cxfclose = () => { CX.fo = ''; CX.selMode = false; CX.sel = new Set(); renderComics(true); $('#stage').scrollTop = 0; };
+  ACTS.cxselmode = () => { CX.selMode = !CX.selMode; CX.sel = new Set(); renderComics(true); };
+  ACTS.cxpick = id => { if (CX.sel.has(id)) CX.sel.delete(id); else CX.sel.add(id); renderComics(true); };
+  ACTS.cxselall = () => {
+    const books = CX.list.filter(m => (CX.fo ? m.fo === CX.fo : !m.fo));
+    if (books.length && books.every(m => CX.sel.has(m.id))) CX.sel = new Set(); else CX.sel = new Set(books.map(m => m.id));
+    renderComics(true);
+  };
+  function cxMoveDlg(ids) {
+    if (!ids.length) return;
+    CX.moveIds = ids.slice();
+    const cur = ids.length === 1 ? (CX.list.find(m => m.id === ids[0]) || {}).fo || '' : null;
+    const rows = [['', 'Kein Ordner (Regal)'], ...CX.folders.slice().sort((a, b) => cxNat(a.n, b.n)).map(f => [f.id, f.n])];
+    dlg(`<h3>${ids.length === 1 ? 'In einen Ordner verschieben' : ids.length + ' Comics verschieben'}</h3>
+      <div class="hid-list">${rows.map(([id, n]) => `<div class="hid-row${cur === id ? ' is-hid' : ''}"><span class="hid-n"><b>${id ? '📁 ' : ''}${esc(n)}</b>${cur === id ? '<small>liegt hier</small>' : ''}</span><button class="btn small" data-act="cxmoveto" data-id="${id}">Hierher</button></div>`).join('')}</div>
+      <label class="field"><span>Neuer Ordner</span><input type="text" id="cx-newf" maxlength="40" placeholder="Name" autocomplete="off"></label>
+      <div class="row"><button class="btn small primary" data-act="cxmovenew">Anlegen und verschieben</button></div>
+      <button class="btn" data-act="dlgclose">Abbrechen</button>`);
+  }
+  async function cxMoveTo(fid) {
+    const ids = CX.moveIds || [];
+    let n = 0;
+    for (const id of ids) { const m = CX.list.find(x => x.id === id); if (m && m.fo !== fid) { m.fo = fid; await cxMetaPut(m); n++; } }
+    CX.moveIds = []; CX.selMode = false; CX.sel = new Set(); closeDlg(); SFX.play('pop');
+    const f = fid ? cxFolderOf(fid) : null;
+    toast(n ? `${n} ${n === 1 ? 'Comic' : 'Comics'} ${f ? `in „${f.n}“` : 'zurück ins Regal'} verschoben.` : 'Nichts verschoben.');
+    renderComics(true);
+  }
+  ACTS.cxmove = id => cxMoveDlg([id]);
+  ACTS.cxmovesel = () => cxMoveDlg([...CX.sel]);
+  ACTS.cxmoveto = id => cxMoveTo(id && cxFolderOf(id) ? id : '');
+  ACTS.cxmovenew = async () => {
+    const n = cxFolderName(($('#cx-newf') || {}).value);
+    if (!n) { toast('Gib dem Ordner einen Namen.'); return; }
+    const f = await cxNewFolder(n); if (f) cxMoveTo(f.id);
+  };
+  ACTS.cxnewfolder = () => dlg(`<h3>Neuer Ordner</h3>
+    <label class="field"><span>Name</span><input type="text" id="cx-newf" maxlength="40" placeholder="z. B. Superhelden" autocomplete="off"></label>
+    <div class="row"><button class="btn primary" data-act="cxfcreate">Anlegen</button><button class="btn" data-act="dlgclose">Abbrechen</button></div>`);
+  ACTS.cxfcreate = async () => {
+    const n = cxFolderName(($('#cx-newf') || {}).value);
+    if (!n) { toast('Gib dem Ordner einen Namen.'); return; }
+    const had = CX.folders.length, f = await cxNewFolder(n); if (!f) return;
+    closeDlg(); SFX.play('pop'); toast(CX.folders.length > had ? `Ordner „${f.n}“ ist angelegt.` : `Den Ordner „${f.n}“ gibt es schon.`); renderComics(true);
+  };
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || (e.target.id !== 'cx-newf' && e.target.id !== 'cx-fname')) return;
+    e.preventDefault();
+    const b = document.querySelector('#dlg [data-act=cxfcreate],#dlg [data-act=cxmovenew],#dlg [data-act=cxfrename]'); if (b) b.click();
+  });
+  ACTS.cxfopts = id => {
+    const f = cxFolderOf(id); if (!f) return;
+    const n = CX.list.filter(m => m.fo === id).length;
+    dlg(`<h3>📁 ${esc(f.n)}</h3>
+      <label class="field"><span>Name</span><input type="text" id="cx-fname" maxlength="40" value="${esc(f.n)}" autocomplete="off"></label>
+      <div class="row"><button class="btn small primary" data-act="cxfrename" data-id="${f.id}">Name speichern</button></div>
+      <p class="note" style="max-width:none">${n} ${n === 1 ? 'Comic' : 'Comics'} in diesem Ordner. Beim Löschen des Ordners kommen sie zurück ins Regal, es geht nichts verloren.</p>
+      <div class="row"><button class="btn small danger" data-act="cxfdel" data-id="${f.id}">Ordner löschen</button></div>
+      <button class="btn" data-act="dlgclose">Schließen</button>`);
+  };
+  ACTS.cxfrename = async id => {
+    const f = cxFolderOf(id), n = cxFolderName(($('#cx-fname') || {}).value); if (!f) return;
+    if (!n) { toast('Der Name darf nicht leer sein.'); return; }
+    if (CX.folders.some(x => x.id !== id && x.n.toLowerCase() === n.toLowerCase())) { toast('Diesen Ordnernamen gibt es schon.'); return; }
+    f.n = n; await cxFoldersSave(); closeDlg(); renderComics(true); toast('Name gespeichert.');
+  };
+  ACTS.cxfdel = async (id, el) => {
+    const f = cxFolderOf(id); if (!f) return;
+    if (el && el.dataset.armed !== '1') {
+      el.dataset.armed = '1'; el.textContent = 'Wirklich löschen?';
+      setTimeout(() => { if (el.isConnected) { el.dataset.armed = ''; el.textContent = 'Ordner löschen'; } }, 3000);
+      return;
+    }
+    for (const m of CX.list) if (m.fo === id) { m.fo = ''; await cxMetaPut(m); }
+    CX.folders = CX.folders.filter(x => x.id !== id); await cxFoldersSave();
+    if (CX.fo === id) CX.fo = '';
+    closeDlg(); SFX.play('back'); toast('Ordner gelöscht. Die Comics liegen wieder im Regal.'); renderComics(true);
+  };
+  ACTS.cxauto = () => {
+    const plan = cxAutoPlan();
+    dlg(`<h3>Nach Serie ordnen</h3>
+      ${plan.length ? `<p class="note" style="max-width:none">Comics, deren Titel gleich beginnen und mit einer Nummer enden, kommen zusammen in einen Ordner.</p>
+        <div class="hid-list">${plan.map(g => `<div class="hid-row"><span class="hid-n"><b>📁 ${esc(g.name)}</b><small>${g.ids.length} Comics</small></span></div>`).join('')}</div>
+        <div class="row"><button class="btn primary" data-act="cxautogo">${plan.length === 1 ? 'Ordner anlegen' : plan.length + ' Ordner anlegen'}</button><button class="btn" data-act="dlgclose">Abbrechen</button></div>`
+      : `<p class="note" style="max-width:none">Ich habe keine Serien gefunden. Die App gruppiert Comics, deren Titel gleich beginnen und mit einer Nummer enden, zum Beispiel „Serie 1“ und „Serie 2“.</p><button class="btn" data-act="dlgclose">Schließen</button>`}`);
+  };
+  ACTS.cxautogo = async () => {
+    const plan = cxAutoPlan();
+    let made = 0;
+    for (const g of plan) {
+      const f = await cxNewFolder(g.name); if (!f) break;
+      for (const id of g.ids) { const m = CX.list.find(x => x.id === id); if (m) { m.fo = f.id; await cxMetaPut(m); } }
+      made++;
+    }
+    closeDlg(); SFX.play('pop'); toast(made ? `${made} ${made === 1 ? 'Ordner' : 'Ordner'} angelegt und Comics einsortiert.` : 'Nichts geordnet.'); renderComics(true);
   };
   ACTS.cxhide = () => { tabSetHidden('comics', true); closeDlg(); SFX.play('pop'); toast('Comics sind versteckt.'); showView('home'); };
   ACTS.cxopts = id => {
@@ -5628,6 +5803,7 @@ body.skin-edit .stage{padding-bottom:54vh}
       <label class="field"><span>Titel</span><input type="text" id="cx-title" maxlength="80" value="${esc(m.t)}" autocomplete="off"></label>
       <div class="row"><button class="btn small primary" data-act="cxrename" data-id="${m.id}">Titel speichern</button></div>
       <p class="note" style="max-width:none">${m.n} Seiten · ${esc(cxMB(m.size))}${m.marks.length ? ` · ${m.marks.length} Lesezeichen` : ''}</p>
+      <div class="row"><button class="btn small" data-act="cxmove" data-id="${m.id}">Ordner: ${m.fo && cxFolderOf(m.fo) ? esc(cxFolderOf(m.fo).n) : 'keiner'} ▸</button></div>
       <div class="row"><button class="btn small" data-act="cxexport" data-id="${m.id}">Als CBZ sichern</button><button class="btn small" data-act="cxreset" data-id="${m.id}">Von vorn lesen</button></div>
       <div class="row"><button class="btn small danger" data-act="cxdel" data-id="${m.id}">Löschen</button></div>
       <button class="btn" data-act="dlgclose">Schließen</button>`);
