@@ -1,4 +1,4 @@
-// JopenBox Service Worker: haelt die App offline verfuegbar. Build: 2026-10-20 17:03:47
+// JopenBox Service Worker: haelt die App offline verfuegbar. Build: 2026-10-20 21:12:32
 const SHELL_CACHE = 'jopenbox-shell';
 const FONT_CACHE = 'jopenbox-fonts';
 const SHELL = ['index.html', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
@@ -7,7 +7,7 @@ const FONT_CSS = 'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const c = await caches.open(SHELL_CACHE);
-    await c.addAll(SHELL);
+    await c.addAll(SHELL.map(u => new Request(u, { cache: 'reload' })));   // am Zwischenspeicher des Servers vorbei, sonst kommt die alte Version
     await self.skipWaiting();
     try { await warmFonts(); } catch (err) { /* offline oder blockiert: dann Ersatzschriften */ }
   })());
@@ -35,7 +35,7 @@ self.addEventListener('activate', e => {
 async function networkFirst(req) {
   const c = await caches.open(SHELL_CACHE);
   try {
-    const res = await Promise.race([fetch(req), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3500))]);
+    const res = await Promise.race([fetch(req.url, { cache: 'no-cache' }), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3500))]);
     if (res && res.ok) c.put('index.html', res.clone());
     return res;
   } catch (err) {
