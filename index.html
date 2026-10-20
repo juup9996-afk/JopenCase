@@ -693,11 +693,12 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .gm-top b{letter-spacing:.1em;text-transform:uppercase}
 .gm-chip{display:inline-flex;align-items:center;gap:4px}.gm-chip img{width:22px;height:22px;object-fit:contain}
 .gm-reels{position:relative;container-type:size;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:1.4cqw;aspect-ratio:var(--cols)/var(--rows)}
-.gm-reel{position:relative;overflow:hidden;border-radius:2.4cqw;background:rgba(8,6,20,.58);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 0 3cqw rgba(0,0,0,.55)}
+.gm-reel{position:relative;overflow:hidden;border-radius:2.4cqw;background:var(--gm-rb,rgba(8,6,20,.58));border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 0 3cqw rgba(0,0,0,.55)}
 .gm-reel.spinning .gm-strip{filter:blur(.9px)}
 .gm-reel.xp{box-shadow:inset 0 0 0 2px var(--gm-win,#ffd36b),inset 0 0 3cqw color-mix(in srgb,var(--gm-win,#ffd36b) 55%,transparent)}
 .gc{position:relative;height:calc(100cqh / var(--rows));display:flex;align-items:center;justify-content:center;transition:opacity .3s,filter .3s}
 .gc img{width:82%;height:82%;object-fit:contain;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
+.gc>span:not(.shp){font-size:calc(100cqh / var(--rows) * .6);line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
 .gc .gv{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);font:700 clamp(9px,3.6cqw,16px)/1 var(--mono);color:#fff;background:rgba(10,8,24,.78);border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:.16em .42em;white-space:nowrap}
 .gc .gv.jp{background:linear-gradient(180deg,#ff6bd6,#8a2ad8);border-color:#fff;letter-spacing:.05em;font-size:clamp(8px,2.9cqw,13px)}
 .gc.hit{animation:hitp .6s ease-in-out infinite alternate;z-index:1;filter:drop-shadow(0 0 .45em var(--gm-win,#ffd36b))}
@@ -747,15 +748,38 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 #skinbg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .sk-fill,.sk-layer,.sk-dimmer{position:absolute;inset:0}
 .sk-dimmer{background:#000}
-.sk-m{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:var(--fit,cover);object-position:var(--px,50%) var(--py,50%);transform:scale(var(--z,1));transform-origin:var(--px,50%) var(--py,50%);filter:blur(var(--bl,0px));user-select:none}
+.sk-m{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:var(--fit,cover);object-position:var(--px,50%) var(--py,50%);transform:translate(var(--dx,0%),var(--dy,0%)) scale(var(--z,1)) rotate(var(--rot,0deg));transform-origin:var(--px,50%) var(--py,50%);filter:blur(var(--bl,0px));user-select:none}
 .sk-mascot{position:absolute;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
 #skmascot{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
 #skmascot .sk-mascot{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
 body.skin-on .tabs{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .skined{--fg:#e9ebf2;--muted:#8c94a8;--surface:#141822;--surface-2:#1b2030;--line:#283044;--accent:#d8c8a0;--on-accent:#1a1608;--btn:#1b2030;--btn-fg:#e9ebf2;--body:'Figtree',system-ui,-apple-system,sans-serif;--display:'Instrument Serif',Georgia,serif;position:fixed;left:0;right:0;bottom:0;z-index:57;max-height:50vh;max-height:50dvh;display:flex;flex-direction:column;background:#0c0e13;color:var(--fg);font:14px/1.45 var(--body);border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -14px 40px rgba(0,0,0,.55);padding-bottom:env(safe-area-inset-bottom,0px)}
 body.skin-edit .stage{padding-bottom:54vh}
+/* Symbole in Formen (Stern, Herz ...) mit Foto oder GIF darin */
+.shp{position:relative;display:block;height:100%;aspect-ratio:1/1;max-width:100%;flex:none}
+.shp-b,.shp-f{position:absolute;display:block;-webkit-clip-path:var(--sh);clip-path:var(--sh)}
+.shp-b{inset:0;background:var(--bd,#fff3b0)}
+.shp-f{inset:var(--bw,3%);overflow:hidden;background:linear-gradient(160deg,var(--c1,#ffd24a),var(--c2,#c9871a))}
+.shp img.shp-m{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:var(--fit,cover)!important;filter:blur(var(--bl,0px))!important}
+.sc .shp,.gc .shp{height:80%}
+.gc .shp{filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
+.sc-i .shp{display:inline-block;height:24px;width:24px;vertical-align:middle}
+.gm-chip .shp{height:22px;width:22px;display:inline-block}
+.gm-big .shp{height:84px;width:84px;display:inline-block;margin-top:4px}
+.sk-sym-i .shp{height:30px;width:30px}
+.sk-sym-big .shp{height:82%}
+.sk-pend{margin:0;padding:6px 16px 8px;font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line)}
+.sk-more{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.sk-more>summary{cursor:pointer;color:var(--muted);font-size:13px;margin-bottom:6px}
+.sk-more[open]>summary{margin-bottom:10px}
+.sk-more .field{margin-top:8px}
+.top-skin{flex:none;margin-left:auto;margin-right:2px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-size:18px;line-height:1;display:grid;place-items:center;padding:0}
+.top-skin:active{transform:scale(.94)}
+
 .sk-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px 6px}
 .sk-head b{font:400 22px var(--display)}
+.sk-head b.sk-pt{font-size:18px}
+.sk-head .row{flex:none}
 .sk-tabs{display:flex;gap:2px;padding:0 10px;overflow-x:auto;border-bottom:1px solid var(--line);flex:none}
 .sk-tab{background:none;border:0;padding:9px 11px;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
 .sk-tab[aria-selected=true]{color:var(--fg);border-bottom-color:var(--accent)}
@@ -778,8 +802,13 @@ body.skin-edit .stage{padding-bottom:54vh}
 .sk-sym-i img{width:30px;height:30px;object-fit:contain}
 .sk-sym small{font-size:9.5px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sk-symed{display:flex;gap:12px;align-items:flex-start}
-.sk-sym-big{width:84px;height:84px;flex:none;border:1px solid var(--line);border-radius:14px;background:#120d24;font-size:44px;display:flex;align-items:center;justify-content:center}
+.sk-sym-big{width:104px;height:104px;flex:none;border:1px solid var(--line);border-radius:14px;background:#120d24;font-size:48px;display:flex;align-items:center;justify-content:center;position:relative}
+.sk-sym-big.drag{touch-action:none;cursor:grab}
 .sk-sym-big img{width:82%;height:82%;object-fit:contain}
+.lz{background-color:var(--surface-2)}
+.more-btn{justify-self:center;margin:6px 0 2px}
+.safebar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 16px;background:var(--surface-2);border-bottom:1px solid var(--accent);font-size:13px;color:var(--fg)}
+.safebar[hidden]{display:none}
 .ga-machine{position:relative;overflow:hidden;isolation:isolate}
 .ga-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
 .ga-bgdim{position:absolute;inset:0;z-index:-1;background:#000}
@@ -791,8 +820,10 @@ body.skin-edit .stage{padding-bottom:54vh}
 <div class="app">
   <header class="top">
     <div class="brand">JopenBox</div>
+    <button class="top-skin" id="top-skin" data-act="skedit" aria-label="Design dieser Seite anpassen" title="Design anpassen">🎨</button>
     <div class="stats" id="stats"></div>
   </header>
+  <div class="safebar" id="safebar" hidden></div>
   <main class="stage" id="stage">
     <section class="view" id="view-home"><div class="empty-note">Lädt …</div></section>
     <section class="view" id="view-case" hidden></section>
@@ -849,6 +880,26 @@ body.skin-edit .stage{padding-bottom:54vh}
   const MAX_CARDS = 1000;
   const MAX_EDGE = 640;
   const REF_RE = /^[al]:[A-Za-z0-9_-]{1,64}$/;
+
+  // ================= Absturz-Waechter =================
+  // Beim Start wird eine Markierung gesetzt und nach einigen ruhigen Sekunden (oder beim normalen Schliessen) wieder entfernt.
+  // Steht sie beim naechsten Start noch da, ist die App abgestuerzt (zum Beispiel weil dem iPhone der Speicher ausging).
+  // Dann startet sie im sicheren Modus: Fotos werden nicht geladen, bis man sie selbst einschaltet.
+  const GUARD_KEY = 'jb-boot', SAFE_KEY = 'jb-safe';
+  let SAFE = false, CRASH = null, guardT = null;
+  try {
+    const g = JSON.parse(localStorage.getItem(GUARD_KEY) || 'null');
+    if (g && typeof g === 'object' && g.t) { CRASH = { v: String(g.v || 'boot').slice(0, 40), t: +g.t || 0 }; localStorage.setItem(SAFE_KEY, '1'); }
+    SAFE = localStorage.getItem(SAFE_KEY) === '1';
+  } catch (e) { SAFE = false; }
+  function guardClear() { clearTimeout(guardT); guardT = null; try { localStorage.removeItem(GUARD_KEY); } catch (e) { /* egal */ } }
+  function guardArm(label, ms) {
+    try { localStorage.setItem(GUARD_KEY, JSON.stringify({ v: label, t: Date.now() })); } catch (e) { return; }
+    clearTimeout(guardT); guardT = setTimeout(guardClear, ms || 5000);
+  }
+  document.addEventListener('visibilitychange', () => { if (document.hidden) guardClear(); });
+  window.addEventListener('pagehide', guardClear);
+  guardArm('boot', 6000);
 
   const $ = s => document.querySelector(s);
   const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
@@ -938,23 +989,34 @@ body.skin-edit .stage{padding-bottom:54vh}
     let db = null;
     try { if (window.indexedDB) db = await idbOpen(); } catch (e) { db = null; }
     const mem = { docs: new Map(), photos: new Map() };
-    const urls = new Map(), blobs = new Map();
+    const urls = new Map(), blobs = new Map(), known = new Set();
     const st = (name, mode) => db.transaction(name, mode).objectStore(name);
-    const mk = (key, buf, type) => {
-      const b = new Blob([buf], { type });
+    const mk = (key, data, type) => {
+      const b = data instanceof Blob ? data : new Blob([data], { type });
       blobs.set(key, b); urls.set(key, URL.createObjectURL(b));
     };
+    // Fotos werden nicht mehr alle beim Start gelesen (bei hunderten Bildern ist das zu viel fuers Handy), sondern erst, wenn eines angezeigt wird.
+    async function ensure(refs) {
+      if (SAFE || !db) return;
+      const keys = [...new Set(refs.map(r => String(r).slice(2)))].filter(k => known.has(k) && !urls.has(k));
+      for (let i = 0; i < keys.length; i += 12) {
+        const part = keys.slice(i, i + 12);
+        const s = st('photos', 'readonly');
+        const vals = await Promise.all(part.map(k => idbP(s.get(k)).catch(() => null)));
+        part.forEach((k, n) => { const v = vals[n]; if (v && v.b && !urls.has(k)) mk(k, v.b, v.t); });
+        if (keys.length > 12) await sleep(0);
+      }
+    }
     return {
       mode: db ? 'local' : 'mem',
+      lazy: true,
       async loadDocs() {
         const out = {};
         if (!db) { mem.docs.forEach((v, k) => { out[k] = v; }); return out; }
         const s = st('docs', 'readonly');
         const keys = await idbP(s.getAllKeys()), vals = await idbP(s.getAll());
         keys.forEach((k, i) => { out[k] = vals[i]; });
-        const ps = st('photos', 'readonly');
-        const pk = await idbP(ps.getAllKeys()), pv = await idbP(ps.getAll());
-        pk.forEach((k, i) => mk(k, pv[i].b, pv[i].t));
+        (await idbP(st('photos', 'readonly').getAllKeys())).forEach(k => known.add(k));
         return out;
       },
       async setDoc(k, v) {
@@ -966,22 +1028,32 @@ body.skin-edit .stage{padding-bottom:54vh}
         if (!db) { mem.docs.delete(k); return; }
         await idbP(st('docs', 'readwrite').delete(k));
       },
-      async putPhoto(blob) {
+      // o.cache === false: nur speichern, nicht im Arbeitsspeicher behalten (beim Speichern von vielen Karten)
+      async putPhoto(blob, o) {
         const key = uid(10), t = blob.type || 'image/jpeg';
         const buf = await readAs(blob, 'readAsArrayBuffer');
         if (!db) mem.photos.set(key, { b: buf, t });
         else await idbP(st('photos', 'readwrite').put({ b: buf, t }, key));
-        mk(key, buf, t);
+        known.add(key);
+        if (!db || !o || o.cache !== false) mk(key, db ? blob : buf, t);
         return 'l:' + key;
       },
       async dropPhoto(ref) {
         const key = ref.slice(2), u = urls.get(key);
         if (u) URL.revokeObjectURL(u);
-        urls.delete(key); blobs.delete(key); mem.photos.delete(key);
+        urls.delete(key); blobs.delete(key); mem.photos.delete(key); known.delete(key);
         if (db) { try { await idbP(st('photos', 'readwrite').delete(key)); } catch (e) { /* egal */ } }
       },
+      has: ref => known.has(ref.slice(2)),
+      loaded: ref => urls.has(ref.slice(2)),
+      ensure,
+      photoCount: () => known.size,
       src: ref => urls.get(ref.slice(2)) || '',
-      blobOf: async ref => blobs.get(ref.slice(2)),
+      blobOf: async ref => {
+        const key = ref.slice(2);
+        if (!blobs.has(key)) { const was = SAFE; SAFE = false; try { await ensure([ref]); } finally { SAFE = was; } }
+        return blobs.get(key);
+      },
     };
   }
 
@@ -991,6 +1063,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     const srcFor = id => (mine.get(id) && mine.get(id).url) || urls.get(id) || '/_blob/' + id;
     return {
       mode: 'cloud',
+      has: () => true, loaded: () => true, ensure: async () => {}, photoCount: () => urls.size + mine.size,
       async loadDocs() {
         const out = {};
         snap.docs.forEach(d => { out[d.id] = JSON.parse(JSON.stringify(d.data())); });
@@ -1265,8 +1338,54 @@ body.skin-edit .stage{padding-bottom:54vh}
   // "Cover"-Groesse gezeichnet und per CSS-Variablen verschoben, so laesst sich auch bei Zoom 1 waehlen,
   // welcher Teil eines Querformat- oder Hochformat-Fotos zu sehen ist.
   const hasPan = c => (c.z && c.z !== 1) || c.x || c.y;
+  // Gespeicherte Fotos werden erst geladen, wenn sie gebraucht werden. Bis dahin steht ein farbiger Platzhalter (data-lz),
+  // den lzFill durch das Bild ersetzt, sobald es da ist.
+  const LZ = { want: new Set(), run: false };
+  function lzWant(ref) { LZ.want.add(ref); lzKick(); }
+  function lzKick() { if (LZ.run || SAFE || !BE) return; LZ.run = true; setTimeout(lzRun, 0); }
+  function lzFill(el, url) {
+    const v = el.dataset.lzm === '1', lazy = el.dataset.lzl === '1', tf = el.dataset.lztf || '';
+    el.classList.remove('lz'); el.removeAttribute('style'); el.removeAttribute('data-lz');
+    el.innerHTML = v
+      ? `<video src="${esc(url)}${lazy ? '#t=0.1' : ''}"${tf ? ` style="${esc(tf)}"` : ''} muted loop playsinline webkit-playsinline preload="${lazy ? 'metadata' : 'auto'}"${lazy ? '' : ' autoplay'}></video>`
+      : `<img src="${esc(url)}" alt=""${tf ? ` style="${esc(tf)}"` : ''}${lazy ? ' loading="lazy"' : ''} decoding="async">`;
+  }
+  async function lzRun() {
+    try {
+      while (LZ.want.size && !SAFE && BE) {
+        const part = [];
+        for (const ref of LZ.want) {
+          LZ.want.delete(ref);
+          if (REF_RE.test(ref) && document.querySelector(`[data-lz="${ref}"]`)) part.push(ref);
+          if (part.length >= 12) break;
+        }
+        if (!part.length) continue;
+        try { await BE.ensure(part); } catch (e) { console.warn('Foto laden', e); }
+        part.forEach(ref => { const u = BE.src(ref); if (u) document.querySelectorAll(`[data-lz="${ref}"]`).forEach(el => lzFill(el, u)); });
+        await sleep(12);
+      }
+    } finally { LZ.run = false; if (LZ.want.size && !SAFE) lzKick(); }
+  }
+  // Lange Kartenraster werden nur stueckweise gezeichnet: erst PAGE_N Felder, dann "Mehr anzeigen" (auch automatisch beim Scrollen).
+  const PAGE_N = 48;
+  const moreBtn = (k, left) => (left > 0 ? `<button class="btn more-btn" data-more="${k}" style="grid-column:1/-1">Mehr anzeigen (${left} weitere)</button>` : '');
+  const MORE_IO = typeof IntersectionObserver === 'function' ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { MORE_IO.unobserve(e.target); e.target.click(); } }), { rootMargin: '500px' }) : null;
+  const watchMore = root => { if (MORE_IO && root) root.querySelectorAll('[data-more]').forEach(b => MORE_IO.observe(b)); };
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('[data-more]');
+    if (!b) return;
+    const k = b.dataset.more;
+    if (k === 'coll') { UI.collN = (UI.collN || PAGE_N) + PAGE_N; const y = $('#stage').scrollTop; renderColl(); $('#stage').scrollTop = y; }
+    else if (k === 'ed' && ED) { ED.gridN = (ED.gridN || PAGE_N) + PAGE_N; renderEdGrid(); }
+  });
   function artBlock(c, cls, lazy, forcePan) {
     const src = srcOf(c);
+    if (!src && c.p && BE && BE.has && BE.has(c.p) && !BE.loaded(c.p)) {
+      const pan = forcePan || hasPan(c);
+      const tf = pan ? `--tx:${c.x || 0};--ty:${c.y || 0};--tz:${c.z || 1}` : '';
+      lzWant(c.p);
+      return `<div class="${cls} lz${pan ? ' has-pan' : ''}" data-lz="${c.p}" data-lzm="${c.m === 'video' ? 1 : 0}" data-lzl="${lazy ? 1 : 0}" data-lztf="${esc(tf)}" style="background:${art(c, true).bg}"></div>`;
+    }
     if (src) {
       const pan = forcePan || hasPan(c);
       const tf = pan ? ` style="--tx:${c.x || 0};--ty:${c.y || 0};--tz:${c.z || 1}"` : '';
@@ -1459,14 +1578,15 @@ body.skin-edit .stage{padding-bottom:54vh}
       return n
         ? `<div class="cell" data-case="${cs.id}" data-card="${c.id}">${thumbHTML(c)}${n > 1 ? `<span class="count">×${n}</span>` : ''}</div>`
         : `<div class="cell"><div class="ghost"><span>${pad(i + 1)}</span></div></div>`;
-    }).join('');
+    });
     el.innerHTML = `${caseChips(own, cs.id, 'pickcoll')}
       <div><span class="eyebrow">${esc(cs.name)}</span><h2>Sammlung</h2><p class="muted" style="margin-top:6px">${haveN} von ${cs.cards.length} Karten · ${p.opened} Booster geöffnet</p></div>
       <div class="prog-list">${rows}</div>
       <div class="chips">${chips}${dupChip}</div>
       ${dupPanel}
-      <div class="grid">${cells}</div>
+      <div class="grid">${cells.slice(0, UI.collN || PAGE_N).join('')}${moreBtn('coll', cells.length - (UI.collN || PAGE_N))}</div>
       <div class="row left"><button class="btn small danger" data-act="resetprog" data-id="${cs.id}">${UI.armReset ? 'Wirklich zurücksetzen?' : 'Fortschritt zurücksetzen'}</button></div>`;
+    watchMore(el.querySelector('.grid'));
   }
 
   const storageNote = () => ({
@@ -1531,6 +1651,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     const tab = VIEW_TAB[v] || v;
     TAB_IDS.forEach(k => { const b = $('#tab-' + k); if (b) b.setAttribute('aria-selected', String(k === tab)); });
     skEnter(v);
+    if (v !== 'home') guardArm('view:' + v, 5000);
     RENDER[v]();
     $('#stage').scrollTop = 0;
   }
@@ -1815,10 +1936,11 @@ body.skin-edit .stage{padding-bottom:54vh}
       RARITIES.map(r => `<button class="chip r-${r.k}${ED.filter === r.k ? ' on' : ''}" data-efilter="${r.k}"><span class="dot"></span>${r.n} ${n(r.k)}</button>`).join('');
   }
   function renderEdGrid() {
-    const d = ED.draft, list = edList();
+    const d = ED.draft, list = edList(), n = ED.gridN || PAGE_N;
     $('#ed-grid').innerHTML = list.length
-      ? list.map(c => `<div class="cell" data-cid="${c.id}">${thumbHTML(c, { sel: ED.sel.has(c.id) })}${ED.selMode ? `<span class="selmark${ED.sel.has(c.id) ? ' on' : ''}"></span>` : ''}</div>`).join('')
+      ? list.slice(0, n).map(c => `<div class="cell" data-cid="${c.id}">${thumbHTML(c, { sel: ED.sel.has(c.id) })}${ED.selMode ? `<span class="selmark${ED.sel.has(c.id) ? ' on' : ''}"></span>` : ''}</div>`).join('') + moreBtn('ed', list.length - n)
       : `<div class="empty-note" style="grid-column:1/-1">${d.cards.length ? 'Keine Karten in dieser Seltenheit.' : 'Noch keine Karten. Tippe auf „Fotos hinzufügen“ und wähle Bilder aus.'}</div>`;
+    watchMore($('#ed-grid'));
   }
   function renderEdBar() {
     const bar = $('#ed-bar');
@@ -1923,6 +2045,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     let ok = 0, bad = 0, big = 0;
     for (let i = 0; i < files.length; i++) {
       busy(`Fotos verarbeiten (${i + 1}/${files.length})`, i / files.length);
+      guardArm('import', 15000);
       try {
         const { blob, m } = await prepMedia(files[i]);
         let id = uid(6);
@@ -1931,6 +2054,7 @@ body.skin-edit .stage{padding-bottom:54vh}
         ok++;
       } catch (e) { if (e && e.big) big++; else bad++; }
       if (i % 4 === 3) await sleep(0);
+      if (i % 40 === 39) await sleep(60);   // kurze Pause, damit das Handy Speicher freigeben kann
     }
     busy(null);
     if (ok) ED.dirty = true;
@@ -3910,13 +4034,38 @@ body.skin-edit .stage{padding-bottom:54vh}
   // ================= Designer: Aussehen von Home, Gacha und Slot =================
   // Jede dieser Seiten hat ein eigenes "Skin": Hintergrund (ganze App), Farben, Schrift, Maskottchen.
   // Der Slot hat zusaetzlich Maschinen-Hintergrund, Symbole und Musik.
-  const SK_PAGES = ['home', 'gacha', 'slot'];
-  const SK_NAMES = { home: 'Home', gacha: 'Gacha', slot: 'Slot' };
+  // Jede Seite der App und jedes einzelne Slot-Spiel hat ein eigenes Design (g_<id> = die vier weiteren Slots).
+  const SK_BASE = ['home', 'gacha', 'slot', 'lobby', 'case', 'inv', 'coll', 'com', 'set', 'comics'];
+  const SK_GAMES = ['angler', 'deep', 'book', 'goo'];
+  const SK_PAGES = [...SK_BASE, ...SK_GAMES.map(g => 'g_' + g)];
+  const SK_NAMES = { home: 'Home', gacha: 'Gacha', slot: 'Kleeblatt-Gold', lobby: 'Slot-Lobby', case: 'Case', inv: 'Inventar', coll: 'Sammlung', com: 'Community', set: 'Einstellungen', comics: 'Comics', g_angler: 'Goldtopf-Angeln', g_deep: 'Tiefsee-Fang', g_book: 'Pharaonengold', g_goo: 'Schleim-Schatz' };
+  const skIsGame = p => typeof p === 'string' && p.startsWith('g_');
+  const skGid = p => p.slice(2);
+  const skHasMach = p => p === 'gacha' || p === 'slot' || skIsGame(p);
+  const skHasSym = p => p === 'slot' || skIsGame(p);
+  // Welche Design-Seite gehoert zu einer Ansicht?
+  const skPageOf = v => (v === 'game' ? (GM.id ? 'g_' + GM.id : '') : (SK_BASE.includes(v) ? v : ''));
+  // Formen fuer Symbole: [Name, Pfad im Einheitsquadrat, [Farbe 1, Farbe 2, Rand]]
+  const skPoly = pts => 'M' + pts.map(p => p.map(v => +v.toFixed(3)).join(' ')).join('L') + 'Z';
+  const skStarPts = () => Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 0.21 : 0.5; return [0.5 + r * Math.cos(a), 0.54 + r * Math.sin(a)]; });
+  const SK_SHAPES = {
+    star: ['Stern', skPoly(skStarPts()), ['#ffd24a', '#c9871a', '#fff3b0']],
+    circle: ['Kreis', 'M.5 0A.5 .5 0 1 1 .5 1A.5 .5 0 1 1 .5 0Z', ['#6bc7ff', '#1f6fd1', '#d6f0ff']],
+    heart: ['Herz', 'M.5 .96C.2 .72 .02 .55 .02 .32C.02 .15 .15 .04 .28 .04C.39 .04 .46 .1 .5 .2C.54 .1 .61 .04 .72 .04C.85 .04 .98 .15 .98 .32C.98 .55 .8 .72 .5 .96Z', ['#ff6b8a', '#c2185b', '#ffd1dc']],
+    diamond: ['Raute', skPoly([[.5, .02], [.98, .5], [.5, .98], [.02, .5]]), ['#9affc7', '#12a366', '#e0fff0']],
+    hexagon: ['Sechseck', skPoly([[.25, .04], [.75, .04], [.98, .5], [.75, .96], [.25, .96], [.02, .5]]), ['#c9a7ff', '#6a3dd1', '#eadbff']],
+    triangle: ['Dreieck', skPoly([[.5, .04], [.98, .94], [.02, .94]]), ['#ffb36b', '#d1561f', '#ffe0c7']],
+    square: ['Quadrat', 'M.2 .02H.8Q.98 .02 .98 .2V.8Q.98 .98 .8 .98H.2Q.02 .98 .02 .8V.2Q.02 .02 .2 .02Z', ['#f0f0f0', '#8a94a8', '#ffffff']],
+    shield: ['Schild', 'M.5 .02L.92 .14V.5C.92 .75 .72 .9 .5 .98C.28 .9 .08 .75 .08 .5V.14Z', ['#8fb4ff', '#2a4fb0', '#dbe6ff']],
+  };
+  const skShOk = k => typeof k === 'string' && Object.prototype.hasOwnProperty.call(SK_SHAPES, k);
+  const SKD = { page: null, tab: 'vorlage', sub: 'page', sel: 0, armPreset: null, armDs: null, armDel: null, fileFor: null, pend: null };
   const SK_FITS = [['cover', 'Füllen'], ['contain', 'Ganz'], ['fill', 'Strecken']];
   const SK_FONTS = [['standard', 'Standard', ''], ['serif', 'Serif', "Georgia,'Times New Roman',serif"], ['rund', 'Rund', "'Trebuchet MS','Avenir Next','Segoe UI',system-ui,sans-serif"], ['mono', 'Maschine', "ui-monospace,Menlo,Consolas,monospace"], ['hand', 'Handschrift', "'Segoe Print','Bradley Hand','Comic Sans MS',cursive"]];
   const SK_MAX_BYTES = 20 * 1024 * 1024;
-  const SK_SYM_COUNT = 10;
-  const mediaDef = (c1, c2, dim) => ({ k: null, ref: null, art: null, fit: 'cover', x: 50, y: 50, z: 1, dim, blur: 0, c1, c2 });
+  const SK_SYM_COUNT = 10, SK_SYM_MAX = 16;
+  const skSymCount = page => (skIsGame(page) ? ((GMREG[skGid(page)] || { names: [] }).names.length || SK_SYM_COUNT) : SK_SYM_COUNT);
+  const mediaDef = (c1, c2, dim) => ({ k: null, ref: null, art: null, fit: 'cover', x: 50, y: 50, z: 1, rot: 0, dx: 0, dy: 0, dim, blur: 0, c1, c2 });
   const SK_DEF = () => ({
     p: 'klassisch',
     page: mediaDef('#0c0e13', '#0c0e13', 0.3),
@@ -3924,7 +4073,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     col: { accent: '#d8c8a0', text: '#e9ebf2', panel: '#141822', pa: 1, spin1: '#ffe9a8', spin2: '#d8c8a0', spinFg: '#1a1608', btn: '#1b2030', btnFg: '#e9ebf2', fs1: '#6b3dff', fs2: '#c14bff', win: '#ffd36b' },
     font: 'standard',
     sym: {},
-    mascot: { v: 'none', ref: null, pos: 'bl', size: 34, flip: false, front: false },
+    mascot: { v: 'none', ref: null, pos: 'bl', size: 34, flip: false, front: false, rot: 0 },
     music: { on: true, src: 'irish', ref: null, vol: 0.4 },
   });
   const SK_IRISH_SYM = () => ({
@@ -3978,11 +4127,22 @@ body.skin-edit .stage{padding-bottom:54vh}
     else if (k === 'art') { art = typeof m.art === 'string' && ART_SRC[m.art] ? m.art : null; if (!art) k = null; }
     const o = {
       k, ref, art, fit: SK_FITS.some(f => f[0] === m.fit) ? m.fit : 'cover',
-      x: skNum(m.x, 0, 100, 50), y: skNum(m.y, 0, 100, 50), z: skNum(m.z, 1, 4, 1), dim: skNum(m.dim, 0, 0.9, d.dim), blur: skNum(m.blur, 0, 14, 0),
+      x: skNum(m.x, 0, 100, 50), y: skNum(m.y, 0, 100, 50), z: skNum(m.z, 0.25, 4, 1), rot: skNum(m.rot, -180, 180, 0), dx: skNum(m.dx, -100, 100, 0), dy: skNum(m.dy, -100, 100, 0),
+      dim: skNum(m.dim, 0, 0.9, d.dim), blur: skNum(m.blur, 0, 14, 0),
       c1: skHex(m.c1, d.c1), c2: skHex(m.c2, d.c2),
     };
-    if (d.fr) { o.fr = skHex(m.fr, d.fr); o.rl = skHex(m.rl, d.rl); o.ra = skNum(m.ra, 0, 1, d.ra); }
+    if (d.fr) { o.fr = skHex(m.fr, d.fr); o.rl = skHex(m.rl, d.rl); o.ra = skNum(m.ra, 0, 1, d.ra); o.own = !!m.own; }
     return o;
+  }
+  // Symbol in Form (Stern, Herz ...), optional mit Foto oder GIF darin
+  function skShapeNorm(s, n) {
+    const ref = typeof s.ref === 'string' && REF_RE.test(s.ref) ? s.ref : null;
+    const sh = skShOk(s.sh) ? s.sh : 'star', dc = SK_SHAPES[sh][2];
+    return {
+      k: 'shape', sh, c1: skHex(s.c1, dc[0]), c2: skHex(s.c2, dc[1]), bd: skHex(s.bd, dc[2]), bw: skNum(s.bw, 0, 8, 3),
+      ref, fit: s.fit === 'contain' ? 'contain' : 'cover', x: skNum(s.x, 0, 100, 50), y: skNum(s.y, 0, 100, 50), z: skNum(s.z, 0.25, 4, 1), rot: skNum(s.rot, -180, 180, 0), dx: skNum(s.dx, -100, 100, 0), dy: skNum(s.dy, -100, 100, 0),
+      ...(n ? { n } : {}),
+    };
   }
   function skNorm(v) {
     const d = SK_DEF();
@@ -3991,11 +4151,12 @@ body.skin-edit .stage{padding-bottom:54vh}
     Object.keys(d.col).forEach(k => { c[k] = k === 'pa' ? skNum(col.pa, 0.2, 1, d.col.pa) : skHex(col[k], d.col[k]); });
     const sym = {};
     if (v.sym && typeof v.sym === 'object') {
-      for (let i = 0; i < SK_SYM_COUNT; i++) {
+      for (let i = 0; i < SK_SYM_MAX; i++) {
         const s = v.sym[i];
         if (!s || typeof s !== 'object') continue;
         const n = typeof s.n === 'string' ? s.n.replace(/[<>&"']/g, '').slice(0, 18) : '';
-        if (s.k === 'emoji' && typeof s.v === 'string' && s.v) sym[i] = { k: 'emoji', v: firstGlyph(s.v) || SLOTCORE.EMOJI[i], ...(n ? { n } : {}) };
+        if (s.k === 'shape') sym[i] = skShapeNorm(s, n);
+        else if (s.k === 'emoji' && typeof s.v === 'string' && s.v) sym[i] = { k: 'emoji', v: firstGlyph(s.v) || SLOTCORE.EMOJI[i % 10], ...(n ? { n } : {}) };
         else if (s.k === 'img' && typeof s.v === 'string' && REF_RE.test(s.v)) sym[i] = { k: 'img', v: s.v, ...(n ? { n } : {}) };
         else if (s.k === 'art' && typeof s.v === 'string' && ART_SRC[s.v]) sym[i] = { k: 'art', v: s.v, ...(n ? { n } : {}) };
         else if (n) sym[i] = { k: 'def', v: '', n };
@@ -4011,7 +4172,7 @@ body.skin-edit .stage{padding-bottom:54vh}
       p: SK_PRESET_KEYS.includes(v.p) || v.p === 'eigen' ? v.p : 'klassisch',
       page: skMedia(v.page, d.page), mach: skMedia(v.mach, d.mach), col: c,
       font: SK_FONTS.some(f => f[0] === v.font) ? v.font : 'standard', sym,
-      mascot: { v: mv, ref: mref, pos: ['tl', 'tr', 'bl', 'br', 'cl', 'cr'].includes(ms.pos) ? ms.pos : 'bl', size: skNum(ms.size, 10, 80, 34), flip: !!ms.flip, front: !!ms.front },
+      mascot: { v: mv, ref: mref, pos: ['tl', 'tr', 'bl', 'br', 'cl', 'cr'].includes(ms.pos) ? ms.pos : 'bl', size: skNum(ms.size, 10, 80, 34), flip: !!ms.flip, front: !!ms.front, rot: skNum(ms.rot, -180, 180, 0) },
       music: { on: mu.on !== false, src: mu.src === 'file' && mur ? 'file' : 'irish', ref: mur, vol: skNum(mu.vol, 0, 1, 0.4) },
     };
   }
@@ -4047,7 +4208,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     if (c.mach.ref) r.push(c.mach.ref);
     if (c.mascot.ref) r.push(c.mascot.ref);
     if (c.music.ref) r.push(c.music.ref);
-    Object.values(c.sym).forEach(s => { if (s.k === 'img') r.push(s.v); });
+    Object.values(c.sym).forEach(s => { if (s.k === 'img') r.push(s.v); else if (s.k === 'shape' && s.ref) r.push(s.ref); });
     return r;
   };
   const skAllRefs = () => { const r = new Set(); Object.values(S.meta.skin || {}).forEach(c => { if (c && c.page) skRefsOf(c).forEach(x => r.add(x)); }); dsRefs().forEach(x => r.add(x)); return r; };
@@ -4055,8 +4216,9 @@ body.skin-edit .stage{padding-bottom:54vh}
   async function mediaDrop(ref) { if (ref && !mediaUsed(ref)) { try { await BE.dropPhoto(ref); } catch (e) { /* egal */ } } }
 
   // ---- Medien anzeigen ----
-  const skSrcOf = m => (m.k === 'art' ? artURL(m.art) : (BE && m.ref ? BE.src(m.ref) : ''));
-  const skMediaVars = m => `--fit:${m.fit};--px:${m.x}%;--py:${m.y}%;--z:${Math.max(m.z, m.blur ? 1 + m.blur * 0.014 : 1).toFixed(3)};--bl:${m.blur}px`;
+  const SK_XKEYS = ['fit', 'x', 'y', 'z', 'rot', 'dx', 'dy'];
+  const skSrcOf = m => (m.tmp ? m.tmp : m.k === 'art' ? artURL(m.art) : (BE && m.ref ? BE.src(m.ref) : ''));
+  const skMediaVars = m => `--fit:${m.fit || 'cover'};--px:${m.x}%;--py:${m.y}%;--z:${(m.blur ? Math.max(m.z, 1 + m.blur * 0.014) : m.z).toFixed(3)};--rot:${m.rot || 0}deg;--dx:${m.dx || 0}%;--dy:${m.dy || 0}%;--bl:${m.blur || 0}px`;
   function skMediaHTML(m) {
     if (!m || !m.k) return '';
     const src = skSrcOf(m);
@@ -4071,7 +4233,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   // Medium in einen Rahmen legen. Beim Verschieben und Zoomen wird nur der Stil geaendert, damit Videos nicht neu starten.
   function skLayer(host, m) {
     if (!host) return;
-    const sig = (m.k || '') + '|' + (m.ref || '') + '|' + (m.art || '');
+    const sig = (m.k || '') + '|' + (m.ref || '') + '|' + (m.art || '') + '|' + (m.tmp || '');
     if (host.dataset.sig !== sig) { host.dataset.sig = sig; host.innerHTML = skMediaHTML(m); skPlay(host); }
     const el = host.querySelector('.sk-m'); if (el) el.setAttribute('style', skMediaVars(m));
   }
@@ -4082,6 +4244,34 @@ body.skin-edit .stage{padding-bottom:54vh}
     return !c.page.k && c.page.c1 === d.page.c1 && c.page.c2 === d.page.c2 && c.font === 'standard' && c.mascot.v === 'none' && JSON.stringify(c.col) === JSON.stringify(d.col);
   };
 
+  // ---- Vorschau vor dem Speichern ----
+  // Ein neues Foto, GIF oder Video wird erst nur angezeigt (SKD.pend). Gespeichert wird erst mit "Uebernehmen".
+  function skPendClear() {
+    const p = SKD.pend; SKD.pend = null;
+    if (p && p.url) { try { URL.revokeObjectURL(p.url); } catch (e) { /* egal */ } }
+  }
+  const skXDefault = fit => ({ fit: fit || 'cover', x: 50, y: 50, z: 1, rot: 0, dx: 0, dy: 0 });
+  // Der Skin, so wie er gerade angezeigt wird: gespeichert + Vorschau
+  function skEff(page) {
+    const c = skinOf(page), p = SKD.pend;
+    if (!p || SKD.page !== page) return c;
+    const o = { ...c };
+    if (p.t === 'page' || p.t === 'mach') o[p.t] = { ...c[p.t], ...p.m, k: p.video ? 'video' : 'img', ref: null, art: null, tmp: p.url, ...(p.t === 'mach' && skIsGame(page) ? { own: true } : {}) };
+    else if (p.t === 'mascot') o.mascot = { ...c.mascot, v: 'img', ref: null, tmp: p.url };
+    else if (p.t === 'sym') {
+      const cur = c.sym[p.sel], n = cur && cur.n ? { n: cur.n } : {};
+      o.sym = { ...c.sym, [p.sel]: cur && cur.k === 'shape' ? { ...cur, ...p.m, tmp: p.url } : { k: 'img', v: '', tmp: p.url, ...n } };
+    }
+    return o;
+  }
+  // Das Objekt, in das Regler fuer "root" schreiben (Vorschau-Werte, solange eine Vorschau offen ist)
+  function skTargetFor(root, key) {
+    const c = skinOf(SKD.page), p = SKD.pend;
+    if (root === 'sym') { if (p && p.t === 'sym' && SK_XKEYS.includes(key)) return p.m; const s = c.sym[SKD.sel]; return s && s.k === 'shape' ? s : null; }
+    if ((root === 'page' || root === 'mach') && p && p.t === root && SK_XKEYS.includes(key)) return p.m;
+    return c[root];
+  }
+
   // ---- Anwenden ----
   let SK_ON = null;
   const SK_VARS = ['--accent', '--on-accent', '--fg', '--muted', '--surface', '--surface-2', '--line', '--spin1', '--spin2', '--spin-fg', '--btn', '--btn-fg', '--fs1', '--fs2', '--win', '--display', '--body'];
@@ -4090,12 +4280,16 @@ body.skin-edit .stage{padding-bottom:54vh}
     SK_VARS.forEach(v => st.removeProperty(v));
     document.body.classList.remove('skin-on');
     delete document.body.dataset.skin;
-    const bg = $('#skinbg'); if (bg) bg.hidden = true;
+    const bg = $('#skinbg');
+    if (bg) {
+      bg.hidden = true;
+      const l = bg.querySelector('.sk-layer'); if (l) { l.innerHTML = ''; delete l.dataset.sig; }   // Video/GIF nicht im Verborgenen weiterlaufen lassen
+    }
     const mc = $('#skmascot'); if (mc) mc.remove();
   }
   function skApply(page) {
     if (!SK_PAGES.includes(page)) { SK_ON = null; skClear(); return; }
-    const c = skinOf(page), st = document.body.style, col = c.col;
+    const c = skEff(page), st = document.body.style, col = c.col;
     SK_ON = page;
     if (skIsDefault(c)) { skClear(); return; }
     const b = document.body;
@@ -4127,37 +4321,88 @@ body.skin-edit .stage{padding-bottom:54vh}
   }
   const skMachStyle = c => `--dim:${c.mach.dim};--sl-fr:${c.mach.fr};--sl-rb:color-mix(in srgb, ${c.mach.rl} ${Math.round(c.mach.ra * 100)}%, transparent)`;
   function skApplyMach() {
-    const m = $('#sl-machine'), c = skinOf('slot');
+    const m = $('#sl-machine'), c = skEff('slot');
     if (!m) return;
-    m.setAttribute('style', skMachStyle(c) + (m.classList.contains('fs-on') ? '' : ''));
+    m.setAttribute('style', skMachStyle(c));
     const b = $('#sl-bg'); if (b) { b.style.background = skRad(c.mach); skLayer(b, c.mach); }
+  }
+  // Die vier weiteren Slots: Original-Look, solange "Eigener Hintergrund" aus ist
+  function skApplyGame() {
+    const m = $('#gm-m'), G = typeof gmG === 'function' ? gmG() : null;
+    if (!m || !G) return;
+    const c = skEff('g_' + G.id), mc = c.mach, bg = m.querySelector('.gm-bg');
+    if (mc.own) {
+      m.setAttribute('style', `${G.style};--gm-fr:${mc.fr};--gm-dim:${mc.dim};--gm-fs1:${c.col.fs1};--gm-fs2:${c.col.fs2};--gm-win:${c.col.win};--gm-rb:color-mix(in srgb, ${mc.rl} ${Math.round(mc.ra * 100)}%, transparent)`);
+      if (bg) { bg.style.backgroundImage = 'none'; bg.style.background = skRad(mc); skLayer(bg, mc); }
+    } else {
+      m.setAttribute('style', G.style);
+      if (bg) { bg.innerHTML = ''; delete bg.dataset.sig; bg.style.background = ''; bg.style.backgroundImage = `url('${gartURL(G.bg)}')`; }
+    }
   }
   const SK_POS = { tl: 'left:0;top:60px', tr: 'right:0;top:60px', bl: 'left:0;bottom:56px', br: 'right:0;bottom:56px', cl: 'left:0;top:34%', cr: 'right:0;top:34%' };
   function skMascotHTML(c, front) {
     const m = c.mascot;
     if (m.v === 'none') return '';
     if (!!m.front !== !!front) return '';
-    const src = m.v === 'art' ? artURL('mascot') : (BE && m.ref ? BE.src(m.ref) : '');
+    const src = m.tmp ? m.tmp : m.v === 'art' ? artURL('mascot') : (BE && m.ref ? BE.src(m.ref) : '');
     if (!src) return '';
-    const right = m.pos === 'tr' || m.pos === 'br' || m.pos === 'cr';
-    return `<img class="sk-mascot" src="${esc(src)}" alt="" draggable="false" style="${SK_POS[m.pos]};width:${m.size}vw;max-width:340px;transform:scaleX(${(m.flip ? -1 : 1)});transform-origin:${right ? '100%' : '0'} 50%">`;
+    return `<img class="sk-mascot" src="${esc(src)}" alt="" draggable="false" style="${SK_POS[m.pos]};width:${m.size}vw;max-width:340px;transform:rotate(${m.rot || 0}deg) scaleX(${(m.flip ? -1 : 1)});transform-origin:50% 50%">`;
   }
-  // Seite wechseln: passenden Skin einschalten
-  function skEnter(page) {
+  // Ansicht wechseln: passenden Skin einschalten (v = Name der Ansicht)
+  function skEnter(v) {
+    const page = skPageOf(v);
     if (SKD.page && SKD.page !== page) skClose(true);
     skApply(page);
-    if (typeof MUSIC !== 'undefined') MUSIC.sync(page);
+    if (typeof MUSIC !== 'undefined') MUSIC.sync(v);
   }
-  const skRefresh = () => { if (SK_ON) skApply(SK_ON); if (SKD.page === 'slot') skApplyMach(); if (SKD.page === 'gacha' && typeof gaSkin === 'function') gaSkin(); };
+  const skRefresh = () => {
+    if (SK_ON) skApply(SK_ON);
+    const p = SKD.page;
+    if (p === 'slot') skApplyMach();
+    else if (p === 'gacha' && typeof gaSkin === 'function') gaSkin();
+    else if (p && skIsGame(p)) skApplyGame();
+  };
 
-  // ---- Symbole des Slots ----
-  const skSymDef = (page, s) => { const o = skinOf(page).sym[s]; return o && o.k !== 'def' ? o : { k: 'emoji', v: SLOTCORE.EMOJI[s] }; };
-  const skSymName = (page, s) => { const o = skinOf(page).sym[s]; return (o && o.n) || SLOTCORE.NAMES[s]; };
+  // ---- Symbole (Slot und die vier weiteren Slots) ----
+  const skGame = page => (skIsGame(page) ? GMREG[skGid(page)] : null);
+  function skSymDefault(page, s) {
+    const G = skGame(page);
+    return G ? { k: 'gart', v: G.sym(s) } : { k: 'emoji', v: SLOTCORE.EMOJI[s] };
+  }
+  const skSymDef = (page, s) => { const o = skEff(page).sym[s]; return o && o.k !== 'def' ? o : skSymDefault(page, s); };
+  const skSymName = (page, s) => { const o = skEff(page).sym[s]; const G = skGame(page); return (o && o.n) || (G ? G.names[s] : SLOTCORE.NAMES[s]) || ''; };
+  const skShapeVars = d => `--sh:url(#shp-${skShOk(d.sh) ? d.sh : 'star'});--bd:${d.bd};--bw:${d.bw}%;--c1:${d.c1};--c2:${d.c2}`;
+  function skShapeHTML(d) {
+    const src = d.tmp ? d.tmp : (d.ref && BE ? BE.src(d.ref) : '');
+    const media = src ? `<img class="sk-m shp-m" src="${esc(src)}" style="${skMediaVars(d)}" alt="" draggable="false">` : '';
+    return `<span class="shp" style="${skShapeVars(d)}"><span class="shp-b"></span><span class="shp-f">${media}</span></span>`;
+  }
+  // Ein Symbol als Markup: Bild, Emoji, Spiel-Grafik oder Form (mit Foto/GIF darin)
+  function skSymHTML(d, nm, fb) {
+    nm = esc(nm || '');
+    if (d.k === 'art') return `<img src="${esc(artURL(d.v))}" alt="${nm}" draggable="false">`;
+    if (d.k === 'gart') return `<img src="${esc(gartURL(d.v))}" alt="${nm}" draggable="false">`;
+    if (d.k === 'shape') return skShapeHTML(d);
+    if (d.k === 'img') { const u = d.tmp ? d.tmp : (BE && d.v ? BE.src(d.v) : ''); return u ? `<img src="${esc(u)}" alt="${nm}" draggable="false">` : `<span>${esc(fb || '?')}</span>`; }
+    return `<span>${esc(d.v)}</span>`;
+  }
+  // Formen als unsichtbare SVG-Definitionen (clip-path)
+  (() => {
+    const defs = Object.keys(SK_SHAPES).map(k => `<clipPath id="shp-${k}" clipPathUnits="objectBoundingBox"><path d="${SK_SHAPES[k][1]}"/></clipPath>`).join('');
+    const box = document.createElement('div');
+    box.innerHTML = `<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>${defs}</defs></svg>`;
+    document.body.appendChild(box.firstChild);
+  })();
 
   // ---- Designer-Oberflaeche ----
-  const SKD = { page: null, tab: 'vorlage', sub: 'page', sel: 0, armPreset: null, armDs: null, armDel: null, fileFor: null };
-  const SK_TABS = { slot: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['sym', 'Symbole'], ['farben', 'Farben'], ['mehr', 'Mehr']], gacha: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['farben', 'Farben'], ['mehr', 'Mehr']], home: [['vorlage', 'Vorlage'], ['bg', 'Hintergrund'], ['farben', 'Farben'], ['mehr', 'Mehr']] };
+  const skTabsOf = page => {
+    const t = [['vorlage', 'Vorlage'], ['bg', 'Hintergrund']];
+    if (skHasSym(page)) t.push(['sym', 'Symbole']);
+    t.push(['farben', 'Farben'], ['mehr', 'Mehr']);
+    return t;
+  };
   function skOpen(page) {
+    skPendClear();
     SKD.page = page; SKD.tab = 'vorlage'; SKD.sub = 'page'; SKD.sel = 0; SKD.armPreset = null; SKD.armDs = null; SKD.armDel = null;
     const el = $('#skined');
     el.hidden = false;
@@ -4165,65 +4410,92 @@ body.skin-edit .stage{padding-bottom:54vh}
     skRender();
   }
   function skClose(quiet) {
+    const had = !!SKD.pend, pg = SKD.page, kind = SKD.pend && SKD.pend.t;
+    skPendClear();
+    if (pg) skSave(true);   // zuletzt verschobene/gedrehte Werte sofort sichern
     const el = $('#skined');
     el.hidden = true; el.innerHTML = '';
     document.body.classList.remove('skin-edit');
     SKD.page = null;
+    if (had && pg && !quiet) { skApply(skPageOf(current)); skAfter(kind === 'sym' ? 'sym' : 'pend', pg); }
     if (!quiet && typeof MUSIC !== 'undefined') MUSIC.sync(current);
   }
   const skField = (label, inner) => `<div class="field"><span>${label}</span>${inner}</div>`;
   const skRange = (path, min, max, step, val, label) => `<label class="field"><span>${label}<b class="sk-val" data-skv="${path}">${(+val).toFixed(step < 1 ? (step < 0.1 ? 2 : 1) : 0)}</b></span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}" data-skf="${path}"></label>`;
   const skColor = (path, val, label) => `<label class="sk-col"><input type="color" value="${val}" data-skf="${path}" aria-label="${esc(label)}"><span>${label}</span></label>`;
   const skChips = (items, cur, attr) => `<div class="chips">${items.map(([k, n]) => `<button class="chip${cur === k ? ' on' : ''}" ${attr}="${k}">${n}</button>`).join('')}</div>`;
-  const skSymPrev = (page, s) => { const d = skSymDef(page, s); return d.k === 'art' ? `<img src="${esc(artURL(d.v))}" alt="">` : d.k === 'img' ? (BE && BE.src(d.v) ? `<img src="${esc(BE.src(d.v))}" alt="">` : '?') : `<span>${esc(d.v)}</span>`; };
-  function skTabBg(c) {
-    const t = SKD.sub, m = t === 'mach' ? c.mach : c.page;
-    const subs = SKD.page !== 'home' ? skChips([['page', 'Ganze App'], ['mach', 'Maschine']], t, 'data-sksub') : '';
-    const src = m.k === 'art' ? artURL(m.art) : (BE && m.ref ? BE.src(m.ref) : '');
-    const prev = m.k ? `<div class="sk-prev" id="sk-prev" data-skdrag="${t}" style="background:${t === 'mach' ? skRad(m) : skGrad(m)};aspect-ratio:${t === 'mach' ? '5/4' : Math.max(1, innerWidth) + '/' + Math.max(1, innerHeight)}">${m.k === 'video' ? `<video class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" autoplay muted loop playsinline></video>` : `<img class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" alt="" draggable="false">`}<i class="sk-prev-dim" style="opacity:${m.dim}"></i></div><p class="note" style="margin:0">Ziehen, um das Bild auszurichten. Zoom und Position stehen unten.</p>` : '';
+  const skSw = (label, act, on) => `<div class="switch"><span>${label}</span><button data-sk="${act}" aria-pressed="${!!on}" aria-label="${esc(label)}"></button></div>`;
+  const skSymPrev = (page, s) => { const d = skSymDef(page, s); return skSymHTML(d, '', d.k === 'img' || d.k === 'shape' ? '?' : ''); };
+  // Regler: Groesse, Drehen, Verschieben, Zentrieren (fuer Hintergruende und Bilder in Formen)
+  const skXform = (root, m) => `<h4 class="set-sub">Bild ausrichten</h4>
+      ${skRange(`${root}.z`, 0.25, 4, 0.01, m.z, 'Größe ')}
+      ${skRange(`${root}.rot`, -180, 180, 1, m.rot || 0, 'Drehen (°) ')}
+      ${skRange(`${root}.dx`, -100, 100, 1, m.dx || 0, 'Verschieben links–rechts ')}
+      ${skRange(`${root}.dy`, -100, 100, 1, m.dy || 0, 'Verschieben oben–unten ')}
+      <div class="row left"><button class="btn small" data-sk="center" data-id="${root}">Zentrieren</button><button class="btn small" data-sk="xreset" data-id="${root}">Alles zurücksetzen</button></div>
+      <details class="sk-more"><summary>Bildausschnitt</summary>${skRange(`${root}.x`, 0, 100, 1, m.x, 'Ausschnitt links–rechts ')}${skRange(`${root}.y`, 0, 100, 1, m.y, 'Ausschnitt oben–unten ')}</details>`;
+  function skTabBg() {
+    const page = SKD.page, e = skEff(page), hasM = skHasMach(page), t = hasM && SKD.sub === 'mach' ? 'mach' : 'page', m = e[t];
+    const subs = hasM ? skChips([['page', 'Ganze App'], ['mach', 'Maschine']], t, 'data-sksub') : '';
+    const src = skSrcOf(m);
+    const media = m.k === 'video' ? `<video class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" autoplay muted loop playsinline></video>` : `<img class="sk-m" src="${esc(src)}" style="${skMediaVars(m)}" alt="" draggable="false">`;
+    const prev = m.k ? `<div class="sk-prev" id="sk-prev" data-skdrag="${t}" style="background:${t === 'mach' ? skRad(m) : skGrad(m)};aspect-ratio:${t === 'mach' ? '5/4' : Math.max(1, innerWidth) + '/' + Math.max(1, innerHeight)}">${media}<i class="sk-prev-dim" style="opacity:${m.dim}"></i></div><p class="note" style="margin:0;max-width:none">Ziehen verschiebt das Bild, zwei Finger zoomen und drehen. Mit dem Mausrad zoomst du, mit Umschalt drehst du.</p>` : '';
+    const where = t === 'mach' ? (page === 'gacha' ? 'Hinter dem Kasten mit dem Case-Namen.' : 'Hinter den Walzen, innerhalb der Maschine.') : 'Läuft hinter der ganzen Seite, auch hinter Kopfzeile und Leiste.';
+    const own = t === 'mach' && skIsGame(page);
+    const reelCol = t === 'mach' && page !== 'gacha';
     return `${subs}
-      <p class="note" style="margin:0;max-width:none">${t === 'mach' ? (SKD.page === 'slot' ? 'Hinter den Walzen, innerhalb der Maschine.' : 'Hinter dem Kasten mit dem Case-Namen.') : 'Läuft hinter der ganzen Seite, auch hinter Kopfzeile und Leiste.'} Foto, GIF oder Video.</p>
-      <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="${t}">Datei wählen</label>
-        <button class="btn small" data-sk="mediaoff" data-id="${t}" ${m.k ? '' : 'disabled'}>Entfernen</button>
+      <p class="note" style="margin:0;max-width:none">${where} Foto, GIF oder Video.</p>
+      ${own ? skSw('Eigener Hintergrund statt Original', 'gown', m.own) : ''}
+      <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="${t}">${SKD.pend && SKD.pend.t === t ? 'Anderes Foto' : 'Datei wählen'}</label>
+        <button class="btn small" data-sk="mediaoff" data-id="${t}" ${m.k && !m.tmp ? '' : 'disabled'}>Entfernen</button>
         ${t === 'page' ? `<button class="btn small${m.k === 'art' ? ' primary' : ''}" data-sk="artbg">Irische Hügel</button>` : ''}</div>
       ${prev}
-      ${m.k ? skField('Anpassung', skChips(SK_FITS, m.fit, 'data-skfit')) + skRange(`${t}.z`, 1, 4, 0.01, m.z, 'Zoom ') + skRange(`${t}.x`, 0, 100, 1, m.x, 'Position links–rechts ') + skRange(`${t}.y`, 0, 100, 1, m.y, 'Position oben–unten ') + skRange(`${t}.blur`, 0, 14, 1, m.blur, 'Unschärfe ') : ''}
+      ${m.k ? skField('Anpassung', skChips(SK_FITS, m.fit, 'data-skfit')) + skXform(t, m) + skRange(`${t}.blur`, 0, 14, 1, m.blur, 'Unschärfe ') : ''}
       ${skRange(`${t}.dim`, 0, 0.9, 0.01, m.dim, 'Abdunkeln ')}
-      ${t === 'mach' && SKD.page === 'gacha' ? '' : `<div class="sk-cols">${skColor(`${t}.c1`, m.c1, 'Farbe 1')}${skColor(`${t}.c2`, m.c2, 'Farbe 2')}${t === 'mach' ? skColor('mach.fr', m.fr, 'Rahmen') + skColor('mach.rl', m.rl, 'Walzen') : ''}</div>`}
-      ${t === 'mach' && SKD.page === 'slot' ? skRange('mach.ra', 0, 1, 0.01, m.ra, 'Walzen-Deckkraft ') : ''}`;
+      ${t === 'mach' && page === 'gacha' ? '' : `<div class="sk-cols">${skColor(`${t}.c1`, m.c1, 'Farbe 1')}${skColor(`${t}.c2`, m.c2, 'Farbe 2')}${reelCol ? skColor('mach.fr', m.fr, 'Rahmen') + skColor('mach.rl', m.rl, 'Walzen') : ''}</div>`}
+      ${reelCol ? skRange('mach.ra', 0, 1, 0.01, m.ra, 'Walzen-Deckkraft ') : ''}`;
   }
   function skTabSym(c) {
-    const s = SKD.sel, d = skSymDef('slot', s), nm = skSymName('slot', s);
-    const grid = Array.from({ length: SK_SYM_COUNT }, (_, i) => `<button class="sk-sym${i === s ? ' on' : ''}" data-sksel="${i}" aria-label="${esc(skSymName('slot', i))}"><span class="sk-sym-i">${skSymPrev('slot', i)}</span><small>${esc(skSymName('slot', i))}</small></button>`).join('');
-    return `<p class="note" style="margin:0;max-width:none">Tippe ein Symbol an und ändere es. Die erste Reihe zahlt am wenigsten, ${esc(skSymName('slot', 7))} am meisten.</p>
+    const page = SKD.page, s = SKD.sel, n = skSymCount(page), nm = skSymName(page, s), cur = c.sym[s], isShape = !!cur && cur.k === 'shape';
+    const d = skSymDef(page, s), pendSym = !!SKD.pend && SKD.pend.t === 'sym';
+    const grid = Array.from({ length: n }, (_, i) => `<button class="sk-sym${i === s ? ' on' : ''}" data-sksel="${i}" aria-label="${esc(skSymName(page, i))}"><span class="sk-sym-i">${skSymPrev(page, i)}</span><small>${esc(skSymName(page, i))}</small></button>`).join('');
+    const shapes = skChips([['', 'Keine Form'], ...Object.keys(SK_SHAPES).map(k => [k, SK_SHAPES[k][0]])], isShape ? cur.sh : '', 'data-sksh');
+    const shapeEd = isShape ? `<div class="sk-cols">${skColor('sym.c1', cur.c1, 'Farbe 1')}${skColor('sym.c2', cur.c2, 'Farbe 2')}${skColor('sym.bd', cur.bd, 'Rand')}</div>${skRange('sym.bw', 0, 8, 0.5, cur.bw, 'Randdicke ')}` : '';
+    const hasMedia = isShape && (cur.ref || pendSym);
+    const hint = page === 'slot' ? `Die erste Reihe zahlt am wenigsten, ${esc(skSymName(page, 7))} am meisten.` : 'Jedes Symbol kann ein eigenes Bild, ein Emoji oder eine Form mit Bild bekommen.';
+    return `<p class="note" style="margin:0;max-width:none">Tippe ein Symbol an und ändere es. ${hint}</p>
       <div class="sk-syms">${grid}</div>
       <div class="sk-symed">
-        <div class="sk-sym-big">${skSymPrev('slot', s)}</div>
+        <div class="sk-sym-big${isShape ? ' drag' : ''}" ${isShape ? 'data-skdrag="sym"' : ''}>${skSymHTML(d, '', '?')}</div>
         <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
           <input type="text" id="sk-symname" maxlength="18" value="${esc(nm)}" placeholder="Name" autocomplete="off" aria-label="Name des Symbols">
           <div class="row left"><input type="text" id="sk-symemo" maxlength="12" placeholder="Emoji, z. B. 🐉" autocomplete="off" aria-label="Emoji" style="flex:1;min-width:0"><button class="btn small" data-sk="symemo">OK</button></div>
-          <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="sym">Foto oder GIF</label><button class="btn small" data-sk="symreset">Standard</button></div>
+          <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="sym">${isShape ? 'Foto oder GIF in die Form' : 'Foto oder GIF'}</label><button class="btn small" data-sk="symreset">Standard</button></div>
         </div>
       </div>
-      ${skField('Symbol-Set übernehmen', skChips(SK_PRESET_KEYS.map(k => [k, SK_PRESETS[k].n]), '', 'data-sksymset'))}`;
+      ${isShape && hasMedia ? '<p class="note" style="margin:0;max-width:none">Ziehe das Bild im Rahmen oben, zoome mit zwei Fingern oder nutze die Regler.</p>' : ''}
+      ${skField('Form', shapes)}
+      ${shapeEd}
+      ${hasMedia ? skXform('sym', d) + (isShape && cur.ref ? '<div class="row left"><button class="btn small" data-sk="shapeoff">Bild aus der Form nehmen</button></div>' : '') : ''}
+      ${page === 'slot' ? skField('Symbol-Set übernehmen', skChips(SK_PRESET_KEYS.map(k => [k, SK_PRESETS[k].n]), '', 'data-sksymset')) : `<div class="row left"><button class="btn small" data-sk="symsall">Alle Symbole auf Original</button></div>`}`;
   }
   function skTabColors(c) {
-    const o = c.col, hasM = SKD.page === 'slot';
+    const o = c.col, hasM = skHasSym(SKD.page);
     return `<div class="sk-cols">${skColor('col.accent', o.accent, 'Akzent')}${skColor('col.text', o.text, 'Text')}${skColor('col.panel', o.panel, 'Flächen')}${skColor('col.btn', o.btn, 'Tasten')}${skColor('col.btnFg', o.btnFg, 'Tasten-Text')}</div>
       ${skRange('col.pa', 0.2, 1, 0.01, o.pa, 'Flächen-Deckkraft ')}
       ${hasM ? `<h4 class="set-sub">Dreh-Knopf</h4><div class="sk-cols">${skColor('col.spin1', o.spin1, 'Licht')}${skColor('col.spin2', o.spin2, 'Farbe')}${skColor('col.spinFg', o.spinFg, 'Schrift')}</div>
-      <h4 class="set-sub">Freispiele und Gewinn</h4><div class="sk-cols">${skColor('col.fs1', o.fs1, 'Leiste 1')}${skColor('col.fs2', o.fs2, 'Leiste 2')}${skColor('col.win', o.win, 'Gewinn')}</div>` : ''}`;
+      <h4 class="set-sub">Freispiele und Gewinn</h4><div class="sk-cols">${skColor('col.fs1', o.fs1, 'Leiste 1')}${skColor('col.fs2', o.fs2, 'Leiste 2')}${skColor('col.win', o.win, 'Gewinn')}</div>${skIsGame(SKD.page) ? '<p class="note" style="margin:0;max-width:none">Leiste und Gewinn gelten nur, wenn unter Hintergrund › Maschine „Eigener Hintergrund“ an ist.</p>' : ''}` : ''}`;
   }
   function skTabMore(c) {
-    const m = c.mascot, mu = c.music;
+    const m = skEff(SKD.page).mascot, mu = c.music;
     const posChips = skChips([['tl', '↖'], ['tr', '↗'], ['cl', '◀'], ['cr', '▶'], ['bl', '↙'], ['br', '↘']], m.pos, 'data-skpos');
     return `${skField('Schrift', skChips(SK_FONTS.map(f => [f[0], f[1]]), c.font, 'data-skfont'))}
       <h4 class="set-sub">Maskottchen</h4>
       ${skChips([['none', 'Keins'], ['art', 'Kobold'], ['img', 'Eigenes Bild']], m.v, 'data-skmasc')}
       <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="mascot">Bild wählen (am besten PNG ohne Hintergrund)</label></div>
-      ${m.v !== 'none' ? skField('Platz', posChips) + skRange('mascot.size', 10, 80, 1, m.size, 'Größe ') + `<div class="switch"><span>Spiegeln</span><button data-sk="mflip" aria-pressed="${m.flip}" aria-label="Spiegeln"></button></div><div class="switch"><span>Vor den Bedienelementen</span><button data-sk="mfront" aria-pressed="${m.front}" aria-label="Vor den Bedienelementen"></button></div>` : ''}
+      ${m.v !== 'none' ? skField('Platz', posChips) + skRange('mascot.size', 10, 80, 1, m.size, 'Größe ') + skRange('mascot.rot', -180, 180, 1, m.rot || 0, 'Drehen (°) ') + skSw('Spiegeln', 'mflip', m.flip) + skSw('Vor den Bedienelementen', 'mfront', m.front) : ''}
       ${SKD.page === 'slot' ? `<h4 class="set-sub">Musik</h4>
-        <div class="switch"><span>Musik im Slot</span><button data-sk="musicon" aria-pressed="${mu.on}" aria-label="Musik an oder aus"></button></div>
+        ${skSw('Musik im Slot', 'musicon', mu.on)}
         ${skChips([['irish', 'Irisch (eingebaut)'], ['file', 'Eigene Datei']], mu.src, 'data-skmus')}
         <div class="row left"><label class="btn small" for="sk-file" data-sk="pick" data-id="music">Musikdatei wählen</label></div>
         ${skRange('music.vol', 0, 1, 0.01, mu.vol, 'Lautstärke ')}
@@ -4239,11 +4511,15 @@ body.skin-edit .stage{padding-bottom:54vh}
   function skRender() {
     const el = $('#skined'), page = SKD.page;
     if (!el || !page) return;
-    const c = skinOf(page), tabs = SK_TABS[page];
+    const c = skinOf(page), tabs = skTabsOf(page), pend = SKD.pend;
     if (!tabs.some(t => t[0] === SKD.tab)) SKD.tab = 'vorlage';
+    if (!skHasMach(page)) SKD.sub = 'page';
     const body = { vorlage: skTabPreset, bg: skTabBg, sym: skTabSym, farben: skTabColors, mehr: skTabMore }[SKD.tab](c);
     const keep = el.querySelector('.sk-body'), top = keep ? keep.scrollTop : 0;
-    el.innerHTML = `<div class="sk-head"><b>Design · ${SK_NAMES[page]}</b><button class="btn small primary" data-sk="done">Fertig</button></div>
+    const head = pend
+      ? `<div class="sk-head"><b class="sk-pt">Vorschau</b><span class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn small" data-sk="pendno">Verwerfen</button><button class="btn small primary" data-sk="pendok">Übernehmen</button></span></div><p class="sk-pend">Noch nicht gespeichert. Schau oben, ob es dir gefällt, und ändere es hier, bevor du es übernimmst.</p>`
+      : `<div class="sk-head"><b>Design · ${esc(SK_NAMES[page])}</b><button class="btn small primary" data-sk="done">Fertig</button></div>`;
+    el.innerHTML = `${head}
       <div class="sk-tabs">${tabs.map(([k, n]) => `<button class="sk-tab" data-sktab="${k}" aria-selected="${SKD.tab === k}">${n}</button>`).join('')}</div>
       <div class="sk-body">${body}</div><input type="file" id="sk-file" class="vh" accept="image/*,video/*">`;
     if (keep) el.querySelector('.sk-body').scrollTop = top;
@@ -4251,10 +4527,12 @@ body.skin-edit .stage{padding-bottom:54vh}
   }
   // Pfad "mach.dim" lesen und schreiben
   function skSet(path, v) {
-    const c = skinOf(SKD.page), ks = path.split('.');
-    let o = c; for (let i = 0; i < ks.length - 1; i++) o = o[ks[i]];
-    o[ks[ks.length - 1]] = v;
-    c.p = 'eigen';
+    const ks = path.split('.'), key = ks[ks.length - 1];
+    const o = ks.length === 2 ? skTargetFor(ks[0], key) : null;
+    if (!o) return false;
+    o[key] = v;
+    skinOf(SKD.page).p = 'eigen';
+    return true;
   }
   // Datei fuer Hintergrund, Maskottchen, Symbol oder Musik
   async function skShrink(file, edge, png) {
@@ -4270,6 +4548,19 @@ body.skin-edit .stage{padding-bottom:54vh}
     cv.width = cv.height = 0;
     return out;
   }
+  // Musik wird sofort uebernommen (es gibt nichts zu sehen)
+  async function skPickAudio(file) {
+    const page = SKD.page;
+    busy('Wird gespeichert …');
+    try {
+      const c = skinOf(page), ref = await BE.putPhoto(file), old = c.music.ref;
+      c.music.src = 'file'; c.music.ref = ref; c.p = 'eigen';
+      skSave(true);
+      if (old && old !== ref) await mediaDrop(old);
+      busy(null); skRender(); skRefresh(); skAfter('music');
+    } catch (e) { busy(null); console.error(e); toast('Das konnte ich nicht speichern.'); }
+  }
+  // Foto, GIF oder Video: erst als Vorschau zeigen
   async function skPickFile(file, target) {
     const page = SKD.page;
     if (!file || !page) return;
@@ -4277,44 +4568,101 @@ body.skin-edit .stage{padding-bottom:54vh}
     if (audio && !(/^audio\//.test(file.type) || /\.(mp3|m4a|wav|ogg|aac)$/i.test(file.name || ''))) { toast('Das ist keine Musikdatei.'); return; }
     if (audio && BE && BE.mode === 'cloud') { toast('Eigene Musik geht in der Claude-Version nicht, nur in der Offline-App.'); return; }
     if (file.size > SK_MAX_BYTES) { toast('Die Datei ist zu groß (höchstens 20 MB).'); return; }
-    const video = !audio && isVideoFile(file), gif = file.type === 'image/gif';
+    if (audio) { await skPickAudio(file); return; }
+    const video = isVideoFile(file), gif = file.type === 'image/gif';
+    if (target === 'sym' && video) { toast('Ein Symbol kann ein Foto oder GIF sein, kein Video.'); return; }
+    if (target === 'mascot' && video) { toast('Das Maskottchen kann ein Foto oder GIF sein, kein Video.'); return; }
+    busy('Vorschau wird gemacht …');
+    try {
+      let blob = file;
+      if (!video && !gif) blob = await skShrink(file, target === 'sym' ? 480 : target === 'mascot' ? 900 : 1600, target === 'sym' || target === 'mascot' || file.type === 'image/png');
+      if (!SKD.page) { busy(null); return; }
+      const c = skinOf(page), keepFit = target === 'page' || target === 'mach' ? c[target].fit : 'cover';
+      skPendClear();
+      SKD.pend = { t: target, sel: SKD.sel, blob, url: URL.createObjectURL(blob), video, gif, m: skXDefault(keepFit) };
+      if (target === 'page' || target === 'mach') SKD.sub = target;
+      busy(null);
+      skRender(); skRefresh(); skAfter(target === 'sym' ? 'sym' : 'pend');
+    } catch (e) { busy(null); skPendClear(); console.error(e); toast('Das Bild konnte ich nicht öffnen.'); }
+  }
+  async function skPendOk() {
+    const p = SKD.pend, page = SKD.page;
+    if (!p || !page) return;
     busy('Wird gespeichert …');
     try {
-      const c = skinOf(page);
-      let blob = file, old = null;
-      if (!audio && !video && !gif) {
-        blob = await skShrink(file, target === 'sym' ? 320 : target === 'mascot' ? 900 : 1600, target === 'sym' || target === 'mascot' || file.type === 'image/png');
+      const c = skinOf(page), ref = await BE.putPhoto(p.blob);
+      let old = null;
+      if (p.t === 'page' || p.t === 'mach') { old = c[p.t].ref; Object.assign(c[p.t], p.m, { k: p.video ? 'video' : 'img', ref, art: null }); if (p.t === 'mach' && skIsGame(page)) c.mach.own = true; }
+      else if (p.t === 'mascot') { old = c.mascot.ref; c.mascot.v = 'img'; c.mascot.ref = ref; }
+      else if (p.t === 'sym') {
+        const cur = c.sym[p.sel], n = cur && cur.n ? { n: cur.n } : {};
+        if (cur && cur.k === 'shape') { old = cur.ref; c.sym[p.sel] = { ...cur, ...p.m, ref }; }
+        else { old = cur && cur.k === 'img' ? cur.v : null; c.sym[p.sel] = { k: 'img', v: ref, ...n }; }
       }
-      const ref = await BE.putPhoto(blob);
-      if (target === 'page' || target === 'mach') { old = c[target].ref; c[target].k = video ? 'video' : 'img'; c[target].ref = ref; c[target].art = null; }
-      else if (target === 'mascot') { old = c.mascot.ref; c.mascot.v = 'img'; c.mascot.ref = ref; }
-      else if (target === 'music') { old = c.music.ref; c.music.src = 'file'; c.music.ref = ref; }
-      else if (target === 'sym') { if (video) throw new Error('Video als Symbol'); const cur = c.sym[SKD.sel]; old = cur && cur.k === 'img' ? cur.v : null; c.sym[SKD.sel] = { k: 'img', v: ref, ...(cur && cur.n ? { n: cur.n } : {}) }; }
       c.p = 'eigen';
+      const kind = p.t;
+      skPendClear();
       skSave(true);
       if (old && old !== ref) await mediaDrop(old);
-      busy(null); skRender(); skRefresh(); skAfter(target);
-    } catch (e) { busy(null); console.error(e); toast(e && /Video als Symbol/.test(e.message) ? 'Ein Symbol kann ein Foto oder GIF sein, kein Video.' : 'Das konnte ich nicht speichern.'); }
+      busy(null); toast('Gespeichert.');
+      skRender(); skRefresh(); skAfter(kind === 'sym' ? 'sym' : kind);
+    } catch (e) { busy(null); console.error(e); toast('Das konnte ich nicht speichern.'); }
   }
-  // Nach Aenderungen: Slot und Musik auffrischen
-  function skAfter(what) {
-    if (SKD.page === 'slot') { if (what === 'sym' || what === 'symset') renderSlot(); if (typeof MUSIC !== 'undefined') MUSIC.sync('slot', true); }
-    if (SKD.page === 'gacha' && current === 'gacha') renderGacha();
-    if (SKD.page === 'home' && current === 'home') renderHome();
-    skRefresh();
+  function skPendNo() {
+    const kind = SKD.pend && SKD.pend.t;
+    skPendClear();
+    skRender(); skRefresh(); skAfter(kind === 'sym' ? 'sym' : 'pend');
   }
+  // Nach Aenderungen: Slot, Spiele und Musik auffrischen
+  function skAfter(what, page) {
+    page = page || SKD.page;
+    if (page === 'slot') {
+      if (what === 'sym' || what === 'symset') { if (current === 'slot') renderSlot(); }
+      if (current === 'slot') { skApplyMach(); if (typeof MUSIC !== 'undefined' && (what === 'music' || what === 'symset')) MUSIC.sync('slot', true); }
+    } else if (skIsGame(page)) {
+      if (current === 'game') { if ((what === 'sym' || what === 'symset') && !GM.spinning && typeof gmPaintReels === 'function') gmPaintReels(); skApplyGame(); }
+    } else if (page === 'gacha' && current === 'gacha') renderGacha();
+    else if (page === 'home' && current === 'home') renderHome();
+    if (SKD.page === page) skRefresh();
+  }
+  // Form-Symbol live nachfuehren (ohne neu zu zeichnen)
+  function skSymLive() {
+    const page = SKD.page, s = SKD.sel;
+    if (!page) return;
+    const d = skEff(page).sym[s];
+    if (!d || d.k !== 'shape') return;
+    const mv = skMediaVars(d), sv = skShapeVars(d);
+    document.querySelectorAll(`#view-slot .sc[data-s="${s}"], #view-game .gc[data-s="${s}"], #skined .sk-sym-big, #skined .sk-sym[data-sksel="${s}"]`).forEach(r => {
+      r.querySelectorAll('.shp').forEach(e => e.setAttribute('style', sv));
+      r.querySelectorAll('.shp-m').forEach(e => e.setAttribute('style', mv));
+    });
+  }
+  const skPresetFor = (page, k) => { const o = skFromPreset(k); if (page !== 'slot') o.sym = {}; return o; };
 
   $('#skined').addEventListener('click', async e => {
     const page = SKD.page;
     if (!page) return;
     const c = skinOf(page);
-    const t = e.target.closest('[data-sk],[data-sktab],[data-sksub],[data-skfit],[data-sksel],[data-sksymset],[data-skpre],[data-skfont],[data-skmasc],[data-skpos],[data-skmus]');
+    const t = e.target.closest('[data-sk],[data-sktab],[data-sksub],[data-skfit],[data-sksel],[data-sksymset],[data-sksh],[data-skpre],[data-skfont],[data-skmasc],[data-skpos],[data-skmus]');
     if (!t) return;
     const d = t.dataset;
+    // Eine offene Vorschau bleibt bei diesen Aktionen bestehen, bei allen anderen wird sie verworfen
+    if (SKD.pend) {
+      const keep = d.sktab || d.sksub || d.skfit || d.sksh != null || d.skpos || d.skfont || (d.sk && ['pick', 'pendok', 'pendno', 'center', 'xreset', 'mflip', 'mfront', 'done'].includes(d.sk));
+      if (!keep) { skPendClear(); skRefresh(); }
+    }
     if (d.sktab) { SKD.tab = d.sktab; skRender(); return; }
     if (d.sksub) { SKD.sub = d.sksub; skRender(); return; }
-    if (d.skfit) { c[SKD.sub].fit = d.skfit; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
-    if (d.sksel != null) { SKD.sel = +d.sksel; skRender(); return; }
+    if (d.skfit) { const o = skTargetFor(SKD.sub, 'fit'); if (o) o.fit = d.skfit; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
+    if (d.sksel != null) { SKD.sel = +d.sksel; skRender(); skAfter('sym'); return; }
+    if (d.sksh != null) {
+      const cur = c.sym[SKD.sel] || {}, n = cur.n ? cur.n : '';
+      if (!d.sksh) {
+        if (cur.k === 'shape') { if (cur.ref) c.sym[SKD.sel] = { k: 'img', v: cur.ref, ...(n ? { n } : {}) }; else if (n) c.sym[SKD.sel] = { k: 'def', v: '', n }; else delete c.sym[SKD.sel]; }
+      } else if (cur.k === 'shape') cur.sh = d.sksh;
+      else c.sym[SKD.sel] = skShapeNorm({ sh: d.sksh, ref: cur.k === 'img' ? cur.v : null }, n);
+      c.p = 'eigen'; skSave(true); skRender(); skAfter('sym'); return;
+    }
     if (d.skfont) { c.font = d.skfont; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
     if (d.skpos) { c.mascot.pos = d.skpos; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
     if (d.skmasc) {
@@ -4323,7 +4671,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     }
     if (d.skmus) { if (d.skmus === 'file' && !c.music.ref) { toast('Wähle erst eine Musikdatei.'); return; } c.music.src = d.skmus; skSave(); skRender(); if (typeof MUSIC !== 'undefined') MUSIC.sync('slot', true); return; }
     if (d.sksymset) {
-      const pre = SK_PRESETS[d.sksymset].d(), olds = Object.values(c.sym).filter(s => s.k === 'img').map(s => s.v);
+      const pre = SK_PRESETS[d.sksymset].d(), olds = Object.values(c.sym).flatMap(s => (s.k === 'img' ? [s.v] : s.k === 'shape' && s.ref ? [s.ref] : []));
       c.sym = d.sksymset === 'klassisch' ? {} : skNorm({ sym: pre.sym || {} }).sym; c.p = 'eigen'; skSave(true);
       for (const r of olds) await mediaDrop(r);
       skRender(); skAfter('symset'); return;
@@ -4333,22 +4681,31 @@ body.skin-edit .stage{padding-bottom:54vh}
       if (custom && SKD.armPreset !== k) { SKD.armPreset = k; skRender(); setTimeout(() => { if (SKD.armPreset === k) { SKD.armPreset = null; if (SKD.page && SKD.tab === 'vorlage') skRender(); } }, 4500); return; }
       SKD.armPreset = null;
       const olds = skRefsOf(c);
-      S.meta.skin[page] = skFromPreset(k); skSave(true);
+      S.meta.skin[page] = skPresetFor(page, k); skSave(true);
       for (const r of olds) await mediaDrop(r);
       skRender(); skRefresh(); skAfter('symset'); return;
     }
     const a = d.sk;
     if (a === 'done') { skClose(); return; }
+    if (a === 'pendok') { await skPendOk(); return; }
+    if (a === 'pendno') { skPendNo(); return; }
     if (a === 'pick') {
-      SKD.fileFor = d.id === 'sym' ? 'sym' : d.id;
+      SKD.fileFor = d.id;
       const f = $('#sk-file'); if (f) f.accept = d.id === 'music' ? 'audio/*' : d.id === 'sym' ? 'image/*' : d.id === 'mascot' ? 'image/*' : 'image/*,video/*';
       return;
+    }
+    if (a === 'center' || a === 'xreset') {
+      const o = skTargetFor(d.id, 'z'); if (!o) return;
+      o.x = 50; o.y = 50; o.dx = 0; o.dy = 0;
+      if (a === 'xreset') { o.z = 1; o.rot = 0; }
+      c.p = 'eigen'; skSave(); skRender(); skRefresh(); skSymLive(); return;
     }
     if (a === 'mediaoff') {
       const tg = d.id, old = c[tg].ref;
       c[tg].k = null; c[tg].ref = null; c[tg].art = null; c.p = 'eigen'; skSave(true);
       await mediaDrop(old); skRender(); skRefresh(); return;
     }
+    if (a === 'gown') { c.mach.own = !c.mach.own; c.p = 'eigen'; skSave(); skRender(); skRefresh(); return; }
     if (a === 'artbg') { c.page.k = 'art'; c.page.art = 'scene'; c.page.ref = null; c.p = 'eigen'; skSave(true); skRender(); skRefresh(); return; }
     if (a === 'mflip') { c.mascot.flip = !c.mascot.flip; skSave(); skRender(); skRefresh(); return; }
     if (a === 'mfront') { c.mascot.front = !c.mascot.front; skSave(); skRender(); skRefresh(); return; }
@@ -4356,20 +4713,32 @@ body.skin-edit .stage{padding-bottom:54vh}
     if (a === 'symemo') {
       const g = firstGlyph(($('#sk-symemo') || {}).value);
       if (!g) { toast('Gib ein Emoji ein, z. B. 🐉'); return; }
-      const cur = c.sym[SKD.sel], old = cur && cur.k === 'img' ? cur.v : null;
+      const cur = c.sym[SKD.sel], old = cur && cur.k === 'img' ? cur.v : cur && cur.k === 'shape' ? cur.ref : null;
       c.sym[SKD.sel] = { k: 'emoji', v: g, ...(cur && cur.n ? { n: cur.n } : {}) }; c.p = 'eigen'; skSave(true);
       if (old) await mediaDrop(old);
       skRender(); skAfter('sym'); return;
     }
     if (a === 'symreset') {
-      const cur = c.sym[SKD.sel], old = cur && cur.k === 'img' ? cur.v : null;
+      const cur = c.sym[SKD.sel], old = cur && cur.k === 'img' ? cur.v : cur && cur.k === 'shape' ? cur.ref : null;
       delete c.sym[SKD.sel]; c.p = 'eigen'; skSave(true);
+      if (old) await mediaDrop(old);
+      skRender(); skAfter('sym'); return;
+    }
+    if (a === 'symsall') {
+      const olds = Object.values(c.sym).flatMap(s => (s.k === 'img' ? [s.v] : s.k === 'shape' && s.ref ? [s.ref] : []));
+      c.sym = {}; c.p = 'eigen'; skSave(true);
+      for (const r of olds) await mediaDrop(r);
+      skRender(); skAfter('symset'); return;
+    }
+    if (a === 'shapeoff') {
+      const cur = c.sym[SKD.sel]; if (!cur || cur.k !== 'shape') return;
+      const old = cur.ref; cur.ref = null; c.p = 'eigen'; skSave(true);
       if (old) await mediaDrop(old);
       skRender(); skAfter('sym'); return;
     }
     if (a === 'reset') {
       const olds = skRefsOf(c);
-      S.meta.skin[page] = skFromPreset(SK_PRESETS[c.p] ? c.p : 'klassisch'); skSave(true);
+      S.meta.skin[page] = skPresetFor(page, SK_PRESETS[c.p] ? c.p : 'klassisch'); skSave(true);
       for (const r of olds) await mediaDrop(r);
       skRender(); skRefresh(); skAfter('symset'); return;
     }
@@ -4387,69 +4756,92 @@ body.skin-edit .stage{padding-bottom:54vh}
     const path = t.dataset && t.dataset.skf;
     if (!path) return;
     const v = t.type === 'color' ? t.value : +t.value;
-    skSet(path, v);
+    if (!skSet(path, v)) return;
     const lab = $('#skined').querySelector(`[data-skv="${path}"]`); if (lab) { const st = +t.step || 1; lab.textContent = (+v).toFixed(st < 1 ? (st < 0.1 ? 2 : 1) : 0); }
     skSave();
     skRefresh();
+    const root = path.split('.')[0];
     // Vorschau im Designer nachfuehren
     const pv = $('#sk-prev');
-    if (pv && /^(page|mach)\./.test(path)) { const m = skinOf(page)[SKD.sub]; const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(m)); const dm = pv.querySelector('.sk-prev-dim'); if (dm) dm.style.opacity = m.dim; pv.style.background = SKD.sub === 'mach' ? skRad(m) : skGrad(m); }
+    if (pv && (root === 'page' || root === 'mach')) { const m = skEff(page)[SKD.sub]; const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(m)); const dm = pv.querySelector('.sk-prev-dim'); if (dm) dm.style.opacity = m.dim; pv.style.background = SKD.sub === 'mach' ? skRad(m) : skGrad(m); }
+    if (root === 'sym') skSymLive();
     if (path === 'music.vol' && typeof MUSIC !== 'undefined') MUSIC.vol(+v);
   });
   document.addEventListener('change', e => {
     if (e.target.id !== 'sk-file') return;
     const f = e.target.files && e.target.files[0], tg = SKD.fileFor; e.target.value = '';
-    if (f && tg) skPickFile(f, tg === 'sym' ? 'sym' : tg);
+    if (f && tg) skPickFile(f, tg);
   });
-  // Bild ausrichten: ziehen und zoomen in der Vorschau
+  // Bild ausrichten: ziehen, zoomen (zwei Finger / Mausrad) und drehen (zwei Finger / Umschalt + Mausrad)
   (() => {
     const pts = new Map();
-    let pinch = 0;
-    const el = () => $('#sk-prev');
+    let pinch = 0, ang = 0, host = null;
+    const rootOf = pv => pv.dataset.skdrag;
+    const objOf = pv => (SKD.page && pv ? skTargetFor(rootOf(pv), 'z') : null);
+    const frame = pv => { const mm = pv.querySelector('.sk-m'); return (mm && mm.parentElement) || pv; };
+    const paint = (pv, o) => {
+      const root = rootOf(pv);
+      const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(o));
+      ['x', 'y', 'z', 'rot', 'dx', 'dy'].forEach(k => {
+        const sel = `[data-skf="${root}.${k}"]`, inp = $('#skined').querySelector(sel);
+        if (inp) { inp.value = o[k]; const lab = $('#skined').querySelector(`[data-skv="${root}.${k}"]`); if (lab) lab.textContent = (+o[k]).toFixed(k === 'z' ? 2 : 0); }
+      });
+      if (!SKD.pend) skSave();
+      if (root === 'sym') skSymLive(); else skRefresh();
+    };
     document.addEventListener('pointerdown', e => {
-      const pv = e.target.closest && e.target.closest('#sk-prev');
-      if (!pv) return;
+      const pv = e.target.closest && e.target.closest('[data-skdrag]');
+      if (!pv || !objOf(pv)) return;
+      host = pv;
       try { pv.setPointerCapture(e.pointerId); } catch (x) { /* egal */ }
       pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = Math.hypot(a.x - b.x, a.y - b.y); }
+      if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = Math.hypot(a.x - b.x, a.y - b.y); ang = Math.atan2(b.y - a.y, b.x - a.x); }
     });
     document.addEventListener('pointermove', e => {
-      if (!pts.has(e.pointerId) || !SKD.page) return;
-      const pv = el(); if (!pv) return;
+      if (!pts.has(e.pointerId) || !SKD.page || !host || !host.isConnected) return;
+      const o = objOf(host); if (!o) return;
       const prev = pts.get(e.pointerId), now = { x: e.clientX, y: e.clientY }; pts.set(e.pointerId, now);
-      const m = skinOf(SKD.page)[SKD.sub], r = pv.getBoundingClientRect();
+      const r = frame(host).getBoundingClientRect();
       if (pts.size === 1) {
-        m.x = skNum(m.x - (now.x - prev.x) / r.width * 100 / m.z, 0, 100, 50);
-        m.y = skNum(m.y - (now.y - prev.y) / r.height * 100 / m.z, 0, 100, 50);
+        o.dx = skNum(o.dx + (now.x - prev.x) / Math.max(1, r.width) * 100, -100, 100, 0);
+        o.dy = skNum(o.dy + (now.y - prev.y) / Math.max(1, r.height) * 100, -100, 100, 0);
       } else if (pts.size === 2) {
-        const [a, b] = [...pts.values()], dd = Math.hypot(a.x - b.x, a.y - b.y);
-        if (pinch) m.z = skNum(m.z * dd / pinch, 1, 4, 1);
-        pinch = dd;
+        const [a, b] = [...pts.values()], dd = Math.hypot(a.x - b.x, a.y - b.y), an = Math.atan2(b.y - a.y, b.x - a.x);
+        if (pinch) o.z = skNum(o.z * dd / pinch, 0.25, 4, 1);
+        let dr = (an - ang) * 180 / Math.PI; if (dr > 180) dr -= 360; if (dr < -180) dr += 360;
+        o.rot = skNum(((o.rot || 0) + dr + 540) % 360 - 180, -180, 180, 0);
+        pinch = dd; ang = an;
       }
       skinOf(SKD.page).p = 'eigen';
-      const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(m));
-      ['x', 'y', 'z'].forEach(k => { const inp = $('#skined').querySelector(`[data-skf="${SKD.sub}.${k}"]`); if (inp) { inp.value = m[k]; const lab = $('#skined').querySelector(`[data-skv="${SKD.sub}.${k}"]`); if (lab) lab.textContent = (+m[k]).toFixed(k === 'z' ? 2 : 0); } });
-      skSave(); skRefresh();
+      paint(host, o);
     });
-    const up = e => { pts.delete(e.pointerId); pinch = 0; };
+    const up = e => { pts.delete(e.pointerId); pinch = 0; ang = 0; };
     document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
     document.addEventListener('wheel', e => {
-      const pv = e.target.closest && e.target.closest('#sk-prev');
+      const pv = e.target.closest && e.target.closest('[data-skdrag]');
       if (!pv || !SKD.page) return;
+      const o = objOf(pv); if (!o) return;
       e.preventDefault();
-      const m = skinOf(SKD.page)[SKD.sub]; m.z = skNum(m.z * Math.exp(-e.deltaY * 0.0015), 1, 4, 1); skinOf(SKD.page).p = 'eigen';
-      const mm = pv.querySelector('.sk-m'); if (mm) mm.setAttribute('style', skMediaVars(m));
-      const inp = $('#skined').querySelector(`[data-skf="${SKD.sub}.z"]`); if (inp) inp.value = m.z;
-      skSave(); skRefresh();
+      if (e.shiftKey || e.altKey) o.rot = skNum(((o.rot || 0) + (e.deltaY || e.deltaX) * 0.2 + 540) % 360 - 180, -180, 180, 0);
+      else o.z = skNum(o.z * Math.exp(-e.deltaY * 0.0015), 0.25, 4, 1);
+      skinOf(SKD.page).p = 'eigen';
+      host = pv; paint(pv, o);
     }, { passive: false });
   })();
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && SKD.page && !$('#skined').hidden && $('#dlg').hidden) { skClose(); } });
-  ACTS.skedit = id => skOpen(SK_PAGES.includes(id) ? id : current);
+  // Design oeffnen: mit Seite (Knopf "Design anpassen") oder fuer die aktuelle Seite (Pinsel oben)
+  ACTS.skedit = id => {
+    const p = SK_PAGES.includes(id) ? id : skPageOf(current);
+    if (!p) return;
+    if (!id && SKD.page === p && !$('#skined').hidden) { skClose(); return; }
+    skOpen(p);
+  };
 
   // ---- Sichern und Wiederherstellen (Teil von "Alles sichern") ----
   async function skExport(photos) {
     const out = {};
     for (const p of SK_PAGES) {
+      if (!['home', 'gacha', 'slot'].includes(p) && !(S.meta.skin && S.meta.skin[p])) continue;
       const c = JSON.parse(JSON.stringify(skinOf(p)));
       for (const ref of skRefsOf(c)) {
         try { const b = await BE.blobOf(ref); if (b) photos[ref] = await blobToDataURL(b); } catch (e) { console.warn('Design-Medium fehlt', ref, e); }
@@ -4458,6 +4850,17 @@ body.skin-edit .stage{padding-bottom:54vh}
     }
     const lib = await dsExport(photos); if (lib) out.lib = lib;
     return out;
+  }
+  // Fotos eines Designs aus einer Sicherung neu anlegen und die Verweise umbiegen (take: alte Referenz -> neue oder null)
+  async function skRemap(c, take) {
+    for (const k of ['page', 'mach']) if (c[k].ref) { const r = await take(c[k].ref); if (r) c[k].ref = r; else { c[k].k = null; c[k].ref = null; } }
+    if (c.mascot.ref) { const r = await take(c.mascot.ref); if (r) c.mascot.ref = r; else { c.mascot.ref = null; c.mascot.v = 'none'; } }
+    if (c.music.ref) { const r = await take(c.music.ref); if (r) c.music.ref = r; else { c.music.ref = null; c.music.src = 'irish'; } }
+    for (const i of Object.keys(c.sym)) {
+      const s = c.sym[i];
+      if (s.k === 'img') { const r = await take(s.v); if (r) s.v = r; else delete c.sym[i]; }
+      else if (s.k === 'shape' && s.ref) { const r = await take(s.ref); if (r) s.ref = r; else s.ref = null; }
+    }
   }
   async function skImport(map, photos) {
     if (!map || typeof map !== 'object') return;
@@ -4474,10 +4877,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     for (const p of SK_PAGES) {
       if (!map[p]) continue;
       const c = skNorm(map[p]);
-      for (const k of ['page', 'mach']) if (c[k].ref) { const r = await take(c[k].ref); if (r) c[k].ref = r; else { c[k].k = null; c[k].ref = null; } }
-      if (c.mascot.ref) { const r = await take(c.mascot.ref); if (r) c.mascot.ref = r; else { c.mascot.ref = null; c.mascot.v = 'none'; } }
-      if (c.music.ref) { const r = await take(c.music.ref); if (r) c.music.ref = r; else { c.music.ref = null; c.music.src = 'irish'; } }
-      for (const i of Object.keys(c.sym)) if (c.sym[i].k === 'img') { const r = await take(c.sym[i].v); if (r) c.sym[i].v = r; else delete c.sym[i]; }
+      await skRemap(c, take);
       const old = skRefsOf(skinOf(p));
       S.meta.skin[p] = c;
       for (const r of old) if (!skAllRefs().has(r)) await mediaDrop(r);
@@ -5084,7 +5484,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   }
 
   // ================= Design-Speicher =================
-  // Das aktuelle Design einer Seite (Home, Gacha, Slot) laesst sich unter einem Namen ablegen und spaeter auf jede Seite anwenden.
+  // Das aktuelle Design einer Seite (jede Seite der App und jeder Slot) laesst sich unter einem Namen ablegen und spaeter auf jede Seite anwenden.
   // Gespeicherte Designs und eingebaute Vorlagen lassen sich verstecken. Zurueckholen: Cheat-Menue (Code 6906) -> "Verstecke Designs".
   const DS_MAX = 40;
   const DS = { fixed: null };
@@ -5160,8 +5560,11 @@ body.skin-edit .stage{padding-bottom:54vh}
       return;
     }
     SKD.armDs = null;
+    skPendClear();
     const olds = skRefsOf(cur);
-    S.meta.skin[page] = skNorm(JSON.parse(JSON.stringify(it.c))); skSave(true);
+    const nc = skNorm(JSON.parse(JSON.stringify(it.c)));
+    if (it.pg !== page) nc.sym = {};   // Symbole gehoeren zu ihrem Slot, nicht zu einer anderen Seite
+    S.meta.skin[page] = nc; skSave(true);
     for (const r of olds) await mediaDrop(r);
     SFX.play('pop'); toast(`„${it.n}“ ist jetzt aktiv.`);
     skRender(); skRefresh(); skAfter('symset');
@@ -5188,7 +5591,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     if (a === 'save') dsSave();
     else if (a === 'use') dsApply(id);
     else if (a === 'del') dsDelete(id);
-    else if (a === 'hide') { dsSetHid(id, true); SKD.armDs = null; SKD.armDel = null; SFX.play('pop'); toast('Das Design ist versteckt.'); skRender(); }
+    else if (a === 'hide') { skPendClear(); skRefresh(); dsSetHid(id, true); SKD.armDs = null; SKD.armDel = null; SFX.play('pop'); toast('Das Design ist versteckt.'); skRender(); }
   });
   document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'ds-name') { e.preventDefault(); dsSave(); } });
 
@@ -5239,10 +5642,7 @@ body.skin-edit .stage{padding-bottom:54vh}
       if (!raw || typeof raw !== 'object' || !raw.c) continue;
       if (m.items.length >= DS_MAX) break;
       const c = skNorm(raw.c);
-      for (const k of ['page', 'mach']) if (c[k].ref) { const r = await take(c[k].ref); if (r) c[k].ref = r; else { c[k].k = null; c[k].ref = null; } }
-      if (c.mascot.ref) { const r = await take(c.mascot.ref); if (r) c.mascot.ref = r; else { c.mascot.ref = null; c.mascot.v = 'none'; } }
-      if (c.music.ref) { const r = await take(c.music.ref); if (r) c.music.ref = r; else { c.music.ref = null; c.music.src = 'irish'; } }
-      for (const i of Object.keys(c.sym)) if (c.sym[i].k === 'img') { const r = await take(c.sym[i].v); if (r) c.sym[i].v = r; else delete c.sym[i]; }
+      await skRemap(c, take);
       const id = uid(8);
       idMap[String(raw.id)] = id;
       m.items.push({ id, n: typeof raw.n === 'string' ? raw.n.replace(/[<>&"']/g, '').slice(0, 24) : 'Design', pg: SK_PAGES.includes(raw.pg) ? raw.pg : 'home', t: Number.isFinite(+raw.t) ? +raw.t : 0, c });
@@ -6094,12 +6494,7 @@ body.skin-edit .stage{padding-bottom:54vh}
     }
     return c;
   }
-  const symHTML = s => {
-    const d = skSymDef('slot', s), nm = esc(skSymName('slot', s));
-    if (d.k === 'art') return `<img src="${esc(artURL(d.v))}" alt="${nm}" draggable="false">`;
-    if (d.k === 'img') { const u = BE && d.v ? BE.src(d.v) : ''; return u ? `<img src="${esc(u)}" alt="${nm}" draggable="false">` : `<span>${esc(SLOTCORE.EMOJI[s])}</span>`; }
-    return `<span>${esc(d.v)}</span>`;
-  };
+  const symHTML = s => skSymHTML(skSymDef('slot', s), skSymName('slot', s), SLOTCORE.EMOJI[s]);
   const cellHTML = s => `<div class="sc s${s}" data-s="${s}">${symHTML(s)}</div>`;
   const rndSym = reel => { const w = SLOTCORE.WEIGHTS[reel], t = w.reduce((a, b) => a + b, 0); let r = Math.random() * t; for (let i = 0; i < w.length; i++) { r -= w[i]; if (r < 0) return i; } return 0; };
   const rndPlain = reel => { let s; do { s = rndSym(reel); } while (s === SLOTCORE.SCAT || s === SLOTCORE.WILD); return s; };
@@ -6109,7 +6504,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   const fsWilds = fs => (fs && fs.wilds ? fs.wilds : []);
 
   function renderSlot() {
-    const cfg = slotCfg(), fs = cfg.fs, sk = skinOf('slot');
+    const cfg = slotCfg(), fs = cfg.fs, sk = skEff('slot');
     const sticky = new Map(fsWilds(fs).map(w => [w.r, w.m]));
     if (!SL.grid) SL.grid = Array.from({ length: SLOTCORE.W }, (_, r) => Array.from({ length: SLOTCORE.H }, () => rndPlain(r)));
     const bet = fs ? fs.bet : cfg.bet;
@@ -6496,7 +6891,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   RENDER.gacha = renderGacha;
   // Gacha-Maschine: eigener Hintergrund aus dem Designer (nur wenn gesetzt, sonst bleibt der Look des Cases)
   function gaSkin() {
-    const m = skinOf('gacha').mach, bg = $('#ga-bg'), dim = $('#ga-bgdim');
+    const m = skEff('gacha').mach, bg = $('#ga-bg'), dim = $('#ga-bgdim');
     if (!bg || !dim) return;
     bg.hidden = dim.hidden = !m.k;
     if (m.k) { skLayer(bg, m); dim.style.opacity = m.dim; }
@@ -7098,7 +7493,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   };
   const gmMusOn = () => !(S.meta && S.meta.gmMus === false);
   const gmG = () => GMREG[GM.id];
-  const gmImg = (G, s) => `<img src="${esc(gartURL(G.sym(s)))}" alt="${esc(G.names[s] || '')}" draggable="false">`;
+  const gmImg = (G, s) => skSymHTML(skSymDef('g_' + G.id, s), skSymName('g_' + G.id, s), '?');
 
   // ---------- Stand (pro Spiel: Einsatz, laufende Freispiele) ----------
   function gmCfg(id) {
@@ -7241,8 +7636,9 @@ body.skin-edit .stage{padding-bottom:54vh}
         <button class="sl-spin" id="gm-spin" data-act="gmspin" aria-label="Drehen"><span id="gm-spin-t">DREHEN</span></button>
         <button class="btn sl-side" data-act="gmbuy" id="gm-buy">${fs ? 'Läuft' : esc(G.buyLabel) + '<small>' + esc(fmtTok(G.buyX * cfg.bet)) + '</small>'}</button>
       </div>
+      <div class="row"><button class="btn" data-act="skedit" data-id="g_${G.id}">Design anpassen</button></div>
       <p class="note">Spielgeld: Hier spielst du nur mit deinen Startoken, nicht mit echtem Geld. ${esc(G.hint)}</p>`;
-    gmPaintTop(); gmPaintCtrl();
+    gmPaintTop(); gmPaintCtrl(); skApplyGame();
     GMUS.sync();
   }
   RENDER.game = renderGame;
@@ -7364,7 +7760,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   };
   const gmPayTable = (G, order, pays, bet, perLine) => {
     const lb = perLine ? bet / 10 : bet;
-    return `<table class="pt"><thead><tr><th></th><th></th><th>3×</th><th>4×</th><th>5×</th></tr></thead><tbody>${order.map(s => `<tr><td class="sc-i">${gmImg(G, s)}</td><td>${esc(G.names[s])}</td>${pays[s].map(p => `<td>${esc(fmtTok(Math.round(p * lb)))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    return `<table class="pt"><thead><tr><th></th><th></th><th>3×</th><th>4×</th><th>5×</th></tr></thead><tbody>${order.map(s => `<tr><td class="sc-i">${gmImg(G, s)}</td><td>${esc(skSymName('g_' + G.id, s))}</td>${pays[s].map(p => `<td>${esc(fmtTok(Math.round(p * lb)))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   };
 
   // ---------- Lobby ----------
@@ -7479,7 +7875,7 @@ body.skin-edit .stage{padding-bottom:54vh}
   const fsInt = (v, lo, hi) => { v = Math.round(+v); return Number.isFinite(v) ? Math.max(lo, Math.min(hi, v)) : null; };
   const takeOver = () => { const o = window.__JB_GM_OVER || null; window.__JB_GM_OVER = null; return o; };
   const initLines = (G, ws) => { const grid = []; for (let r = 0; r < G.w; r++) { const col = []; for (let k = 0; k < G.h; k++) col.push(gmRndW(ws)); grid.push(col); } return { grid, vals: null }; };
-  const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <b>${esc(G.names[s])}</b> ${text}</li>`;
+  const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <b>${esc(skSymName('g_' + G.id, s))}</b> ${text}</li>`;
 
   // =====================================================================================
   // Goldtopf-Angeln
@@ -7820,7 +8216,7 @@ body.skin-edit .stage{padding-bottom:54vh}
         return true;
       },
       info(bet) {
-        const lb = bet, row = s => `<tr><td class="sc-i">${gmImg(G, s)}</td><td>${esc(G.names[s])}</td>${O.PAYS[s].map(p => `<td>${esc(fmtTok(Math.round(p * lb)))}</td>`).join('')}</tr>`;
+        const lb = bet, row = s => `<tr><td class="sc-i">${gmImg(G, s)}</td><td>${esc(skSymName('g_' + G.id, s))}</td>${O.PAYS[s].map(p => `<td>${esc(fmtTok(Math.round(p * lb)))}</td>`).join('')}</tr>`;
         return `<p class="note">Gewinn ab <b>8 gleichen Symbolen irgendwo</b> auf dem 6×5-Feld. Auszahlung bei deinem Einsatz von ${esc(fmtTok(bet))}:</p>
         <table class="pt"><thead><tr><th></th><th></th><th>8–9</th><th>10–11</th><th>12+</th></tr></thead><tbody>${[6, 5, 4, 3, 2, 1, 0].map(row).join('')}</tbody></table>
         <ul class="pt-list">
@@ -8048,13 +8444,15 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     ed.saving = true;
     const todo = d.cards.filter(c => c._blob);
     let done = 0, failed = false;
+    guardArm('save', 20000);
     try {
       busy(todo.length ? `Fotos speichern (0/${todo.length})` : 'Speichere …', todo.length ? 0 : null);
       await pool(todo, 3, async c => {
         if (failed) return;
         try {
-          const ref = await BE.putPhoto(c._blob);
+          const ref = await BE.putPhoto(c._blob, { cache: false });
           c.p = ref; c._blob = null; ed.uploaded.add(ref);
+          guardArm('save', 20000);
         } catch (e) { failed = true; throw e; }
         done++;
         if (!failed) busy(`Fotos speichern (${done}/${todo.length})`, done / todo.length);
@@ -8113,26 +8511,32 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
   const slug = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30) || 'case';
   const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 
+  // Die Sicherungsdatei wird Stueck fuer Stueck als Blob zusammengesetzt (statt eines riesigen Textes im Arbeitsspeicher),
+  // damit auch Cases mit hunderten Fotos auf dem Handy nicht zu viel Speicher brauchen.
   async function buildPackage(list, withProg, wallet) {
     const refs = [...new Set(list.flatMap(cs => cs.cards.map(c => c.p).filter(Boolean)))];
-    const photos = {};
-    let i = 0;
-    await pool(refs, 4, async ref => {
-      try {
-        const b = await BE.blobOf(ref);
-        if (b) photos[ref] = await blobToDataURL(b);
-      } catch (e) { console.warn('Foto fehlt', ref, e); }
-      i++; busy(`Datei wird gepackt (${i}/${refs.length})`, i / Math.max(1, refs.length));
-    });
-    return {
+    const extra = {};   // Medien aus Slot, Home und Designs (wenige)
+    const obj = {
       app: 'jopenbox', v: 1,
       cases: list.map(cs => withProg ? { case: serializeCase(cs), prog: progOf(cs.id) } : { case: serializeCase(cs) }),
-      photos,
-      ...(wallet ? { wallet: { c: MONEY_VER, tokens: tokens(), standard: progOf('standard'), slot: await slotExport(photos), gm: gmExport(), home: await homeExport(photos), ...(hidExport() ? { hid: hidExport() } : {}) } } : {}),
+      ...(wallet ? { wallet: { c: MONEY_VER, tokens: tokens(), standard: progOf('standard'), slot: await slotExport(extra), gm: gmExport(), home: await homeExport(extra), ...(hidExport() ? { hid: hidExport() } : {}) } } : {}),
     };
+    let parts = [JSON.stringify(obj).slice(0, -1) + ',"photos":{'], first = true, i = 0;
+    const add = (ref, url) => { parts.push((first ? '' : ',') + JSON.stringify(ref) + ':' + JSON.stringify(url)); first = false; if (parts.length > 40) parts = [new Blob(parts)]; };
+    Object.keys(extra).forEach(r => add(r, extra[r]));
+    await pool(refs.filter(r => !(r in extra)), 3, async ref => {
+      try {
+        const b = await BE.blobOf(ref);
+        if (b) add(ref, await blobToDataURL(b));
+      } catch (e) { console.warn('Foto fehlt', ref, e); }
+      i++; busy(`Datei wird gepackt (${i}/${refs.length})`, i / Math.max(1, refs.length));
+      guardArm('backup', 15000);
+    });
+    parts.push('}}');
+    return new Blob(parts, { type: 'application/json' });
   }
-  async function saveFile(filename, text) {
-    const blob = new Blob([text], { type: 'application/json' });
+  async function saveFile(filename, data) {
+    const blob = data instanceof Blob ? data : new Blob([data], { type: 'application/json' });
     let dl = null;
     try { if (window.claude && typeof claude.use === 'function') dl = await claude.use('downloads'); } catch (e) { dl = null; }
     if (dl) {
@@ -8172,13 +8576,13 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
   }
   async function exportCases(list, withProg, filename, wallet) {
     if (!list.length && !wallet) { toast('Es gibt noch nichts zu sichern.'); return; }
-    let text;
+    let blob;
     try {
       busy('Datei wird gepackt …', 0);
-      text = JSON.stringify(await buildPackage(list, withProg, wallet));
+      blob = await buildPackage(list, withProg, wallet);
     } catch (e) { busy(null); reportErr(e, 'Datei konnte nicht erstellt werden.'); return; }
     busy(null);
-    await saveFile(filename, text);
+    await saveFile(filename, blob);
   }
   async function shareDraft() {
     if (!ED) return;
@@ -8279,7 +8683,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     switch (act) {
       case 'gostandard': UI.caseId = 'standard'; showView('case'); break;
       case 'pickcase': UI.caseId = id; renderCase(); break;
-      case 'pickcoll': UI.collId = id; UI.filter = 'all'; UI.dup = false; UI.armDup = false; UI.armReset = false; renderColl(); break;
+      case 'pickcoll': UI.collId = id; UI.filter = 'all'; UI.dup = false; UI.armDup = false; UI.armReset = false; UI.collN = PAGE_N; renderColl(); break;
       case 'opencase': startCase(id); break;
       case 'openbooster': startOpen(id); break;
       case 'again': startOpen(id); break;
@@ -8319,7 +8723,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     else if (t.hasAttribute('data-close')) closeOpener();
     else if (t.dataset.view) showView(t.dataset.view);
     else if (t.dataset.act) onAct(t.dataset.act, t.dataset.id, t);
-    else if (t.dataset.f) { if (t.dataset.f === 'dup') UI.dup = !UI.dup; else UI.filter = t.dataset.f; UI.armDup = false; renderColl(); }
+    else if (t.dataset.f) { if (t.dataset.f === 'dup') UI.dup = !UI.dup; else UI.filter = t.dataset.f; UI.armDup = false; UI.collN = PAGE_N; renderColl(); }
     else if (t.dataset.card) openCardFrom(t);
   });
   document.addEventListener('keydown', e => {
@@ -8366,7 +8770,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     const t = e.target.closest('[data-ed],[data-efilter],[data-theme],[data-bar],.cell[data-cid]');
     if (!t) return;
     if (t.dataset.ed) onEd(t.dataset.ed);
-    else if (t.dataset.efilter) { ED.filter = t.dataset.efilter; renderEdChips(); renderEdGrid(); }
+    else if (t.dataset.efilter) { ED.filter = t.dataset.efilter; ED.gridN = PAGE_N; renderEdChips(); renderEdGrid(); }
     else if (t.dataset.theme) {
       ED.draft.theme = t.dataset.theme; ED.dirty = true;
       $$('#editor .sw').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.theme === ED.draft.theme)));
@@ -8449,16 +8853,49 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     else if (t.id === 'ed-perbooster') t.value = clampInt(t.value, 1, 40, 15);
   });
 
+  // ================= Sicherer Start =================
+  const mediaRefsAll = () => [...skAllRefs(), ...homeRefs()];
+  const CRASH_WHERE = { boot: 'beim Starten', home: 'auf dem Startbildschirm', import: 'beim Hinzufügen von Fotos', save: 'beim Speichern eines Cases', photos: 'beim Laden der Fotos',
+    'view:coll': 'in der Sammlung', 'view:case': 'in der Case-Ansicht', 'view:inv': 'im Inventar', 'view:com': 'bei deinen Cases', 'view:set': 'in den Einstellungen', 'view:gacha': 'im Gacha', 'view:slot': 'im Slot', 'view:lobby': 'in der Slot-Lobby', 'view:game': 'in einem Slot', 'view:comics': 'bei den Comics' };
+  function safeBar() {
+    const b = $('#safebar');
+    if (!b) return;
+    if (!SAFE) { b.hidden = true; b.innerHTML = ''; return; }
+    b.hidden = false;
+    b.innerHTML = '<span>Sicherer Start: Fotos sind aus.</span><button class="btn small" data-act="safeoff">Fotos laden</button>';
+  }
+  function safeNotice() {
+    safeBar();
+    if (!CRASH) return;
+    const where = CRASH_WHERE[CRASH.v] || 'in der App';
+    dlg(`<h3>Die App ist beim letzten Mal abgestürzt</h3>
+      <p class="note" style="max-width:none">Das war ${esc(where)}. Meistens geht dem Handy dabei der Arbeitsspeicher aus, zum Beispiel bei sehr vielen Fotos. Damit du wieder hineinkommst, habe ich die Fotos vorerst ausgeschaltet. Deine Cases, Karten und Startoken sind noch da.</p>
+      <p class="note" style="max-width:none">Oben siehst du „Fotos laden“. Stürzt die App danach wieder ab, bleiben die Fotos beim nächsten Start einfach wieder aus.</p>
+      <div class="row"><button class="btn primary" data-act="dlgclose">Weiter ohne Fotos</button><button class="btn" data-act="safeoff">Fotos laden</button></div>`);
+  }
+  ACTS.safeoff = async () => {
+    SAFE = false;
+    try { localStorage.removeItem(SAFE_KEY); } catch (e) { /* egal */ }
+    closeDlg(); safeBar(); guardArm('photos', 8000);
+    busy('Fotos werden geladen …');
+    try { await BE.ensure(mediaRefsAll()); } catch (e) { console.warn(e); }
+    busy(null);
+    refresh(); lzKick();
+  };
+
   // ================= Start =================
   async function init() {
     try {
       BE = await pickBackend();
+      if (BE.mode === 'cloud') { SAFE = false; CRASH = null; }
       try { if (BE.mode === 'local' && navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { /* egal */ }
       await loadAll();
+      if (!SAFE) { try { await BE.ensure(mediaRefsAll()); } catch (e) { console.warn('Medien laden', e); } }
       try { await seedDemo(); } catch (e) { console.error(e); }
       updateStats();
       showView('home');
       startTicker();
+      if (SAFE) safeNotice();
     } catch (e) {
       console.error(e);
       $('#view-home').hidden = false;
