@@ -594,9 +594,9 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .wp-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .wp-head b{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase}
 .wp-head small{color:var(--muted);font:400 11px var(--mono)}
-.wp-row{display:flex;flex-wrap:nowrap;gap:6px;align-items:center;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.wp-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-bottom:2px}
 .wp-row::-webkit-scrollbar{display:none}
-.wp-b{flex:none;min-width:42px;padding:7px 9px!important;font-size:15px!important;min-height:40px}
+.wp-b{flex:none;min-width:38px;padding:5px 8px!important;font-size:15px!important;min-height:38px}
 .wp-hint{margin:0;font-size:11px;color:var(--muted);line-height:1.35}
 .wp-fs{font:500 12px var(--mono);color:var(--muted);min-width:44px;text-align:center}
 .w-note{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.45;margin:0}
@@ -1318,6 +1318,20 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
 .pi-buys button small{font:500 11px var(--mono);opacity:.8}
 .pi-buys button[aria-pressed=true]{border-color:var(--accent);background:var(--accent);color:var(--on-accent,#1a1608)}.pi-buys button[aria-pressed=true] small{opacity:.85}
 @media (prefers-reduced-motion:reduce){.pi-board.antic,.pi-board.bh,.pbm.lit,.pc.morph img,.pb.hit img,.pf{animation:none}}
+/* Pirots: Abspaltungen der Voegel, Nachfallen, Kisten-Items */
+.pb.clone{z-index:2}
+.pb.clone img{width:76%;height:76%}
+.pb.clone::before{inset:12%;opacity:.7}
+.pb.clone.gone{opacity:0;transform:scale(.3)}
+.pc.fallin,.pc.chestpop{z-index:4}
+.pc.fallin img{animation:pifall .5s cubic-bezier(.3,.7,.4,1.15) both}
+.pc.fallin .gv,.pc.chestpop .gv{animation:pifade .45s both}
+@keyframes pifall{from{transform:translateY(calc(var(--fd,1) * -111%))}to{transform:none}}
+@keyframes pifade{from{opacity:0}to{opacity:1}}
+.pc.chestpop img{animation:pichest .6s cubic-bezier(.2,.8,.3,1) both}
+@keyframes pichest{0%{transform:translate(calc(var(--dx,0) * 111%),calc(var(--dy,0) * 111%)) scale(.25);opacity:.2}55%{transform:translate(0,-22%) scale(1.18);opacity:1}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.pc.fallin img,.pc.chestpop img,.pc.fallin .gv,.pc.chestpop .gv{animation:none}}
+
 
 /* Gacha-Kapseln: Fenster und Kacheln */
 .cpw{z-index:57}
@@ -6446,6 +6460,10 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     const FREE_SPINS = [10, 15, 25];  // gewonnene Freispiele bei 3 / 4 / 5
     const FREE_MULT = 1;             // (frueher x3) jetzt zaehlen die Wild-Multiplikatoren
     const FREE_CAP = 60;
+    // Mindestgewinn einer Freispiel-Runde (Vielfache des Einsatzes, ohne den Gewinn der ausloesenden Drehung); gekaufte Runden: mindestens 10 % des Preises
+    const MINX = 12, MIN_BUY_PCT = 0.10;
+    // Verlaengerung: Schon 2 Freispiel-Symbole in einem Freispiel geben EXT2 weitere Freispiele (3 oder mehr wie sonst)
+    const EXT2 = 3;
     const WEIGHTS = [
       [22,20,18,14,10,7,5,3,0,1.22],
       [22,20,18,14,10,7,5,3,3,1.22],
@@ -6522,7 +6540,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     const buyCost = (bet, w, t) => Math.min(BUY_CAP, Math.round(BUY_X[Math.max(0, Math.min(2, w))][Math.max(0, Math.min(3, t))] * bet));
     // Neue Freispielrunde. cap = wie viele Wild-Walzen gleichzeitig kleben duerfen (1 bis 3), startWilds = Wilds, die schon am Anfang liegen
     function freeStart(rng, spins, startWilds, tier, cap) {
-      const st = { left: spins || FREE_SPINS[0], tier: tier || 0, cap: Math.max(1, Math.min(3, Math.round(cap) || 1)), wilds: [] };
+      const st = { left: spins || FREE_SPINS[0], w0: 0, minx: MINX, tier: tier || 0, cap: Math.max(1, Math.min(3, Math.round(cap) || 1)), wilds: [] };
       const reels = [1, 2, 3];   // Wilds gibt es nur auf Walze 2 bis 4
       for (let i = 0; i < Math.min(startWilds || 0, st.cap) && reels.length; i++) {
         const j = Math.floor(rng() * reels.length), r = reels.splice(j, 1)[0];
@@ -6553,9 +6571,18 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       st.left--;
       if (ev.total >= room) { ev.total = room; ev.max = true; st.left = 0; }
       else if (ev.spins) st.left = Math.min(FREE_CAP, st.left + ev.spins);
+      else if (ev.scatter === 2) { ev.ext = EXT2; st.left = Math.min(FREE_CAP, st.left + EXT2); }
       return { grid: g, ev, fresh };
     }
-    return { W, H, WILD, SCAT, NAMES, EMOJI, LINES, PAYS, SCATTER_PAY, FREE_SPINS, FREE_MULT, FREE_CAP, WEIGHTS, FS_WEIGHTS, retune, WM_VALUES, WM_WEIGHTS, TIERS, BUY_X, BUY_CAP, buyCost, drawMult, freeStart, freeSpin, spin, evaluate, lineWin, MAXWIN, plainSym };
+    // Gekaufte Runden: Mindestgewinn je Variante
+    const buyMin = (w, t) => Math.max(MINX, Math.round(BUY_X[Math.max(0, Math.min(2, w))][Math.max(0, Math.min(3, t))] * MIN_BUY_PCT));
+    // Fehlbetrag in Cent, den die beendete Freispiel-Runde noch bis zum Mindestgewinn bekommt (hoechstens bis zum Hoechstgewinn)
+    function minTop(st, bet) {
+      const need = Math.round((st.minx || MINX) * bet), got = Math.max(0, (st.won || 0) - (st.w0 || 0));
+      const room = Math.max(0, Math.round(MAXWIN * bet) - (st.won || 0));
+      return got < need ? Math.min(need - got, room) : 0;
+    }
+    return { MINX, EXT2, buyMin, minTop, W, H, WILD, SCAT, NAMES, EMOJI, LINES, PAYS, SCATTER_PAY, FREE_SPINS, FREE_MULT, FREE_CAP, WEIGHTS, FS_WEIGHTS, retune, WM_VALUES, WM_WEIGHTS, TIERS, BUY_X, BUY_CAP, buyCost, drawMult, freeStart, freeSpin, spin, evaluate, lineWin, MAXWIN, plainSym };
   })();
   if (typeof module !== 'undefined' && module.exports) module.exports = SLOTCORE;
 
@@ -7923,7 +7950,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     const b = (act, label, aria, extra) => `<button class="btn small wp-b" data-act="${act}" data-id="${w.id}" aria-label="${aria}" title="${aria}"${extra || ''}>${label}</button>`;
     return `<div class="wp-head"><b>${esc(HOME_TYPES[w.t].n)}</b><small>${Math.round(w.w)} % breit · ${w.h} px hoch</small></div>
       <div class="wp-row">${b('wup', '▲', 'Nach vorne')}${b('wdown', '▼', 'Nach hinten')}${b('wfull', '↔', 'Volle Breite')}${b('wcenter', '⌖', 'Mittig')}${b('wbg', w.bg ? '▣' : '▢', w.bg ? 'Hintergrund ausschalten' : 'Hintergrund einschalten')}${b('wfsd', 'A−', 'Inhalt kleiner')}<span class="wp-fs" aria-label="Inhaltsgröße">${Math.round(w.fs * 100)} %</span>${b('wfsu', 'A+', 'Inhalt größer')}${HOME_OPTS.includes(w.t) ? b('wopt', '✎', 'Einstellungen') : ''}${b('wdup', '⧉', 'Kopie')}${b('wdel', '✕', 'Löschen', ' style="color:var(--danger,#ff8a9a)"')}</div>
-      <p class="wp-hint">▲▼ vorne/hinten · ↔ volle Breite · ⌖ mittig · ▣ Hintergrund · A± Inhalt · ⧉ Kopie</p>`;
+      <p class="wp-hint">▲▼ Reihenfolge · ↔ Breite · ⌖ mittig · ▣ Hintergrund · A± Größe · ⧉ Kopie · ✕ Löschen</p>`;
   }
   const wPanelUpdate = () => {
     const p = $('#w-panel'); if (p) p.innerHTML = wPanelHTML();
@@ -9874,6 +9901,8 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       f.bet = SL_BETS.includes(f.bet) ? f.bet : c.bet;
       f.won = Math.max(0, Math.round(f.won) || 0);
       f.total = Math.max(f.left, Math.round(f.total) || f.left);
+      f.w0 = Math.max(0, Math.min(f.won, Math.round(f.w0) || 0));
+      f.minx = Math.max(SLOTCORE.MINX, Math.min(100000, Math.round(f.minx) || SLOTCORE.MINX));
       f.tier = Math.max(0, Math.min(SLOTCORE.TIERS.length - 1, Math.round(f.tier) || 0));
       f.cap = Math.max(1, Math.min(3, Math.round(f.cap) || 3));   // alte Runden ohne Obergrenze zaehlen als 3
       const seen = new Set();
@@ -10042,7 +10071,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       const p = pts(line, 5);
       html += `<polyline points="${p.map(x => x.map(n => n.toFixed(1)).join(',')).join(' ')}" stroke="${COL[i % COL.length]}" />`;
     });
-    ev.scatterCells.forEach(([r, k]) => { if (ev.scatter >= 3) hit.add(r + ',' + k); });
+    ev.scatterCells.forEach(([r, k]) => { if (ev.scatter >= 3 || ev.ext) hit.add(r + ',' + k); });
     svg.innerHTML = html;
     hit.forEach(key => { const [r, k] = key.split(',').map(Number); const c = reels[r].querySelectorAll('.sc')[k]; if (c) c.classList.add('hit'); });
     $$('#sl-reels .sc').forEach(c => { if (!c.classList.contains('hit')) c.classList.add('dimmed'); });
@@ -10076,7 +10105,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     // Bezahlen und Ergebnis sofort festschreiben: so geht nichts verloren, auch wenn die Seite waehrend der Animation schliesst
     if (!free) addTokens(-bet);
     const over = window.__JB_SLOT_GRID || null; window.__JB_SLOT_GRID = null;
-    let grid, ev, fresh = [], land, finished = null, started = 0;
+    let grid, ev, fresh = [], land, finished = null, started = 0, minAdd = 0;
     const skip = new Set();
     if (free) {
       cfg.fs.wilds.forEach(w => skip.add(w.r));
@@ -10084,18 +10113,22 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       grid = res.grid; ev = res.ev; fresh = res.fresh;
       cfg.fs.won += ev.total;
       if (ev.spins) { started = ev.spins; cfg.fs.total += ev.spins; }
+      else if (ev.ext) { started = ev.ext; cfg.fs.total += ev.ext; }
       // So sieht die Walze beim Stoppen aus: nur die gelandeten Wilds, der Rest fuellt sich danach auf
       land = grid.map((col, r) => { const f = fresh.find(x => x.r === r); return f ? col.map((s, k) => (f.rows.includes(k) ? SLOTCORE.WILD : rndPlain(r))) : col; });
-      if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; }
+      if (cfg.fs.left <= 0) {
+        finished = cfg.fs; cfg.fs = null;
+        minAdd = SLOTCORE.minTop(finished, bet); finished.won += minAdd;   // Mindestgewinn der Runde
+      }
     } else {
       grid = over || SLOTCORE.spin(Math.random);
       ev = SLOTCORE.evaluate(grid, bet, 1);
       land = grid;
       if (ev.spins) { started = ev.spins; cfg.fs = Object.assign(SLOTCORE.freeStart(Math.random, ev.spins, 0, 0, 1), { bet, won: 0, total: ev.spins }); }
     }
-    if (ev.total) addTokens(ev.total);
-    SET_HOLD(ev.total);
-    SL.lastWin = ev.total;
+    if (ev.total + minAdd) addTokens(ev.total + minAdd);
+    SET_HOLD(ev.total + minAdd);
+    SL.lastWin = ev.total + minAdd;
     saveMeta(true);
     updateStats(); slotUpdateNums();
     SFX.play('spin');
@@ -10124,6 +10157,11 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     SET_HOLD(0); updateStats();
     if (finished) {
       const w = slotEl('sl-win');
+      if (minAdd && w) {
+        w.className = 'sl-win show scat'; w.innerHTML = `<small>MINDESTGEWINN · mindestens ${finished.minx}× Einsatz</small><b>+${fmtTok(minAdd)}</b>`;
+        SFX.play('win2'); await slotWait(1500);
+        if (SL.abort) return;
+      }
       if (w) { w.className = 'sl-win show scat'; w.innerHTML = `<small>${ev.max ? 'Höchstgewinn erreicht · Freispiele beendet' : 'Freispiele beendet'}</small><b>${finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn'}</b>`; }
       SFX.play(finished.won ? 'win3' : 'lose');
       await slotWait(1500);
@@ -10173,7 +10211,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
         <div class="seg" role="group" aria-label="Multiplikator">${T.map((t, i) => `<button data-act="slotbuyt" data-id="${i}" aria-pressed="${SLB.t === i}">${esc(t.n.replace('Zufall 2–50×', 'Zufall').replace('mind. ', '≥').replace('immer 50×', '50×'))}</button>`).join('')}</div>
         <p class="note" style="max-width:none">${SLB.t === 0 ? 'Jedes neue Wild bekommt einen zufälligen Multiplikator von 2× bis 50×, meistens klein.' : SLB.t === 3 ? 'Jedes Wild hat immer 50×.' : `Jedes Wild hat mindestens ${T[SLB.t].min}× und höchstens 50×.`}</p></div>
       <div class="buy-sum"><div><span class="eyebrow">Preis</span><br><b id="buy-cost">${esc(fmtTok(cost))}</b></div><small>${capped ? 'Höchstpreis erreicht' : esc(SLOTCORE.BUY_X[SLB.w][SLB.t].toLocaleString('de-DE') + '× Einsatz')}</small></div>
-      <p class="note" id="buy-typ" style="max-width:none">Typisch kommen etwa ${typ[0]} % des Preises zurück, in ${typ[1] >= 45 ? 'etwa jedem zweiten' : 'ungefähr ' + Math.round(typ[1] / 10) + ' von 10'} Fällen mehr als der Preis. Höchstgewinn: ${SLOTCORE.MAXWIN.toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(SLOTCORE.MAXWIN * bet))}).</p>
+      <p class="note" id="buy-typ" style="max-width:none">Typisch kommen etwa ${typ[0]} % des Preises zurück, in ${typ[1] >= 45 ? 'etwa jedem zweiten' : 'ungefähr ' + Math.round(typ[1] / 10) + ' von 10'} Fällen mehr als der Preis. Höchstgewinn: ${SLOTCORE.MAXWIN.toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(SLOTCORE.MAXWIN * bet))}). Mindestgewinn der Freispiele: ${SLOTCORE.buyMin(SLB.w, SLB.t).toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(SLOTCORE.buyMin(SLB.w, SLB.t) * bet))}).</p>
       <p class="note" id="buy-msg" style="min-height:1.3em">${can ? '' : `Dir fehlen ${esc(fmtTok(cost - tokens()))}.`}</p>
       <div class="row"><button class="btn" data-act="dlgclose">Abbrechen</button><button class="btn primary" id="buy-go" data-act="slotbuygo" ${can ? '' : 'disabled'}>${SLB.arm ? 'Wirklich kaufen?' : 'Kaufen'}</button></div>`);
   }
@@ -10229,7 +10267,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     addTokens(-cost);
     const pay = SLOTCORE.SCATTER_PAY[0] * cfg.bet;
     addTokens(pay);
-    cfg.fs = Object.assign(SLOTCORE.freeStart(Math.random, SLOTCORE.FREE_SPINS[0], 0, SLB.t, SLB.w + 1), { bet: cfg.bet, won: pay, total: SLOTCORE.FREE_SPINS[0] });
+    cfg.fs = Object.assign(SLOTCORE.freeStart(Math.random, SLOTCORE.FREE_SPINS[0], 0, SLB.t, SLB.w + 1), { bet: cfg.bet, won: pay, w0: pay, minx: SLOTCORE.buyMin(SLB.w, SLB.t), total: SLOTCORE.FREE_SPINS[0] });
     SL.lastWin = pay; SET_HOLD(pay);
     saveMeta(true); updateStats(); slotUpdateNums();
     slotBuySpin(pay, cfg.bet);
@@ -10261,11 +10299,13 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       <ul class="pt-list">
         <li><span class="sc-i">${symHTML(SLOTCORE.WILD)}</span> <b>${esc(skSymName('slot', SLOTCORE.WILD))}</b> ersetzt jedes Symbol außer dem Freispiel-Symbol und erscheint auf den Walzen 2 bis 4.</li>
         <li><span class="sc-i">${symHTML(SLOTCORE.SCAT)}</span> <b>${esc(skSymName('slot', SLOTCORE.SCAT))}</b> irgendwo: 3× zahlt ${esc(fmtTok(SLOTCORE.SCATTER_PAY[0] * bet))} und gibt ${SLOTCORE.FREE_SPINS[0]} Freispiele, 4× ${SLOTCORE.FREE_SPINS[1]}, 5× ${SLOTCORE.FREE_SPINS[2]}.</li>
+        <li><b>Verlängerung:</b> Landen in den Freispielen schon 2 Freispiel-Symbole, gibt es ${SLOTCORE.EXT2} Freispiele extra. Bei 3 oder mehr gibt es wie oben die vollen Freispiele dazu.</li>
+        <li><b>Mindestgewinn:</b> Jede Freispiel-Runde zahlt zusammen mindestens ${SLOTCORE.MINX}× Einsatz (${esc(fmtTok(SLOTCORE.MINX * bet))}). Bei gekauften Runden mindestens 10 % des Preises. Fehlt etwas, wird am Ende aufgefüllt.</li>
         <li><b>In den Freispielen</b> landen Wilds häufiger. Jedes bleibt kleben, füllt die ganze Walze aus und bekommt einen zufälligen Multiplikator von 2× bis 50× (kleine kommen öfter). Es kleben höchstens so viele Wild-Walzen gleichzeitig, wie die Runde erlaubt (normal 1, beim Kauf bis 3). Weitere Wilds werden dann zu normalen Symbolen. Läuft eine Gewinnlinie über mehrere Wild-Walzen, werden deren Multiplikatoren addiert. Neue Freispiel-Symbole geben weitere Freispiele.</li>
         <li><b>Höchstgewinn: ${SLOTCORE.MAXWIN.toLocaleString('de-DE')}× Einsatz</b> (${esc(fmtTok(SLOTCORE.MAXWIN * bet))}). Das zahlt ein Vollbild aus lauter Sieben oder Wilds. Mehr gibt es in keiner Runde: Wer ihn erreicht, bekommt genau diesen Betrag und die Freispiele enden.</li>
         <li><b>Spannung:</b> Liegen schon zwei Freispiel-Symbole, laufen die übrigen Walzen langsamer aus und die Symbole leuchten.</li>
         <li><b>Freispiele kaufen</b> kannst du mit 1, 2 oder 3 klebenden Wild-Walzen und einer Stufe für den Multiplikator. Gekauft wird mit einer Drehung, in der 3 Freispiel-Symbole landen.</li>
-        <li>Rückzahlung im Schnitt ca. 96 %. Das ist Spielgeld, kein echtes Geld.</li>
+        <li>Rückzahlung im Schnitt ca. 97 %. Das ist Spielgeld, kein echtes Geld.</li>
       </ul>
       <button class="btn" data-act="dlgclose">Schließen</button>`);
   };
@@ -10279,7 +10319,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
   async function slotImport(c, photos) {
     if (!c || typeof c !== 'object') return;
     const cur = slotCfg(), next = { bet: SL_BETS.includes(c.bet) ? c.bet : cur.bet, fs: cur.fs };
-    if (c.fs && c.fs.left > 0 && !cur.fs) next.fs = { left: c.fs.left, bet: c.fs.bet, won: c.fs.won, total: c.fs.total, tier: c.fs.tier, cap: c.fs.cap, wilds: c.fs.wilds };
+    if (c.fs && c.fs.left > 0 && !cur.fs) next.fs = { left: c.fs.left, bet: c.fs.bet, won: c.fs.won, w0: c.fs.w0, minx: c.fs.minx, total: c.fs.total, tier: c.fs.tier, cap: c.fs.cap, wilds: c.fs.wilds };
     S.meta.slot = next; slotCfg();
     if (c.skin) await skImport(c.skin, photos);
     else if (c.bg || c.scatter || c.dim != null) {   // alte Sicherung (vor dem Designer)
@@ -10550,6 +10590,13 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     }
     const countSym = (grid, id) => { const cells = []; grid.forEach((col, r) => col.forEach((s, k) => { if (s === id) cells.push([r, k]); })); return cells; };
 
+    // Mindestgewinn einer Freispiel-Runde: Fehlbetrag in Cent, den die beendete Runde (st.won = Summe der Freispiele, ohne die ausloesende Drehung)
+    // noch bis zum Mindestgewinn (Vielfache des Einsatzes) bekommt, hoechstens bis zum Hoechstgewinn
+    const minTopOf = (minx, maxwin) => (st, bet) => {
+      const need = Math.round(minx * bet), got = Math.max(0, st.won || 0), room = Math.max(0, Math.round(maxwin * bet) - got);
+      return got < need ? Math.min(need - got, room) : 0;
+    };
+
     // ---------- Halten-und-Gewinnen (gemeinsam fuer deep und book) ----------
     // cfg: { W, H, q (Chance je freier Zelle und Respin), vals:[[wert, gewicht, jackpot|null]...], grand }
     function hwValue(rng, cfg) { const i = pick(rng, cfg._vc || (cfg._vc = mkCum(cfg.vals.map(v => v[1])))); return { v: cfg.vals[i][0], jp: cfg.vals[i][2] || null }; }
@@ -10576,7 +10623,9 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       if (full) x += cfg.grand;
       const max = !!cfg.max && x >= cfg.max;
       if (max) x = cfg.max;
-      return { x, cents: Math.round(x * bet), full, max };
+      let minAdd = 0;   // Mindestgewinn der Runde
+      if (!max && cfg.minx && x < cfg.minx) { minAdd = Math.round((cfg.minx - x) * bet); x = cfg.minx; }
+      return { x, cents: Math.round(x * bet), full, max, minAdd };
     }
     // Vollbild: alle Felder zeigen das hoechste Symbol (oder Wild) -> Hoechstgewinn
     const isFull = (grid, ok) => grid.every(col => col.every(s => ok.has(s)));
@@ -10599,8 +10648,9 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       const FULL_OK = new Set([5, 6]);
       const FREE_SPINS = [10, 15, 20];
       const LEVEL_AT = [4, 8, 12], LEVEL_MULT = [1, 2, 3, 5], LEVEL_SPINS = 10, FREE_CAP = 80;
+      const MINX = 7, EXT2 = 1;   // Mindestgewinn der Freispiel-Runde (x Einsatz); 2 Boote in einem Freispiel geben 3 Freispiele extra
       // Gewichte: Symbole 0..8 je Walze. Angler (6) im Basisspiel nur auf Walze 2-4, in den Freispielen auf allen
-      const WB = [[22, 22, 20, 14, 10, 6, 0, 2.6, 3.2], [22, 22, 20, 14, 10, 6, 1.5, 2.6, 3.2], [22, 22, 20, 14, 10, 6, 1.5, 2.6, 3.2], [22, 22, 20, 14, 10, 6, 1.5, 2.6, 3.2], [22, 22, 20, 14, 10, 6, 0, 2.6, 3.2]];
+      const WB = [[22, 22, 20, 14, 10, 6, 0, 2.52, 3.2], [22, 22, 20, 14, 10, 6, 1.5, 2.52, 3.2], [22, 22, 20, 14, 10, 6, 1.5, 2.52, 3.2], [22, 22, 20, 14, 10, 6, 1.5, 2.52, 3.2], [22, 22, 20, 14, 10, 6, 0, 2.52, 3.2]];
       const WF = [0, 1, 2, 3, 4].map(() => [22, 22, 20, 14, 10, 6, 1.84, 2.4, 30]);
       // Werte der Geld-Fische (Vielfache des Einsatzes) und Gewichte, in Freispielen etwas groesser
       const VB = [[1, 30], [2, 24], [3, 16], [4, 10], [5, 8], [8, 5], [10, 4], [15, 2], [20, 1.2], [25, .6], [50, .2]];
@@ -10642,14 +10692,15 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
         if (ev.max) st.left = 0;
         else {
           if (ev.spins) { st.left += ev.spins; st.total += ev.spins; bonus.push({ k: 'scat', n: ev.spins }); }
+          else if (ev.scat.length === 2) { ev.ext = EXT2; st.left += EXT2; st.total += EXT2; bonus.push({ k: 'scat', n: EXT2 }); }
           while (st.level < LEVEL_AT.length && st.collected >= LEVEL_AT[st.level]) { st.level++; st.left += LEVEL_SPINS; st.total += LEVEL_SPINS; bonus.push({ k: 'level', level: st.level, mult: LEVEL_MULT[st.level], n: LEVEL_SPINS }); }
           if (st.left > FREE_CAP) { st.total -= st.left - FREE_CAP; st.left = FREE_CAP; }
         }
         st.won += ev.total;
         return { sp, ev, bonus };
       }
-      function session(rng, bet, spins) { const st = freeStart(spins); let g = 0; while (st.left > 0) g += freeSpin(st, rng, bet).ev.total; return g; }
-      return { W, H, WILD, SCAT, CASH, NAMES, PAYS, WILD_PAY, SCAT_PAY, MAXWIN, FREE_SPINS, LEVEL_AT, LEVEL_MULT, LEVEL_SPINS, FREE_CAP, WB, WF, VB, VF, retune, spin, evaluate, freeStart, freeSpin, session, multOf };
+      function session(rng, bet, spins) { const st = freeStart(spins); while (st.left > 0) freeSpin(st, rng, bet); return st.won + minTopOf(MINX, MAXWIN)(st, bet); }
+      return { MINX, EXT2, minTop: minTopOf(MINX, MAXWIN), W, H, WILD, SCAT, CASH, NAMES, PAYS, WILD_PAY, SCAT_PAY, MAXWIN, FREE_SPINS, LEVEL_AT, LEVEL_MULT, LEVEL_SPINS, FREE_CAP, WB, WF, VB, VF, retune, spin, evaluate, freeStart, freeSpin, session, multOf };
     })();
 
     // =====================================================================================
@@ -10664,7 +10715,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       const MAXWIN = 5000;
       const FULL_OK = new Set([5, 6]);
       const WT = [[22, 22, 20, 14, 10, 6, 0, 14.35], [22, 22, 20, 14, 10, 6, 3, 14.35], [22, 22, 20, 14, 10, 6, 3, 14.35], [22, 22, 20, 14, 10, 6, 3, 14.35], [22, 22, 20, 14, 10, 6, 0, 14.35]];
-      const HW = { W, H, q: 0.1265, grand: 200, max: MAXWIN,
+      const HW = { W, H, q: 0.1265, grand: 200, max: MAXWIN, minx: 20,
         vals: [[1, 17], [2, 12], [3, 14], [4, 9], [5, 7], [8, 6.5], [10, 4.4], [15, 2.3], [20, .8, 'MINI'], [50, .36, 'MINOR'], [150, .096, 'MAJOR'], [500, .024, 'GRAND']] };
       let cw = WT.map(w => mkCum(w));
       const retune = () => { cw = WT.map(w => mkCum(w)); HW._vc = null; };
@@ -10690,11 +10741,12 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       const MAXWIN = 5000;     // Hoechstgewinn je Runde; Pharao-Vollbild (5 Walzen wachsend) zahlt genau das
       const FULL_OK = new Set([5, 6]);
       const FREE_SPINS = 10, RETRIGGER = 10, FREE_CAP = 60;
+      const MINX = 15, EXT2 = 2;   // Mindestgewinn der Freispiel-Runde (x Einsatz); 2 Buecher in einem Freispiel geben 3 Freispiele extra
       // Wachsendes Symbol: Zahlung in Vielfachen des Gesamteinsatzes je Anzahl Walzen (2..5), nur ab 2 (hohe) bzw. 3 (niedrige)
       const EXP_PAY = [[0, 0, 2.8, 11.3, 56.4], [0, 0, 2.8, 11.3, 56.4], [0, 0, 5.6, 22.6, 112.8], [0, 0, 8.5, 33.8, 169.2], [0, 2.8, 14.1, 70.5, 338.4], [0, 5.6, 28.2, 141, MAXWIN]];
-      const WB = [0, 1, 2, 3, 4].map(() => [24, 22, 18, 14, 10, 7, 2.9, 12]);
+      const WB = [0, 1, 2, 3, 4].map(() => [24, 22, 18, 14, 10, 7, 2.81, 12]);
       const WF = [[22, 22, 20, 16, 12, 8, 2.1, 0], [22, 22, 20, 16, 12, 8, 2.1, 0], [22, 22, 20, 16, 12, 8, 2.1, 0], [22, 22, 20, 16, 12, 8, 2.1, 0], [22, 22, 20, 16, 12, 8, 2.1, 0]];
-      const HW = { W, H, q: 0.115, grand: 300, max: MAXWIN,
+      const HW = { W, H, q: 0.115, grand: 300, max: MAXWIN, minx: 20,
         vals: [[1, 34], [2, 24], [3, 14], [4, 9], [5, 7], [8, 5], [10, 3.4], [15, 1.8], [20, 1.0, 'MINI'], [50, .45, 'MINOR'], [100, .15, 'MAJOR'], [300, .04, 'GRAND']] };
       const COIN_TRIGGER = 6;
       let cb = WB.map(w => mkCum(w)), cf = WF.map(w => mkCum(w));
@@ -10727,13 +10779,14 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
         if (ev.max) st.left = 0;
         else {
           if (ev.spins) { st.left += ev.spins; st.total += ev.spins; }
+          else if (ev.books.length === 2) { ev.ext = EXT2; st.left += EXT2; st.total += EXT2; }
           if (st.left > FREE_CAP) { st.total -= st.left - FREE_CAP; st.left = FREE_CAP; }
         }
         st.won += ev.total;
         return { sp, ev };
       }
-      function session(rng, bet) { const st = freeStart(rng); let g = 0; while (st.left > 0) g += freeSpin(st, rng, bet).ev.total; return g; }
-      return { W, H, BOOKS, COIN, NAMES, PAYS, WILD_PAY, SCAT_PAY, MAXWIN, EXP_PAY, FREE_SPINS, RETRIGGER, FREE_CAP, COIN_TRIGGER, WB, WF, HW, retune, spin, evaluate, freeStart, freeSpin, session, chooseExpand, hwStart: (rng, cells) => hwStart(rng, HW, cells), hwRespin: (rng, st) => hwRespin(rng, HW, st), hwDone: st => hwDone(HW, st), hwPayout: (st, bet) => hwPayout(HW, st, bet), hwPlay: (rng, cells, bet) => hwPlay(rng, HW, cells, bet) };
+      function session(rng, bet) { const st = freeStart(rng); while (st.left > 0) freeSpin(st, rng, bet); return st.won + minTopOf(MINX, MAXWIN)(st, bet); }
+      return { MINX, EXT2, minTop: minTopOf(MINX, MAXWIN), W, H, BOOKS, COIN, NAMES, PAYS, WILD_PAY, SCAT_PAY, MAXWIN, EXP_PAY, FREE_SPINS, RETRIGGER, FREE_CAP, COIN_TRIGGER, WB, WF, HW, retune, spin, evaluate, freeStart, freeSpin, session, chooseExpand, hwStart: (rng, cells) => hwStart(rng, HW, cells), hwRespin: (rng, st) => hwRespin(rng, HW, st), hwDone: st => hwDone(HW, st), hwPayout: (st, bet) => hwPayout(HW, st, bet), hwPlay: (rng, cells, bet) => hwPlay(rng, HW, cells, bet) };
     })();
 
     // =====================================================================================
@@ -10747,6 +10800,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       const SCAT_PAY = [3, 5, 100];     // 4 / 5 / 6+ Truhen
       const MAXWIN = 10000;             // Hoechstgewinn je Runde; Vollbild aus 30 Kronen-Schleimen zahlt genau das
       const FREE_SPINS = 10, RETRIGGER = 5, FREE_CAP = 60;
+      const MINX = 10;   // Mindestgewinn der Freispiel-Runde (x Einsatz)
       const WB = [26, 24, 22, 20, 12, 9, 6, 3.0];             // Symbole 0..7 (Basis)
       const WF = [26, 24, 22, 20, 12, 9, 6, 3.0, 1.2];       // Freispiele, 8 = Multiplikator-Blase
       const BV = [[2, 30], [3, 24], [4, 18], [5, 12], [6, 8], [8, 5], [10, 4], [12, 3], [15, 2], [20, 1.2], [25, .8], [50, .3], [100, .1], [250, .02]];
@@ -10814,13 +10868,13 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
         st.won += add;
         return { res, more, add };
       }
-      function session(rng, bet) { const st = freeStart(); let g = 0; while (st.left > 0) g += freeSpin(st, rng, bet).add; return g; }
+      function session(rng, bet) { const st = freeStart(); while (st.left > 0) freeSpin(st, rng, bet); return st.won + minTopOf(MINX, MAXWIN)(st, bet); }
       // Hauptspiel: eine Kaskade, dann ggf. Freispiele
       function baseSpin(rng, bet, over) {
         const res = cascade(rng, bet, false, null, over);
         return { res, cents: res.total + res.scatCents, trigger: res.scatters >= 4 };
       }
-      return { W, H, SCAT, BUB, NAMES, PAYS, SCAT_PAY, MAXWIN, FREE_SPINS, RETRIGGER, FREE_CAP, WB, WF, BV, retune, spin, findWins, tumble, cascade, baseSpin, freeStart, freeSpin, session, scatN, tier };
+      return { MINX, minTop: minTopOf(MINX, MAXWIN), W, H, SCAT, BUB, NAMES, PAYS, SCAT_PAY, MAXWIN, FREE_SPINS, RETRIGGER, FREE_CAP, WB, WF, BV, retune, spin, findWins, tumble, cascade, baseSpin, freeStart, freeSpin, session, scatN, tier };
     })();
 
     return { LINES10, pick, mkCum, evalLines, ANGLER, DEEP, BOOK, GOO, hwStart, hwRespin, hwDone, hwPayout, hwValue };
@@ -10841,20 +10895,26 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     // Einstellungen, die der Tuner veraendern darf
     const CFG = {
       // Gewinn je Edelstein (Vielfache des Einsatzes) auf Stufe 7; Stufe k = Stufe 7 / RAMP^(7-k), mal SCALE
-      TOP: [30, 15, 10, 7.5], RAMP: 3.2, SCALE: 0.52,
+      TOP: [30, 15, 10, 7.5], RAMP: 2.8, SCALE: 0.036,
       COINS: [0.2, 0.5, 1, 2, 4, 8, 30, 150], COINW: [38, 26, 16, 10, 6, 3, 0.9, 0.1],
       // Gewichte beim Fuellen: 4 Edelsteine, dann Wild, Coin, Bonus, Super, Up1, Up2, Up3, UpAll1, UpAll2, Transform, Spacecorn, Hole, Alien
-      W: { gem: 17, wild: 4.2, coin: 0.09, bonus: 0.56, sup: 0.01, up1: 1, up2: 0.3, up3: 0.1, ua1: 0.15, ua2: 0.04, trans: 3, corn: 0.0035, hole: 0.08, alien: 0.0035 },
+      W: { gem: 17, wild: 4.2, coin: 0.035, bonus: 0.29, sup: 0.003, up1: 1, up2: 0.3, up3: 0.1, ua1: 0.15, ua2: 0.04, trans: 3, corn: 0.002, hole: 0.08, alien: 0.0016 },
       // Freispiele: mehr Upgrades, Super-Bonus: noch mehr Upgrades und +1 Startstufe; Kauf-Wuerfe geben Bonus-Symbolen mehr Gewicht
-      BONUS_DROPS: 5, FREE_CAP: 60, FREE_UPMUL: 1.4, AL_LVBONUS: 1.8, BUY_BM: 3, SUP_UPMUL: 1.7, SUP_LV: 1, HUNT_MUL: 2.35,
+      BONUS_DROPS: 5, FREE_CAP: 60, FREE_UPMUL: 1.4, AL_LVBONUS: 3.8, BUY_BM: 3, SUP_UPMUL: 1.7, SUP_LV: 1, SUP_PAYMUL: 3.2, HUNT_MUL: 2.35,
       // Alien Invasion
       AL_MULT0: 1, AL_STEP: 1, AL_BANDIT: 0.55, AL_BIRDLOSS: 1,
       // Lost in Space
       LIS_P: 0.03, LIS_COIN: 0.7, LIS_VALS: [0.2, 0.35, 0.7, 1, 1.6, 3.3, 8, 33], LIS_W: [30, 24, 17, 12, 8, 5, 2.2, 0.3],
-      TF_FEATURE: 0.03, CLASH_MAX: 2,
+      TF_FEATURE: 0.008, CLASH_MAX: 2,
+      // Nachfallen: nach jeder Runde fallen die Symbole nach; REFILL = Chance fuer ein neues Symbol je Luecke (sinkt mit jedem Durchgang um REFILL_DECAY), CASC_MAX = hoechstens so viele Durchgaenge
+      CASC_MAX: 5, REFILL: 0.6, REFILL_DECAY: 0.65,
+      // Mindestgewinn einer Freispiel-Runde (Vielfache des Einsatzes), Super-Bonus hoeher
+      MINX: 15, MINX_SUP: 60,
+      // Kiste: Chance auf 2. und 3. Item, Gewichte der Items (Edelstein, Coin, Upgrade, Upgrade fuer alle), Coin-Gewichte (kleine Coins)
+      CHEST_N: [0.5, 0.2], CHEST_W: { gem: 30, coin: 38, up: 26, ua: 6 }, CHEST_COINW: [50, 30, 15, 5],
     };
     const idx = (r, c) => r * ST + c;
-    const lvPay = (c, lv) => CFG.TOP[c] * CFG.SCALE / Math.pow(CFG.RAMP, 7 - lv);
+    const lvPay = (c, lv, sup) => CFG.TOP[c] * CFG.SCALE / Math.pow(CFG.RAMP, 7 - lv) * (sup ? CFG.SUP_PAYMUL : 1);
     const cornersOf = n => [idx(0, 0), idx(0, n - 1), idx(n - 1, 0), idx(n - 1, n - 1)];
     const inGrid = (n, r, c) => r >= 0 && c >= 0 && r < n && c < n;
 
@@ -10900,7 +10960,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     // Betraege sind ganze Cent. Kleine Bruchteile werden zufaellig auf- oder abgerundet (im Mittel genau richtig),
     // damit die Rueckzahlung auch bei kleinen Einsaetzen stimmt.
     const rc = (x, rng) => { const b = Math.floor(x); return b + (x > b && rng() < x - b ? 1 : 0); };
-    const gemPay = (S, c, bet) => Math.round(lvPay(c, S.lv[c]) * bet);
+    const gemPay = (S, c, bet) => Math.round(lvPay(c, S.lv[c], S.sup) * bet);
     const coinPay = (x, bet) => Math.round(CFG.COINS[x] * bet);
 
     function shuffle(a, rng) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
@@ -10993,11 +11053,12 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       }
       return true;
     }
-    function targets(D, b) {
+    // Alle Ziele rund um das Feld p (der Vogel b steht dort). out.jump = true: Sprung ueber leere Felder (Spacecorn), dann nur ein Ziel
+    function targets(D, b, p0) {
       const out = [];
-      for (const q of neigh(D, b.p)) if (okTarget(D, b, q, b.p)) out.push(q);
+      for (const q of neigh(D, p0)) if (okTarget(D, b, q, p0)) out.push(q);
       if (!out.length && D.bridge) {   // Spacecorn: ueber leere Felder hinweg zum naechsten Ziel
-        const seen = new Set([b.p]), queue = [b.p];
+        const seen = new Set([p0]), queue = [p0];
         while (queue.length && !out.length) {
           const nxt = [];
           for (const p of queue) for (const q of neigh(D, p)) {
@@ -11008,45 +11069,102 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
           }
           queue.length = 0; nxt.forEach(x => queue.push(x));
         }
+        out.jump = out.length > 0;
       }
       return out;
     }
-    function pickTarget(D, b, cand, rng) {
-      for (const q of cand) if (D.force.has(q) && D.forceBird[q] === D.birds.indexOf(b)) return q;
+    // Der Hauptweg des Vogels: bevorzugt Features, sonst zufaellig. Die anderen Ziele werden von Abspaltungen eingesammelt.
+    function pickMain(D, bi, cand, rng) {
+      for (const q of cand) if (D.force.has(q) && D.forceBird[q] === bi) return q;
       let t = 0; const w = cand.map(q => { const s = D.g[q], v = s >= 5 && s !== WILD ? 2 : 1; t += v; return v; });
       let r = rng() * t;
       for (let i = 0; i < cand.length; i++) { r -= w[i]; if (r < 0) return cand[i]; }
       return cand[cand.length - 1];
     }
 
-    // ---------- Einsammeln: Takt fuer Takt, bis kein Vogel mehr weiterkommt ----------
+    // ---------- Einsammeln ----------
+    // Eine Runde: Jeder Vogel geht von seinem Feld in ALLE Richtungen, in denen etwas fuer ihn liegt. Steht er an einer Weggabelung,
+    // teilt er sich: ein Zweig behaelt den Vogel, die anderen laufen als Abspaltung weiter. So wird alles eingesammelt, was zusammenhaengt.
+    // Die Runde endet, wenn kein Zweig mehr weiterkommt. Dann fallen die Symbole nach (siehe fall) und die Voegel laufen von vorn los.
+    function round(D, rng, bet, log) {
+      const S = D.S; let nMoves = 0, spawned = 0, fronts = [], nextId = 4;
+      const rebuild = () => { fronts = []; D.birds.forEach((b, bi) => { if (b.alive) fronts.push({ f: bi, bi, p: b.p }); }); };
+      rebuild();
+      for (let tick = 0; tick < 110 && !S.max; tick++) {
+        const moves = [], changes = [], keep = [];
+        const order = shuffle(fronts.slice(), rng);
+        for (const fr of order) {
+          if (S.max) { keep.push(fr); continue; }
+          const b = D.birds[fr.bi], cand = targets(D, b, fr.p);
+          if (!cand.length) { keep.push(fr); continue; }
+          const m = pickMain(D, fr.bi, cand, rng);
+          const list = cand.jump ? [m] : [m].concat(shuffle(cand.filter(q => q !== m), rng));
+          const from = fr.p; let first = true;
+          for (const q of list) {
+            if (S.max) break;
+            if (!first && !okTarget(D, b, q, from)) continue;   // durch einen anderen Zweig kann sich das Ziel geaendert haben
+            const mv = { b: fr.bi, f: first ? fr.f : nextId, from, to: q, code: D.g[q], x: D.x[q], pay: 0 };
+            if (first) { D.occ[from] = -1; fr.p = q; if (fr.f === fr.bi) b.p = q; keep.push(fr); }
+            else { mv.sp = fr.f; spawned++; keep.push({ f: nextId++, bi: fr.bi, p: q }); }
+            D.occ[q] = fr.bi;
+            effect(D, b, fr.bi, q, mv, changes, rng, bet);
+            D.g[q] = VOID; D.x[q] = 0;
+            moves.push(mv); nMoves++;
+            first = false;
+          }
+        }
+        fronts = keep;
+        if (!moves.length) break;
+        const entry = { k: 'tick', moves, changes, lv: S.lv.slice(), bonus: S.bonusCnt, bridge: D.bridge, won: S.won };
+        if (D.holeQ && !S.max) { const bh = blackHole(D, rng); if (log) { log.push(entry); log.push(Object.assign({ k: 'hole' }, bh)); } D.holeQ = 0; rebuild(); continue; }
+        if (log) log.push(entry);
+      }
+      D.occ.fill(-1); D.birds.forEach((b, bi) => { if (b.alive) D.occ[b.p] = bi; });
+      if (log && spawned && !S.max) log.push({ k: 'merge', pos: D.birds.map(b => (b.alive ? b.p : -1)) });
+      return nMoves;
+    }
+    // Nach jeder Runde fallen alle Symbole nach unten. Vogel-Felder halten die Symbole darueber auf (sie stapeln sich auf dem Vogel),
+    // in die obersten Luecken jeder Spalte faellt mit einer gewissen Wahrscheinlichkeit Neues nach (wird mit jedem Durchgang seltener).
+    function fall(D, rng, log, depth) {
+      const n = D.n, pr = CFG.REFILL * Math.pow(CFG.REFILL_DECAY, depth), mvs = [], fresh = [];
+      const mix = D.mix;
+      for (let c = 0; c < n; c++) {
+        let r = n - 1;
+        while (r >= 0) {
+          if (D.occ[idx(r, c)] >= 0) { r--; continue; }
+          let top = r; while (top > 0 && D.occ[idx(top - 1, c)] < 0) top--;
+          let dest = r;
+          for (let k = r; k >= top; k--) {
+            const p = idx(k, c);
+            if (D.g[p] === VOID) continue;
+            if (k !== dest) { const q = idx(dest, c); D.g[q] = D.g[p]; D.x[q] = D.x[p]; D.g[p] = VOID; D.x[p] = 0; mvs.push([p, q]); }
+            dest--;
+          }
+          if (top === 0 && dest >= 0) {
+            let cnt = 0; for (let i = 0; i <= dest; i++) if (rng() < pr) cnt++;
+            for (let i = 0; i < cnt; i++) { const row = dest - i, q = idx(row, c), [code, x] = drawCell(rng, mix); D.g[q] = code; D.x[q] = x; fresh.push([q, code, x, row + 1]); }
+          }
+          r = top - 1;
+        }
+      }
+      if (!mvs.length && !fresh.length) return false;
+      if (log) log.push({ k: 'fall', moves: mvs, fresh, snap: snapshot(D) });
+      return true;
+    }
     function collect(D, rng, bet, log) {
       const S = D.S;
-      for (let tick = 0; tick < 80 && !S.max; tick++) {
-        const moves = [], changes = [];
-        const order = shuffle(D.birds.map((b, i) => i).filter(i => D.birds[i].alive), rng);
-        for (const bi of order) {
-          const b = D.birds[bi], cand = targets(D, b);
-          if (!cand.length) continue;
-          const q = pickTarget(D, b, cand, rng);
-          const mv = { b: bi, from: b.p, to: q, code: D.g[q], x: D.x[q], pay: 0 };
-          D.occ[b.p] = -1; b.p = q; D.occ[q] = bi;
-          effect(D, b, bi, q, mv, changes, rng, bet);
-          D.g[q] = VOID; D.x[q] = 0;
-          moves.push(mv);
-          if (S.max) break;
-        }
-        if (!moves.length) break;
-        if (D.holeQ && !S.max) { const bh = blackHole(D, rng); if (log) log.push({ k: 'tick', moves, changes, lv: S.lv.slice(), bonus: S.bonusCnt, bridge: D.bridge, won: S.won }); if (log) log.push(Object.assign({ k: 'hole' }, bh)); D.holeQ = 0; continue; }
-        if (log) log.push({ k: 'tick', moves, changes, lv: S.lv.slice(), bonus: S.bonusCnt, bridge: D.bridge, won: S.won });
+      for (let casc = 0; !S.max; casc++) {
+        const moved = round(D, rng, bet, log);
+        if (S.max || !moved || casc >= CFG.CASC_MAX) break;
+        if (!fall(D, rng, log, casc)) break;
       }
     }
     // Wirkung eines eingesammelten Symbols. mv.pay wird gefuellt
     function effect(D, b, bi, q, mv, changes, rng, bet) {
       const S = D.S, code = mv.code, x = mv.x;
-      if ((code >= 1 && code <= 4) || code === WILD) { mv.pay = pay(S, rc(lvPay(b.c, S.lv[b.c]) * bet, rng)); }
+      if ((code >= 1 && code <= 4) || code === WILD) { mv.pay = pay(S, rc(lvPay(b.c, S.lv[b.c], S.sup) * bet, rng)); }
       else if (code === COIN) mv.pay = pay(S, rc(CFG.COINS[x] * bet, rng));
-      else if (code === BONUS || code === SUPER) { S.bonusCnt++; if (code === SUPER) { S.supSeen = true; } }
+      else if (code === BONUS || code === SUPER) { S.bonusCnt++; if (code === SUPER) { S.supSeen = true; } chestItems(D, b, q, mv, rng, bet); }
       else if (code === UP) { if (S.sup) { for (let c = 0; c < 4; c++) S.lv[c] = Math.min(7, S.lv[c] + x); } else S.lv[b.c] = Math.min(7, S.lv[b.c] + x); }
       else if (code === UPALL) { for (let c = 0; c < 4; c++) S.lv[c] = Math.min(7, S.lv[c] + x); }
       else if (code === TRANS) {
@@ -11065,6 +11183,32 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       // Eck-Bombe: wer das Symbol auf einer Ecke einsammelt, zuendet sie
       const cs = cornersOf(D.n), ci = cs.indexOf(q);
       if (ci >= 0 && D.bombs[ci] && code !== VOID && !D.bombQ.includes(ci)) { D.bombQ.push(ci); mv.bomb = ci; }
+    }
+
+    // Die Kiste geht auf: 1 bis 3 Items fallen auf leere Felder rundherum (Edelstein des Vogels, Coin, Upgrade, selten Upgrade fuer alle)
+    // und werden im naechsten Schritt eingesammelt. Ist kein Feld frei, gibt es stattdessen einen kleinen Coin direkt.
+    function chestItems(D, b, q, mv, rng, bet) {
+      const S = D.S, n = D.n, r0 = q >> 3, c0 = q & 7, W = CFG.CHEST_W;
+      const cnt = 1 + (rng() < CFG.CHEST_N[0] ? 1 : 0) + (rng() < CFG.CHEST_N[1] ? 1 : 0);
+      const cells = [];
+      for (let rad = 1; rad <= 2 && !cells.length; rad++) {
+        for (let dr = -rad; dr <= rad; dr++) for (let dc = -rad; dc <= rad; dc++) {
+          if (Math.max(Math.abs(dr), Math.abs(dc)) !== rad || !inGrid(n, r0 + dr, c0 + dc)) continue;
+          const p = idx(r0 + dr, c0 + dc); if (D.occ[p] < 0 && D.g[p] === VOID) cells.push(p);
+        }
+      }
+      shuffle(cells, rng);
+      const items = [];
+      for (let i = 0; i < cnt && i < cells.length; i++) {
+        const t = W.gem + W.coin + W.up + W.ua; let v = rng() * t, code, x = 0;
+        if ((v -= W.gem) < 0) code = GEM + b.c;
+        else if ((v -= W.coin) < 0) { code = COIN; let u = rng() * CFG.CHEST_COINW.reduce((a, z) => a + z, 0); while (x < CFG.CHEST_COINW.length - 1 && (u -= CFG.CHEST_COINW[x]) >= 0) x++; }
+        else if ((v -= W.up) < 0) { code = UP; x = 1; }
+        else { code = UPALL; x = 1; }
+        const p = cells[i]; D.g[p] = code; D.x[p] = x; items.push([p, code, x]);
+      }
+      if (items.length) mv.items = items;
+      else mv.pay += pay(S, rc(CFG.COINS[1] * bet, rng));
     }
 
     // ---------- Black Hole ----------
@@ -11156,7 +11300,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     }
 
     // ---------- Alien Invasion ----------
-    const alienGem = (S, c, bet, rng) => rc(lvPay(c, Math.min(7, S.lv[c] + CFG.AL_LVBONUS)) * bet, rng);
+    const alienGem = (S, c, bet, rng) => rc(lvPay(c, Math.min(7, S.lv[c] + CFG.AL_LVBONUS), S.sup) * bet, rng);
     function alien(D, rng, bet, log) {
       D.S.aliens = (D.S.aliens || 0) + 1;
       const S = D.S, n = D.n;
@@ -11243,7 +11387,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       if (!S.max && S.bonusCnt >= 3) bonus = { drops: CFG.BONUS_DROPS + (S.bonusCnt - 3), sup: S.supSeen, lv: S.lv.slice(), n: S.supSeen ? NMAX : S.n };
       return { won: S.won, max: S.max, bonus, lis: !!r.lis, n: S.n, lv: S.lv.slice(), bonusCnt: S.bonusCnt };
     }
-    const freeStart = (b, won) => ({ left: b.drops, total: b.drops, won: won || 0, n: b.n, lv: b.lv.map(l => b.sup ? Math.min(7, l + CFG.SUP_LV) : l), sup: !!b.sup });
+    const freeStart = (b, won) => ({ left: b.drops, total: b.drops, won: won || 0, w0: won || 0, n: b.n, lv: b.lv.map(l => b.sup ? Math.min(7, l + CFG.SUP_LV) : l), sup: !!b.sup });
     function freeDrop(st, rng, bet, log) {
       const S = newBase({ n: st.n, lv: st.lv, sup: st.sup, free: true, won: st.won });
       S.cap = Math.round(MAXWIN * bet); S.bet = bet;
@@ -11259,7 +11403,13 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
         st.left += more; st.total += more;
         if (st.left > CFG.FREE_CAP) { st.total -= st.left - CFG.FREE_CAP; st.left = CFG.FREE_CAP; }
       }
-      return { won: S.won - before, max: S.max, more, n: st.n, lv: st.lv.slice() };
+      // Mindestgewinn: Die Freispiel-Runde zahlt insgesamt (ohne den Gewinn der ausloesenden Drehung) mindestens MINX x Einsatz
+      let minAdd = 0;
+      if (st.left <= 0 && !S.max) {
+        const got = st.won - (st.w0 || 0), need = Math.round((st.sup ? CFG.MINX_SUP : CFG.MINX) * bet), room = S.cap - st.won;
+        if (got < need && room > 0) { minAdd = Math.min(need - got, room); st.won += minAdd; }
+      }
+      return { won: S.won - before + minAdd, max: S.max, more, n: st.n, lv: st.lv.slice(), minAdd };
     }
     function session(rng, bet, b, startWon) {
       const st = freeStart(b, startWon || 0);
@@ -11713,7 +11863,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     gmClear(); box.classList.add('hw');
     const have = new Map(); let sum = 0;
     const draw = () => reels.forEach((reel, r) => { reel.querySelector('.gm-strip').style.transform = 'none'; reel.querySelector('.gm-strip').innerHTML = Array.from({ length: G.h }, (_, k) => { const c = have.get(r + ',' + k); return c ? gmCell(G, G.cash, c, bet) : '<div class="gc empty"></div>'; }).join(''); });
-    const top = left => gmTop(`<b>Halten &amp; Gewinnen</b><span>Respins ${'●'.repeat(Math.max(0, left))}${'○'.repeat(Math.max(0, 3 - left))}</span><span class="sl-fs-won">${esc(fmtTok(Math.round(sum * bet)))}</span>`);
+    const top = (left, ext) => gmTop(`<b>Halten &amp; Gewinnen</b><span>Respins ${'●'.repeat(Math.max(0, left))}${'○'.repeat(Math.max(0, 3 - left))}${ext ? ' · Verlängert!' : ''}</span><span class="sl-fs-won">${esc(fmtTok(Math.round(sum * bet)))}</span>`);
     SFX.play('bonusin');
     await gmBanner('HALTEN & GEWINNEN', 'Fische bleiben liegen · 3 Respins', 1500, 'scat');
     rd.init.forEach(c => have.set(c.r + ',' + c.k, c)); sum = rd.init.reduce((a, c) => a + c.v, 0);
@@ -11721,7 +11871,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     rd.init.forEach((c, i) => { reels[c.r].querySelectorAll('.gc')[c.k].classList.add('fresh'); });
     SFX.play('hwland', { i: 0 });
     await gmWait(900);
-    let n = 0;
+    let n = 0, prevLeft = 3;
     for (const st of rd.steps) {
       $$('#gm-reels .gc.empty').forEach(c => c.classList.add('roll'));
       SFX.play('spin');
@@ -11729,11 +11879,13 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       st.fresh.forEach(c => { have.set(c.r + ',' + c.k, c); sum += c.v; });
       draw(); n++;
       st.fresh.forEach((c, i) => { const el = reels[c.r].querySelectorAll('.gc')[c.k]; if (el) el.classList.add('fresh'); SFX.play(c.jp && (c.jp === 'MAJOR' || c.jp === 'GRAND') ? 'jackpot' : 'hwland', { i: n + i }); });
-      top(st.left);
+      top(st.left, st.fresh.length && prevLeft < 3);
+      prevLeft = st.left;
       await gmWait(st.fresh.length ? 650 : 320);
     }
     if (rd.full) { SFX.play('jackpot'); sum += G.hw.grand; top(0); await gmBanner('VOLLES BILD', `+${G.hw.grand}× Bonus`, 1500, 'mega'); }
     SFX.play('gong');
+    if (rd.pay.minAdd && !rd.pay.max) { SFX.play('win2'); await gmBanner('MINDESTGEWINN', `Halten & Gewinnen zahlt mindestens ${G.hw.minx}× Einsatz`, 1500, 'scat'); }
     if (rd.pay.max) await gmMaxWin(rd.pay.cents, bet, rd.full ? 'Volles Bild' : 'Halten & Gewinnen');
     else await gmWinBox('Halten & Gewinnen', rd.pay.cents, bet, rd.full ? 'Volles Bild' : '');
     await gmWait(900);
@@ -11904,12 +12056,12 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
     const A = GC.ANGLER;
     const G = {
       id: 'angler', name: 'Goldtopf-Angeln', sub: 'Der Angler holt alle Geld-Fische · Freispiele mit Stufen', kind: 'lines', w: 5, h: 3,
-      bg: 'ang', sym: s => 'ang' + s, names: A.NAMES, cash: A.CASH, buyX: 77, buyLabel: 'Freispiele kaufen', maxwin: A.MAXWIN, buyTyp: [48, 22],
+      bg: 'ang', sym: s => 'ang' + s, names: A.NAMES, cash: A.CASH, buyX: 84, buyLabel: 'Freispiele kaufen', maxwin: A.MAXWIN, buyTyp: [48, 22],
       antic: [{ sym: A.SCAT, need: 3, lo: 2, g: 1 }],
       buyText: `${A.FREE_SPINS[0]} Freispiele, in denen jeder Angler alle Geld-Fische auf den Walzen einsammelt. Mit jedem Angler steigt die Stufe: mehr Freispiele und ein größerer Multiplikator. Du siehst erst eine Drehung, in der 3 Boote landen. Sie zahlen sofort ${A.SCAT_PAY[0]}× Einsatz.`,
       hint: '3 Boote starten Freispiele. Dort sammelt jeder Angler alle Geld-Fische ein.',
       style: '--gm-fr:#b07a2a;--gm-win:#ffe08a;--gm-fs1:#1f8bd8;--gm-fs2:#ffb52a;--gm-dim:.12',
-      cardStyle: '--c1:#2a8ac8;--c2:#0e3a5c', cardIcons: [6, 8, 7], tags: ['10 Linien', 'Angler-Wilds', 'Freispiele', 'Kauf 77×'],
+      cardStyle: '--c1:#2a8ac8;--c2:#0e3a5c', cardIcons: [6, 8, 7], tags: ['10 Linien', 'Angler-Wilds', 'Freispiele', 'Kauf 84×'],
       rnd: () => gmRndW([22, 22, 20, 14, 10, 6]),
       initial() { return initLines(G, [22, 22, 20, 14, 10, 6]); },
       reelsHTML(cur, bet) { return gmReelsHTML(G, cur, bet); },
@@ -11940,19 +12092,19 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         const cfg = gmCfg('angler'), rng = gmRandFn, over = takeOver();
         const free = !!cfg.fs, bet = free ? cfg.fs.bet : cfg.bet;
         if (buy) { if (!gmPay(G.buyX * cfg.bet)) return false; } else if (!free && !gmPay(bet)) return false;
-        let sp, ev, bonus = [], started = 0, finished = null;
+        let sp, ev, bonus = [], started = 0, finished = null, minAdd = 0;
         if (free) {
           const res = A.freeSpin(cfg.fs, rng, bet, over); sp = res.sp; ev = res.ev; bonus = res.bonus;
-          if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; }
+          if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; minAdd = A.minTop(finished, bet); finished.won += minAdd; }
         } else {
           sp = over || (buy ? G.buyGrid(bet) : A.spin(rng, false)); ev = A.evaluate(sp, bet, 1);
           if (ev.spins) { started = ev.spins; cfg.fs = Object.assign(A.freeStart(ev.spins), { bet }); }
         }
-        gmCredit(ev.total); saveMeta(true); updateStats(); gmNums(); gmPaintTop();
+        gmCredit(ev.total + minAdd); saveMeta(true); updateStats(); gmNums(); gmPaintTop();
         const vals = sp.cash.map(col => col.map(v => (v ? { v } : null)));
         SFX.play('spin');
         await gmAnimate(sp.grid, vals, bet);
-        const scatHit = ev.scat.length >= 3 ? ev.scat : [];
+        const scatHit = ev.scat.length >= 3 || ev.ext ? ev.scat : [];
         if (ev.max) {
           gmClear(); gmShowLines(ev.full ? [] : ev.wins, ev.full ? gmAllCells(sp.grid) : scatHit.concat(ev.anglers, ev.fish));
           await gmMaxWin(ev.total, bet, ev.full ? 'Vollbild' : '');
@@ -11973,7 +12125,8 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
           if (b.k === 'scat') { SFX.play('scatter'); await gmBanner('NOCHMAL', `+${b.n} Freispiele`, 1300, 'scat'); }
           if (b.k === 'level') { SFX.play('bonusin'); await gmBanner(`STUFE ${b.level}`, `Fische ×${b.mult} · +${b.n} Freispiele`, 1700, 'mega'); }
         }
-        if (finished) { SFX.play(finished.won ? 'win3' : 'lose'); await gmBanner('Freispiele beendet', finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn', 1900, 'scat'); }
+        if (finished) { if (minAdd) { SFX.play('win2'); await gmBanner('MINDESTGEWINN', `Die Freispiele zahlen mindestens ${A.MINX}× Einsatz: +${fmtTok(minAdd)}`, 1800, 'scat'); }
+        SFX.play(finished.won ? 'win3' : 'lose'); await gmBanner('Freispiele beendet', finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn', 1900, 'scat'); }
         return true;
       },
       info(bet) {
@@ -11984,9 +12137,11 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
           ${infoWild(G, 8, 'zeigt einen Betrag. Ist ein Angler auf den Walzen, bekommst du die Summe aller Fische (mal Anzahl der Angler).')}
           ${infoWild(G, 7, `irgendwo: 3× zahlt ${esc(fmtTok(A.SCAT_PAY[0] * bet))}, 4× ${esc(fmtTok(A.SCAT_PAY[1] * bet))}, 5× ${esc(fmtTok(A.SCAT_PAY[2] * bet))} und gibt ${A.FREE_SPINS.join(' / ')} Freispiele.`)}
           <li><b>In den Freispielen</b> liegen mehr Fische und Angler auf allen Walzen. Jeder eingesammelte Angler zählt: bei 4, 8 und 12 Anglern steigt die Stufe, du bekommst je ${A.LEVEL_SPINS} Freispiele und die Fische zählen ×${A.LEVEL_MULT[1]}, ×${A.LEVEL_MULT[2]}, dann ×${A.LEVEL_MULT[3]}.</li>
+          <li><b>Verlängerung:</b> Landen in den Freispielen 2 Boote, gibt es ${A.EXT2} Freispiel extra. Bei 3 oder mehr Booten gibt es wie oben die vollen Freispiele dazu.</li>
+          <li><b>Mindestgewinn:</b> Jede Freispiel-Runde zahlt zusammen mindestens ${A.MINX}× Einsatz (${esc(fmtTok(A.MINX * bet))}). Fehlt etwas, wird am Ende aufgefüllt.</li>
           <li><b>Höchstgewinn:</b> ${A.MAXWIN.toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(A.MAXWIN * bet))}) pro Runde. Ein Vollbild aus Goldfischen (Angler zählen mit) zahlt genau das, auch in den Freispielen endet die Runde dann.</li>
           <li><b>Freispiele kaufen</b> kostet ${G.buyX}× Einsatz. Es wird einmal gedreht, bis 3 Boote liegen.</li>
-          <li>Rückzahlung im Schnitt ca. 96 %. Das ist Spielgeld, kein echtes Geld.</li></ul>`;
+          <li>Rückzahlung im Schnitt ca. 97 %. Das ist Spielgeld, kein echtes Geld.</li></ul>`;
       },
     };
     return G;
@@ -12048,11 +12203,12 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         <ul class="pt-list">
           ${infoWild(G, 6, `ist Wild und erscheint auf den Walzen 2 bis 4. 3 Kraken in einer Linie zahlen ${esc(fmtTok(Math.round(D.WILD_PAY[0] * bet / 10)))}.`)}
           ${infoWild(G, 7, `trägt einen Betrag. <b>${D.TRIGGER} oder mehr</b> davon starten „Halten &amp; Gewinnen“.`)}
-          <li><b>Halten &amp; Gewinnen:</b> Die Fische bleiben liegen, leere Felder drehen 3 Mal. Jeder neue Fisch setzt die Respins auf 3 zurück. Am Ende zahlt die Summe aller Fische. Ist das ganze Feld voll, kommt ${D.HW.grand}× Einsatz (${esc(fmtTok(D.HW.grand * bet))}) dazu.</li>
+          <li><b>Halten &amp; Gewinnen:</b> Die Fische bleiben liegen, leere Felder drehen 3 Mal. Jeder neue Fisch setzt die Respins auf 3 zurück. Am Ende zahlt die Summe aller Fische, mindestens aber ${D.HW.minx}× Einsatz (${esc(fmtTok(D.HW.minx * bet))}). Ist das ganze Feld voll, kommt ${D.HW.grand}× Einsatz (${esc(fmtTok(D.HW.grand * bet))}) dazu.</li>
+          <li><b>Verlängerung:</b> Landet in einem Respin ein neuer Fisch, geht es mit 3 Respins von vorn los, so oft es klappt.</li>
           <li><b>Jackpots</b> auf Fischen: MINI ${hv.find(x => x[2] === 'MINI')[0]}×, MINOR ${hv.find(x => x[2] === 'MINOR')[0]}×, MAJOR ${hv.find(x => x[2] === 'MAJOR')[0]}×, GRAND ${hv.find(x => x[2] === 'GRAND')[0]}× Einsatz.</li>
           <li><b>Höchstgewinn:</b> ${D.MAXWIN.toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(D.MAXWIN * bet))}) pro Runde. Ein Vollbild aus Anglerfischen (Kraken zählen mit) zahlt genau das. Auch „Halten &amp; Gewinnen“ endet bei dieser Grenze.</li>
           <li><b>Bonus kaufen</b> kostet ${G.buyX}× Einsatz. Es wird einmal gedreht, bis 6 Perlenfische liegen.</li>
-          <li>Rückzahlung im Schnitt ca. 96 %. Das ist Spielgeld, kein echtes Geld.</li></ul>`;
+          <li>Rückzahlung im Schnitt ca. 96 bis 97 %. Das ist Spielgeld, kein echtes Geld.</li></ul>`;
       },
     };
     return G;
@@ -12078,12 +12234,12 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
     }
     const G = {
       id: 'book', name: 'Pharaonengold', sub: 'Buch-Freispiele mit wachsendem Symbol · Münz-Jackpots', kind: 'lines', w: 5, h: 3,
-      bg: 'bk', sym: s => 'bk' + s, names: B.NAMES, cash: B.COIN, hw: B.HW, buyX: 72, buyLabel: 'Freispiele kaufen', maxwin: B.MAXWIN, buyTyp: [65, 31],
+      bg: 'bk', sym: s => 'bk' + s, names: B.NAMES, cash: B.COIN, hw: B.HW, buyX: 77, buyLabel: 'Freispiele kaufen', maxwin: B.MAXWIN, buyTyp: [65, 31],
       antic: [{ sym: B.BOOKS, need: 3, lo: 2, g: 1 }, { sym: B.COIN, need: 6, lo: 4, g: 4 }],
       buyText: `${B.FREE_SPINS} Freispiele mit einem zufällig gewählten wachsenden Symbol. Wo es erscheint, füllt es die ganze Walze und zahlt. Du siehst erst eine Drehung, in der 3 Bücher landen. Sie zahlen sofort ${B.SCAT_PAY[0]}× Einsatz.`,
       hint: '3 Bücher starten Freispiele, 6 Münzen starten „Halten & Gewinnen“.',
       style: '--gm-fr:#c9871c;--gm-win:#ffe08a;--gm-fs1:#8a3a10;--gm-fs2:#e8a21e;--gm-dim:.1',
-      cardStyle: '--c1:#e8803a;--c2:#2a1a5a', cardIcons: [5, 6, 3], tags: ['10 Linien', 'Wachsendes Symbol', 'Münz-Jackpots', 'Kauf 72×'],
+      cardStyle: '--c1:#e8803a;--c2:#2a1a5a', cardIcons: [5, 6, 3], tags: ['10 Linien', 'Wachsendes Symbol', 'Münz-Jackpots', 'Kauf 77×'],
       rnd: () => gmRndW([24, 22, 18, 14, 10, 7]),
       initial() { return initLines(G, [24, 22, 18, 14, 10, 7]); },
       reelsHTML(cur, bet) { return gmReelsHTML(G, cur, bet); },
@@ -12113,20 +12269,20 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         const cfg = gmCfg('book'), rng = gmRandFn, over = takeOver();
         const free = !!cfg.fs, bet = free ? cfg.fs.bet : cfg.bet;
         if (buy) { if (!gmPay(G.buyX * cfg.bet)) return false; } else if (!free && !gmPay(bet)) return false;
-        let sp, ev, started = 0, finished = null, rd = null;
+        let sp, ev, started = 0, finished = null, rd = null, minAdd = 0;
         if (free) {
           const res = B.freeSpin(cfg.fs, rng, bet, over); sp = res.sp; ev = res.ev;
-          if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; }
+          if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; minAdd = B.minTop(finished, bet); finished.won += minAdd; }
         } else {
           sp = over || (buy ? G.buyGrid(bet) : B.spin(rng, false)); ev = B.evaluate(sp, bet, null);
           if (ev.spins) { started = ev.spins; cfg.fs = Object.assign(B.freeStart(rng), { bet }); }
           if (ev.hw) rd = gmHwRound(B, ev.coins, bet);
         }
-        const total = ev.total + (rd ? rd.pay.cents : 0);
+        const total = ev.total + (rd ? rd.pay.cents : 0) + minAdd;
         gmCredit(total); saveMeta(true); updateStats(); gmNums(); gmPaintTop();
         SFX.play('spin');
         await gmAnimate(sp.grid, sp.vals, bet);
-        const bookHit = ev.books.length >= 3 ? ev.books : [];
+        const bookHit = ev.books.length >= 3 || ev.ext ? ev.books : [];
         if (ev.max) {
           gmClear(); gmShowLines(ev.full ? [] : ev.wins, ev.full ? gmAllCells(sp.grid) : bookHit);
           if (free && ev.expand) {
@@ -12153,8 +12309,9 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         }
         if (rd) { gmClear(); gmShowLines([], ev.coins.map(c => [c[0], c[1]])); SFX.play('scatter'); await gmWait(700); await gmHold(G, rd, bet); }
         if (started) { SFX.play('bonusin'); await gmBanner(buy ? 'FREISPIELE GEKAUFT' : 'FREISPIELE', `${started} Freispiele`, 1500, 'scat'); await roulette(cfg.fs.exp); }
-        if (free && ev.spins && !ev.max) { SFX.play('scatter'); await gmBanner('NOCHMAL', `+${ev.spins} Freispiele`, 1300, 'scat'); }
-        if (finished) { SFX.play(finished.won ? 'win3' : 'lose'); await gmBanner('Freispiele beendet', finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn', 1900, 'scat'); }
+        if (free && (ev.spins || ev.ext) && !ev.max) { SFX.play('scatter'); await gmBanner('NOCHMAL', `+${ev.spins || ev.ext} Freispiele`, 1300, 'scat'); }
+        if (finished) { if (minAdd) { SFX.play('win2'); await gmBanner('MINDESTGEWINN', `Die Freispiele zahlen mindestens ${B.MINX}× Einsatz: +${fmtTok(minAdd)}`, 1800, 'scat'); }
+        SFX.play(finished.won ? 'win3' : 'lose'); await gmBanner('Freispiele beendet', finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn', 1900, 'scat'); }
         return true;
       },
       info(bet) {
@@ -12162,8 +12319,8 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         ${gmPayTable(G, [5, 4, 3, 2, 1, 0], B.PAYS, bet, true)}
         <ul class="pt-list">
           ${infoWild(G, 6, `ist Wild <b>und</b> Freispiel-Symbol. 3 Bücher irgendwo zahlen ${esc(fmtTok(B.SCAT_PAY[0] * bet))} und starten ${B.FREE_SPINS} Freispiele (4× ${esc(fmtTok(B.SCAT_PAY[1] * bet))}, 5× ${esc(fmtTok(B.SCAT_PAY[2] * bet))}).`)}
-          <li><b>Freispiele:</b> Vor dem Start wird ein Symbol ausgelost. Erscheint es auf einer Walze, wächst es über die ganze Walze und zahlt. Je mehr Walzen, desto mehr. 3 Bücher geben nochmal ${B.RETRIGGER} Freispiele.</li>
-          ${infoWild(G, 7, `<b>${B.COIN_TRIGGER} oder mehr</b> Münzen im Hauptspiel starten „Halten &amp; Gewinnen“: Münzen bleiben liegen, leere Felder drehen 3 Mal, neue Münzen setzen die Respins zurück. Volles Feld: ${B.HW.grand}× Einsatz extra. Jackpots MINI, MINOR, MAJOR, GRAND auf Münzen.`)}
+          <li><b>Freispiele:</b> Vor dem Start wird ein Symbol ausgelost. Erscheint es auf einer Walze, wächst es über die ganze Walze und zahlt. Je mehr Walzen, desto mehr. 3 Bücher geben nochmal ${B.RETRIGGER} Freispiele, schon 2 Bücher geben ${B.EXT2} extra (Verlängerung). Jede Freispiel-Runde zahlt zusammen mindestens ${B.MINX}× Einsatz (${esc(fmtTok(B.MINX * bet))}); fehlt etwas, wird am Ende aufgefüllt.</li>
+          ${infoWild(G, 7, `<b>${B.COIN_TRIGGER} oder mehr</b> Münzen im Hauptspiel starten „Halten &amp; Gewinnen“: Münzen bleiben liegen, leere Felder drehen 3 Mal, neue Münzen setzen die Respins zurück. Volles Feld: ${B.HW.grand}× Einsatz extra, mindestens ${B.HW.minx}× Einsatz. Jackpots MINI, MINOR, MAJOR, GRAND auf Münzen.`)}
           <li><b>Höchstgewinn:</b> ${B.MAXWIN.toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(B.MAXWIN * bet))}) pro Runde. Wächst der Pharao auf allen 5 Walzen, ist das Vollbild und zahlt genau das. Auch ein Vollbild aus Pharaonen (Bücher zählen mit) zahlt den Höchstgewinn.</li>
           <li><b>Freispiele kaufen</b> kostet ${G.buyX}× Einsatz. Es wird einmal gedreht, bis 3 Bücher liegen.</li>
           <li>Rückzahlung im Schnitt ca. 96 %. Das ist Spielgeld, kein echtes Geld.</li></ul>`;
@@ -12215,15 +12372,15 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         const cfg = gmCfg('goo'), rng = gmRandFn, over = takeOver();
         const free = !!cfg.fs, bet = free ? cfg.fs.bet : cfg.bet;
         if (buy) { if (!gmPay(G.buyX * cfg.bet)) return false; } else if (!free && !gmPay(bet)) return false;
-        let res, add, more = 0, started = 0, finished = null;
+        let res, add, more = 0, started = 0, finished = null, minAdd = 0;
         if (free) {
           const r = O.freeSpin(cfg.fs, rng, bet, over); res = r.res; add = r.add; more = r.more;
-          if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; }
+          if (cfg.fs.left <= 0) { finished = cfg.fs; cfg.fs = null; minAdd = O.minTop(finished, bet); finished.won += minAdd; }
         } else {
           const b = O.baseSpin(rng, bet, over || (buy ? G.buyGrid() : undefined)); res = b.res; add = b.cents;
           if (b.trigger) { started = O.FREE_SPINS; cfg.fs = Object.assign(O.freeStart(), { bet }); }
         }
-        gmCredit(add); saveMeta(true); updateStats(); gmNums();
+        gmCredit(add + minAdd); saveMeta(true); updateStats(); gmNums();
         const spinsLeft = free ? (cfg.fs ? cfg.fs.left : 0) : 0;
         // Anzeige der Blasen-Summe: beginnt vor dem Spin (Summe ohne die Blasen dieses Spins)
         let shownMult = free ? (finished ? finished.mult : cfg.fs.mult) - res.steps.filter(s => s.k === 'bubble').reduce((a, s) => a + s.v, 0) : 0;
@@ -12287,7 +12444,8 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         if (res.scatCents && !free) { SFX.play('scatter'); await gmWinBox('Truhen', res.scatCents, bet); }
         if (started) { SFX.play('bonusin'); await gmBanner(buy ? 'FREISPIELE GEKAUFT' : 'FREISPIELE', `${started} Freispiele · Blasen addieren sich`, 1800, 'scat'); }
         if (more) { SFX.play('scatter'); await gmBanner('NOCHMAL', `+${more} Freispiele`, 1300, 'scat'); }
-        if (finished) { SFX.play(finished.won ? 'win3' : 'lose'); await gmBanner('Freispiele beendet', finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn', 1900, 'scat'); }
+        if (finished) { if (minAdd) { SFX.play('win2'); await gmBanner('MINDESTGEWINN', `Die Freispiele zahlen mindestens ${O.MINX}× Einsatz: +${fmtTok(minAdd)}`, 1800, 'scat'); }
+        SFX.play(finished.won ? 'win3' : 'lose'); await gmBanner('Freispiele beendet', finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn', 1900, 'scat'); }
         return true;
       },
       info(bet) {
@@ -12296,11 +12454,11 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         <table class="pt"><thead><tr><th></th><th></th><th>8–9</th><th>10–11</th><th>12+</th></tr></thead><tbody>${[6, 5, 4, 3, 2, 1, 0].map(row).join('')}</tbody></table>
         <ul class="pt-list">
           <li>Gewinnende Symbole verschwinden, die übrigen fallen nach und oben kommen neue. So geht es weiter, bis nichts mehr gewinnt.</li>
-          ${infoWild(G, 7, `irgendwo: 4× zahlt ${esc(fmtTok(O.SCAT_PAY[0] * bet))}, 5× ${esc(fmtTok(O.SCAT_PAY[1] * bet))}, 6× ${esc(fmtTok(O.SCAT_PAY[2] * bet))} und gibt ${O.FREE_SPINS} Freispiele. In den Freispielen geben 3 Truhen nochmal ${O.RETRIGGER}.`)}
+          ${infoWild(G, 7, `irgendwo: 4× zahlt ${esc(fmtTok(O.SCAT_PAY[0] * bet))}, 5× ${esc(fmtTok(O.SCAT_PAY[1] * bet))}, 6× ${esc(fmtTok(O.SCAT_PAY[2] * bet))} und gibt ${O.FREE_SPINS} Freispiele. In den Freispielen geben 3 Truhen nochmal ${O.RETRIGGER} (Verlängerung). Jede Freispiel-Runde zahlt zusammen mindestens ${O.MINX}× Einsatz (${esc(fmtTok(O.MINX * bet))}); fehlt etwas, wird am Ende aufgefüllt.`)}
           ${infoWild(G, 8, 'gibt es nur in den Freispielen. Jede Blase hat einen Multiplikator. Alle Blasen addieren sich und gelten bis zum Ende der Freispiele für jeden Gewinn.')}
           <li><b>Höchstgewinn:</b> ${O.MAXWIN.toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(O.MAXWIN * bet))}) pro Runde. 30 Kronen-Schleime auf dem ganzen Feld (Vollbild) zahlen genau das. In den Freispielen endet die Runde, sobald die Grenze erreicht ist.</li>
           <li><b>Freispiele kaufen</b> kostet ${G.buyX}× Einsatz. Es wird einmal gedreht, bis 4 Truhen liegen.</li>
-          <li>Rückzahlung im Schnitt ca. 96 %. Das ist Spielgeld, kein echtes Geld.</li></ul>`;
+          <li>Rückzahlung im Schnitt ca. 98 %. Das ist Spielgeld, kein echtes Geld.</li></ul>`;
       },
     };
     return G;
@@ -12384,11 +12542,11 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
     const BIRD_COL = ['#ff5470', '#b46bff', '#4fe08a', '#4fb4ff'];
     // Kauf-Auswahl: Typische Werte aus der Simulation (Median in % des Preises, Anteil der Faelle ueber dem Preis, Mittelwert in %)
     const BUYS = [
-      { id: 'hunt', name: 'Bonus-Jagd', x: 3, text: 'Eine Drehung, in der Bonus-Symbole viel öfter erscheinen. Ein Bonus zahlt dann ganz normal.', typ: [3, 4, 91] },
-      { id: 'alien', name: 'Alien Invasion', x: 25, text: 'Eine Drehung, in der garantiert eine Alien Invasion stattfindet.', typ: [20, 16, 92] },
-      { id: 'lis', name: 'Lost in Space', x: 50, text: 'Direkt in die Lost-in-Space-Runde auf dem 8×8-Feld.', typ: [56, 35, 92] },
-      { id: 'bonus', name: 'Bonus', x: 100, text: 'Eine Drehung, in der 3 Bonus-Symbole eingesammelt werden. Danach laufen mindestens 5 Freispiele.', typ: [28, 27, 99] },
-      { id: 'super', name: 'Super-Bonus', x: 500, text: 'Wie Bonus, aber mit einem Super-Bonus-Symbol: 8×8-Feld, Upgrades gelten für alle Edelsteine und alle starten eine Stufe höher.', typ: [86, 40, 99] },
+      { id: 'hunt', name: 'Bonus-Jagd', x: 3, text: 'Eine Drehung, in der Bonus-Symbole viel öfter erscheinen. Ein Bonus zahlt dann ganz normal.', typ: [2, 5, 95] },
+      { id: 'alien', name: 'Alien Invasion', x: 25, text: 'Eine Drehung, in der garantiert eine Alien Invasion stattfindet.', typ: [28, 24, 96] },
+      { id: 'lis', name: 'Lost in Space', x: 50, text: 'Direkt in die Lost-in-Space-Runde auf dem 8×8-Feld.', typ: [57, 36, 92] },
+      { id: 'bonus', name: 'Bonus', x: 100, text: `Eine Drehung, in der 3 Bonus-Symbole eingesammelt werden. Danach laufen mindestens 5 Freispiele. Die Freispiele zahlen zusammen mindestens ${C.MINX}× Einsatz.`, typ: [66, 32, 91] },
+      { id: 'super', name: 'Super-Bonus', x: 500, text: `Wie Bonus, aber mit einem Super-Bonus-Symbol: 8×8-Feld, Upgrades gelten für alle Edelsteine und alle starten eine Stufe höher. Jeder Stein zahlt ${C.SUP_PAYMUL}-mal so viel. Die Freispiele zahlen zusammen mindestens ${C.MINX_SUP}× Einsatz.`, typ: [82, 35, 93] },
     ];
     const PI = { buyId: 'bonus' };
     const U = p => (p >> 3) * GM.cur.n + (p & 7);
@@ -12432,7 +12590,7 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
     // Kopfzeile: vier Edelstein-Stufen mit aktuellem Wert, Bonus-Zaehler, Gewinn der Runde
     function hudHTML(fs) {
       const cur = GM.cur, bet = betNow();
-      const gems = [0, 1, 2, 3].map(c => `<span class="pi-g c${c}">${gmImg(G, c)}<span class="pips">${[1, 2, 3, 4, 5, 6, 7].map(k => `<i${k <= cur.lv[c] ? ' class="on"' : ''}></i>`).join('')}</span><b>${esc(gmShort(Math.round(P.lvPay(c, cur.lv[c]) * bet)))}</b></span>`).join('');
+      const gems = [0, 1, 2, 3].map(c => `<span class="pi-g c${c}">${gmImg(G, c)}<span class="pips">${[1, 2, 3, 4, 5, 6, 7].map(k => `<i${k <= cur.lv[c] ? ' class="on"' : ''}></i>`).join('')}</span><b>${esc(gmShort(Math.round(P.lvPay(c, cur.lv[c], fs && fs.sup) * bet)))}</b></span>`).join('');
       const bon = `<span class="pi-bon" title="Bonus-Symbole">${gmImg(G, 6)}${[0, 1, 2].map(k => `<i class="${k < cur.bonus ? 'on' : ''}"></i>`).join('')}</span>`;
       const free = fs ? `<span class="pi-free">${fs.left} Freispiele${fs.sup ? ' · Super' : ''}</span>` : '';
       return gems + bon + free + `<span class="sl-fs-won">${esc(fmtTok(cur.won || 0))}</span>`;
@@ -12475,30 +12633,57 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
       setHud();
       await W(st.fresh ? 800 : 700);
     }
+    // Das Tempo steigt im Lauf einer Drehung etwas an, damit lange Ketten nicht zaeh werden
+    const spd = ctx => Math.max(0.5, 1 - 0.035 * ((ctx && ctx.ticks) || 0));
+    const cloneEl = f => { const l = lay(); return l ? l.querySelector(`.pb.clone[data-f="${f}"]`) : null; };
+    const frontEl = mv => (mv.f < 4 ? birdEl(mv.b) : cloneEl(mv.f));
+    const placeEl = (el, p) => { el.style.setProperty('--r', p >> 3); el.style.setProperty('--c', p & 7); };
     async function rTick(st, bet, ctx) {
-      const cur = GM.cur, b = box(); if (!b) return;
-      const oldLv = cur.lv.slice();
-      st.moves.forEach(mv => {
-        const bd = cur.birds[mv.b]; bd.p = mv.to;
-        const el = birdEl(mv.b);
-        if (el) { el.style.setProperty('--r', mv.to >> 3); el.style.setProperty('--c', mv.to & 7); el.classList.add('hit'); setTimeout(() => el.classList.remove('hit'), 380); }
+      const cur = GM.cur, b = box(), l = lay(); if (!b || !l) return;
+      ctx.ticks = (ctx.ticks || 0) + 1;
+      const k = spd(ctx), oldLv = cur.lv.slice(), moves = st.moves;
+      // Weggabelung: Der Vogel teilt sich. Der neue Zweig startet auf dem Feld, von dem der Vogel losgelaufen ist.
+      let forked = 0;
+      moves.forEach(mv => {
+        if (mv.f >= 4 && !cloneEl(mv.f)) {
+          const c = cur.birds[mv.b].c, e = document.createElement('div');
+          e.className = 'pb clone b' + c; e.dataset.f = mv.f; e.dataset.c = c;
+          placeEl(e, mv.from); e.innerHTML = gmImg(G, 15 + c); l.appendChild(e); forked++;
+        }
       });
-      SFX.play('pick', { b: st.moves[0].b });
-      await W(250);
+      if (forked) { void l.offsetWidth; SFX.play('pop'); }
+      moves.forEach(mv => {
+        if (mv.f < 4) cur.birds[mv.b].p = mv.to;
+        const el = frontEl(mv);
+        if (el) { placeEl(el, mv.to); el.classList.add('hit'); setTimeout(() => el.classList.remove('hit'), 380); }
+      });
+      SFX.play('pick', { b: moves[0].b });
+      await W(230 * k);
       (st.changes || []).forEach(([p, code, x]) => { const u = U(p); cur.g[u] = code; cur.x[u] = x; setCell(u, 'morph'); });
       if ((st.changes || []).length) SFX.play('pop');
-      for (const mv of st.moves) {
+      const gap = Math.max(10, Math.min(55, 300 / moves.length)) * k;
+      for (const mv of moves) {
         const u = U(mv.to);
         cur.g[u] = 0; cur.x[u] = 0; emptyCell(u, true);
         if (mv.pay > 0) { float(mv.to, '+' + gmShort(mv.pay), mv.b); if (mv.code === COINC) SFX.play('coin', { n: 1 }); }
-        if (mv.code === BONUSC || mv.code === SUPERC) { cur.bonus++; SFX.play('scatter'); }
+        if (mv.code === BONUSC || mv.code === SUPERC) { cur.bonus++; SFX.play('scatter'); float(mv.to, 'Kiste!', mv.b, 'tx'); }
+        if (mv.items) {
+          mv.items.forEach(([p, code, x]) => {
+            const iu = U(p); cur.g[iu] = code; cur.x[iu] = x; setCell(iu, 'chestpop');
+            const ie = cellEl(iu); if (ie) { ie.style.setProperty('--dx', (mv.to & 7) - (p & 7)); ie.style.setProperty('--dy', (mv.to >> 3) - (p >> 3)); }
+          });
+          SFX.play('hwland', { i: mv.items.length });
+        }
         if (mv.code === P.HOLE) float(mv.to, 'Loch', mv.b, 'tx');
         if (mv.code === P.ALIEN) float(mv.to, 'Alien', mv.b, 'tx');
         if (mv.code === P.CORN) { cur.bridge = true; b.querySelector('.pi-board').classList.add('bridged'); float(mv.to, 'Spacecorn', mv.b, 'tx'); }
         if (mv.code === P.TRANS) float(mv.to, 'Transform', mv.b, 'tx');
         if (mv.bomb !== undefined) { const bm = b.querySelector(`.pbm.k${mv.bomb}`); if (bm) bm.classList.add('lit'); }
-        await W(55);
+        await W(gap);
       }
+      // Eine Verwandlung kann auch ein Item treffen, das in diesem Schritt erst aus einer Kiste gefallen ist
+      const itemCells = new Set(); moves.forEach(mv => (mv.items || []).forEach(([p]) => itemCells.add(p)));
+      (st.changes || []).forEach(([p, code, x]) => { if (itemCells.has(p)) { const u = U(p); cur.g[u] = code; cur.x[u] = x; setCell(u, 'morph'); } });
       cur.lv = st.lv.slice(); cur.bridge = !!st.bridge; cur.won = st.won;
       const up = cur.lv.some((v, i) => v > oldLv[i]);
       if (up) { SFX.play('lvup', { l: Math.max(...cur.lv) }); }
@@ -12516,7 +12701,28 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         }
       }
       if (cur.bonus >= 3 && ctx.ant) { ctx.ant = false; ctx.won3 = true; anticOff(); SFX.play('anticwin'); await W(420); return; }
-      await W(220);
+      await W(130 * k);
+    }
+    // Die Runde ist zu Ende: die Abspaltungen verschwinden, die Voegel stehen an ihrem Hauptweg
+    async function rMerge(st, bet, ctx) {
+      const l = lay(); if (!l) return;
+      const cl = Array.from(l.querySelectorAll('.pb.clone'));
+      cl.forEach(e => e.classList.add('gone'));
+      st.pos.forEach((p, i) => { const bd = GM.cur.birds[i]; if (!bd) return; bd.p = p; const e = birdEl(i); if (e && p >= 0) placeEl(e, p); });
+      await W(240 * spd(ctx));
+      cl.forEach(e => e.remove());
+    }
+    // Nach der Runde fallen alle Symbole nach unten, oben fallen neue nach. Voegel halten die Symbole ueber sich auf.
+    async function rFall(st, bet, ctx) {
+      const cur = GM.cur, k = spd(ctx);
+      applySnap(st.snap, false);
+      const mark = (q, fd, fresh) => { const e = cellEl(U(q)); if (e) { e.style.setProperty('--fd', fd); e.classList.add('fallin'); if (fresh) e.classList.add('newsym'); } };
+      st.moves.forEach(([p, q]) => mark(q, (q >> 3) - (p >> 3), false));
+      st.fresh.forEach(([q, , , dist]) => mark(q, dist, true));
+      SFX.play('pop');
+      await W(520 * k);
+      $$('#gm-reels .pc.fallin').forEach(e => e.classList.remove('fallin', 'newsym'));
+      await W(80 * k);
     }
     async function rHole(st, bet, ctx) {
       const cur = GM.cur, pb = gmEl('pi-board'); if (!pb) return;
@@ -12640,6 +12846,8 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
       for (const st of log) {
         if (st.k === 'drop') await rDrop(st, bet, ctx);
         else if (st.k === 'tick') await rTick(st, bet, ctx);
+        else if (st.k === 'merge') await rMerge(st, bet, ctx);
+        else if (st.k === 'fall') await rFall(st, bet, ctx);
         else if (st.k === 'hole') await rHole(st, bet, ctx);
         else if (st.k === 'clash') await rClash(st, bet, ctx);
         else if (st.k === 'bomb') await rBomb(st, bet, ctx);
@@ -12702,7 +12910,8 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         const left = fsInt2(f.left, 1, C.FREE_CAP), total = fsInt2(f.total, 1, 400), won = fsInt2(f.won, 0, 1e12), n = fsInt2(f.n, 6, 8);
         if (left == null || total == null || won == null || n == null || !Array.isArray(f.lv) || f.lv.length !== 4) return false;
         const lv = f.lv.map(v => fsInt2(v, 1, 7)); if (lv.some(v => v == null)) return false;
-        f.left = left; f.total = Math.max(left, total); f.won = won; f.n = n; f.lv = lv; f.sup = !!f.sup; return true;
+        const w0 = fsInt2(f.w0, 0, won);
+        f.left = left; f.total = Math.max(left, total); f.won = won; f.w0 = w0 == null ? won : w0; f.n = n; f.lv = lv; f.sup = !!f.sup; return true;
       },
       freshFs(bet) { return Object.assign(P.freeStart({ drops: C.BONUS_DROPS, sup: false, lv: [1, 1, 1, 1], n: 6 }, 0), { bet }); },
       top(cfg) { if (!GM.cur || GM.cur.id !== 'pirots') return ''; return hudHTML(cfg.fs); },
@@ -12726,16 +12935,17 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
         await replay(log, bet, ctx);
         gmClear();
         const roundTotal = free ? (finished ? finished.won : cfg.fs.won) : add;
+        if (free && res.minAdd) { SFX.play('win2'); await gmBanner('MINDESTGEWINN', `Die Freispiele zahlen mindestens ${(finished && finished.sup ? C.MINX_SUP : C.MINX)}× Einsatz: +${fmtTok(res.minAdd)}`, 1800, 'scat'); }
         if (max) await gmMaxWin(free ? roundTotal : add, bet, 'Höchstgewinn erreicht');
         else if (add > 0) await gmWinBox(free ? 'Freispiel' : 'Gewinn', add, bet, free && roundTotal > add ? `Runde ${fmtTok(roundTotal)}` : '');
-        if (started) { SFX.play('bonusin'); await gmBanner(started.sup ? 'SUPER-BONUS' : (buy ? 'BONUS GEKAUFT' : 'BONUS'), `${started.drops} Freispiele${started.sup ? ' · 8×8, Upgrades für alle' : ''}`, 1900, 'scat'); }
+        if (started) { SFX.play('bonusin'); await gmBanner(started.sup ? 'SUPER-BONUS' : (buy ? 'BONUS GEKAUFT' : 'BONUS'), `${started.drops} Freispiele${started.sup ? ' · 8×8, Upgrades für alle' : ''} · mindestens ${started.sup ? C.MINX_SUP : C.MINX}× Einsatz`, 1900, 'scat'); }
         if (more) { SFX.play('scatter'); await gmBanner('NOCHMAL', `+${more} Freispiele`, 1300, 'scat'); }
         if (finished) { SFX.play(finished.won ? 'win3' : 'lose'); await gmBanner('Freispiele beendet', finished.won ? '+' + fmtTok(finished.won) : 'kein Gewinn', 1900, 'scat'); }
         return true;
       },
       info(bet) {
         const pay = c => [1, 2, 3, 4, 5, 6, 7].map(l => `<td>${esc(fmtTok(Math.round(P.lvPay(c, l) * bet)))}</td>`).join('');
-        return `<p class="note">Vier Vögel (Rot, Lila, Grün, Blau) fallen aufs Feld und sammeln nacheinander angrenzende Felder ein: Edelsteine ihrer Farbe und alle Feature-Symbole. Jedes Einsammeln zahlt. Kein Vogel kann mehr ziehen, dann ist die Drehung vorbei. Auszahlung je Stein bei deinem Einsatz von ${esc(fmtTok(bet))}:</p>
+        return `<p class="note">Vier Vögel (Rot, Lila, Grün, Blau) stehen auf dem Feld und sammeln alles ein, was um sie herum liegt: Edelsteine ihrer Farbe und alle Feature-Symbole. Liegt auf mehreren Seiten etwas für sie, teilen sie sich und gehen alle Wege gleichzeitig weiter. Führt kein Weg mehr weiter, fallen alle Symbole nach unten, oben kommen neue nach und die Vögel laufen von vorn los (höchstens ${C.CASC_MAX}-mal pro Drehung). Jedes Einsammeln zahlt. Auszahlung je Stein bei deinem Einsatz von ${esc(fmtTok(bet))}:</p>
         <table class="pt"><thead><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody>${[0, 1, 2, 3].map(c => `<tr><td class="sc-i">${gmImg(G, c)}</td>${pay(c)}</tr>`).join('')}</tbody></table>
         <ul class="pt-list">
           ${infoWild(G, 4, 'ersetzt einen Stein und zahlt auf der Stufe des sammelnden Vogels. Kein Vogel bleibt auf einem Wild stehen.')}
@@ -12748,8 +12958,8 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
           ${infoWild(G, 13, 'startet die Alien Invasion: Der Bandit räumt Spalte für Spalte ab, sein Multiplikator steigt. Trifft er einen Vogel, gibt es ein Duell: Gewinnt der Bandit, fällt der Vogel aus. Gewinnt der Vogel, endet die Invasion und der Multiplikator gilt auf alles Gesammelte.')}
           ${infoWild(G, 19, 'liegt in jeder Ecke. Wer dort einsammelt, zündet sie: Edelsteine rundherum verschwinden, neue fallen nach und das Feld wächst (6×6 bis 8×8). Bei 8×8 verbinden Portale die Ecken.')}
           <li><b>Power Clash:</b> stehen 3 oder mehr Vögel nebeneinander, prallen sie zusammen. Ein 5×5-Bereich wird geräumt, dabei werden Coins, Bonus, Alien und Schwarzes Loch automatisch ausgelöst.</li>
-          ${infoWild(G, 6, 'Drei Bonus-Symbole in einer Drehung starten 5 Freispiele (jedes weitere +1 Freispiel, auch in den Freispielen). Feldgröße und Stufen bleiben erhalten. Sind schon 2 eingesammelt, leuchten die übrigen.')}
-          ${infoWild(G, 7, 'Super-Bonus-Symbol unter den drei: 8×8-Feld, Upgrades gelten für alle Edelsteine und alle Farben starten eine Stufe höher.')}
+          ${infoWild(G, 6, `Kiste: Beim Einsammeln geht sie auf und 1 bis 3 Items fallen heraus (Edelstein des Vogels, Coin, Upgrade, selten Upgrade für alle), die gleich mit eingesammelt werden. Drei Kisten in einer Drehung starten 5 Freispiele (jede weitere Kiste +1 Freispiel, auch in den Freispielen: so verlängert sich die Runde). Feldgröße und Stufen bleiben erhalten. Sind schon 2 eingesammelt, leuchten die übrigen. Mindestgewinn: Die Freispiele zahlen zusammen mindestens ${C.MINX}× Einsatz (${esc(fmtTok(C.MINX * bet))}), beim Super-Bonus mindestens ${C.MINX_SUP}×. Fehlt etwas, wird am Ende aufgefüllt.`)}
+          ${infoWild(G, 7, `Super-Bonus-Symbol unter den drei: 8×8-Feld, Upgrades gelten für alle Edelsteine, alle Farben starten eine Stufe höher und jeder Stein zahlt ${C.SUP_PAYMUL}-mal so viel.`)}
           <li><b>Lost in Space:</b> 8×8-Feld, ein Vogel in jeder Ecke, 3 Drops. Münzen und Brücken landen, jeder Coin oder jede Brücke setzt den Zähler wieder auf 3. Jeder Vogel sammelt alle Münzen, die er über Nachbarn erreicht. Münzen, die mehrere Vögel erreichen, zählen mehrfach.</li>
           <li><b>Höchstgewinn:</b> ${P.MAXWIN.toLocaleString('de-DE')}× Einsatz (${esc(fmtTok(P.MAXWIN * bet))}) pro Runde. Ist er erreicht, endet die Runde sofort.</li>
           <li><b>Features kaufen:</b> Bonus-Jagd 3×, Alien Invasion 25×, Lost in Space 50×, Bonus 100×, Super-Bonus 500× Einsatz. Gekaufte Runden sind ganz normale Runden: Es wird gewürfelt, bis das gekaufte Ereignis wirklich eintritt, nichts wird hineingemogelt. Im Schnitt zahlen sie etwa 90 bis 99 % des Preises zurück, einzelne Käufe können weit darunter oder darüber liegen.</li>
