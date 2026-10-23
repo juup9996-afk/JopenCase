@@ -46,7 +46,7 @@ h3{font:400 24px/1.1 var(--display)}
 .stats b{color:var(--accent);font-weight:500}
 .stage{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:22px 16px 32px}
 .view{max-width:560px;margin-inline:auto;display:flex;flex-direction:column;gap:28px}
-.tabs{display:grid;grid-template-columns:repeat(5,1fr) 52px;border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs{display:grid;grid-template-columns:repeat(var(--tn,5),1fr) 52px;border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px)}
 .tabs button{background:none;border:0;padding:7px 1px 6px;font-size:10.5px;line-height:1.1;color:var(--muted);font-weight:500;letter-spacing:.02em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0}
 .tabs svg{width:22px;height:22px;flex:none}
 .tabs .tab-set{border-left:1px solid var(--line)}
@@ -340,7 +340,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .pbar i{display:block;height:100%;background:var(--accent)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 84px);z-index:70;background:var(--surface-2);border:1px solid var(--line);padding:10px 16px;border-radius:999px;font-size:14px;max-width:calc(100vw - 32px);text-align:center}
 .opener:not([hidden]) ~ .toast,.lightbox:not([hidden]) ~ .toast{bottom:auto;top:calc(env(safe-area-inset-top,0px) + 64px)}
-@media(max-width:400px){.sell-bar .sum{display:none}.tabs button{font-size:9.5px;letter-spacing:0}.tabs{grid-template-columns:repeat(5,1fr) 44px}}
+@media(max-width:400px){.sell-bar .sum{display:none}.tabs button{font-size:9.5px;letter-spacing:0}.tabs{grid-template-columns:repeat(var(--tn,5),1fr) 44px}}
 @media(max-height:660px){.sum-scroll{padding-top:40px}.sell-bar{gap:6px;padding-top:8px}.sell-bar .btn{padding:8px 10px}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
@@ -1109,8 +1109,9 @@ body:not([data-pg=home]):not([data-pg=case]):not([data-pg=inv]):not([data-pg=col
 
 /* ===== V20: Grind-Modus, Einstellungen v2, Kachel-Brett, Fenster ===== */
 body.grind #tab-com{display:none}
-body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
-@media(max-width:400px){body.grind .tabs{grid-template-columns:repeat(4,1fr) 44px}}
+body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
+@media(max-width:400px){body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 44px}}
+.tabs button[hidden]{display:none}
 
 .set-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .set-bar .seg{flex:1;min-width:210px}
@@ -1347,6 +1348,30 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
 .cp-nn small{color:var(--muted)}
 .ga-machine>.capsule{margin:0}
 .cpw .win-top .btn{white-space:nowrap}
+
+/* ===== Desktops ===== */
+.dk-bar{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;margin:0 0 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.dk-bar::-webkit-scrollbar{display:none}
+.dk-chip{flex:none;display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;color:var(--muted);cursor:pointer;max-width:70vw}
+.dk-chip b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dk-chip.on{color:var(--fg);border-color:var(--accent);background:var(--surface-2)}
+.dk-chip.dk-plus{padding:7px 13px;font-size:16px;line-height:1}
+#view-home.dk-r{animation:dkInR .26s ease-out}
+#view-home.dk-l{animation:dkInL .26s ease-out}
+@keyframes dkInR{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes dkInL{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+.dk-list{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow-y:auto}
+.dk-row{display:grid;grid-template-columns:36px 1fr;gap:6px 10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface-2)}
+.dk-row.cur{border-color:var(--accent)}
+.dk-ic{font-size:24px;text-align:center}
+.dk-n{display:flex;flex-direction:column;min-width:0}
+.dk-n b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.dk-n b em{font-style:normal;font-weight:500;font-size:11px;color:var(--accent);margin-left:6px}
+.dk-n small{color:var(--muted);font-size:12px}
+.dk-act{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+.dk-icb{padding:5px 10px;font-size:18px}
+.dk-cases{max-height:28vh;overflow-y:auto}
+@media (prefers-reduced-motion:reduce){#view-home.dk-r,#view-home.dk-l{animation:none}}
 </style>
 <style>body{margin:0}</style>
 </head><body>
@@ -2696,7 +2721,8 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
   let current = 'home';
   const TAB_IDS = ['home', 'case', 'inv', 'coll', 'com', 'set'];
   function showView(v) {
-    if (!RENDER[v] || (v === 'comics' && tabHidden('comics')) || (v === 'com' && grindOn())) v = 'home';
+    if (!RENDER[v] || (['case', 'inv', 'coll', 'com', 'comics'].includes(v) && tabHidden(v)) || (v === 'com' && grindOn())) v = 'home';
+    if (typeof dkApplyTabs === 'function') dkApplyTabs();
     if (current !== v && LEAVE[current]) { try { LEAVE[current](); } catch (e) { /* egal */ } }
     current = v;
     Object.keys(RENDER).forEach(k => { const el = $('#view-' + k); if (el) el.hidden = k !== v; });
@@ -5183,7 +5209,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
   // ================= Einstellungen v2: einklappbar, Kacheln, anordnen · Grind-Modus · Cheat-Fenster =================
   // ---- Grind-Modus: Community weg, nichts mehr erstellen/importieren/cheaten ----
   const grindOn = () => !!(S.meta && S.meta.grind && S.meta.grind.on);
-  const applyGrind = () => { document.body.classList.toggle('grind', grindOn()); };
+  const applyGrind = () => { document.body.classList.toggle('grind', grindOn()); if (typeof dkApplyTabs === 'function') dkApplyTabs(); };
   function grindBlock(what) {
     if (!grindOn()) return false;
     toast(`Im Grind-Modus gesperrt: ${what}.`); SFX.play('err');
@@ -6303,7 +6329,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     if (d.pk) ['b', 'c'].forEach(k => { if (d.pk[k]) pkRefsOfD(d.pk[k]).forEach(x => r.add(x)); });
     return r;
   }
-  const atRefs = () => { const r = new Set(); atItems().forEach(it => atRefsOf(it.d).forEach(x => r.add(x))); return r; };
+  const atRefs = () => { const r = new Set(); atItems().forEach(it => atRefsOf(it.d).forEach(x => r.add(x))); if (typeof dkRefs === 'function') dkRefs().forEach(x => r.add(x)); return r; };
   // Abzug des jetzigen Aussehens
   function atSnap(parts) {
     const d = {};
@@ -6335,29 +6361,33 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     AT.name = ''; saveMeta(true); SFX.play('pop'); toast(`„${name}“ ist gespeichert.`);
     renderSetAll();
   }
+  // Wendet einen Abzug an (ersetzt nur die Teile, die im Abzug stehen). Wird auch von den Desktops genutzt.
+  async function atApplyData(d) {
+    const olds = atCurRefs();
+    if (d.sk) {
+      const next = {};
+      SK_PAGES.forEach(p => { if (d.sk[p]) next[p] = skNorm(d.sk[p]); });
+      S.meta.skin = next;
+    }
+    if (d.th) { setPref('theme', d.th); applyTheme(d.th); }
+    if (d.hm) { S.meta.home = homeNorm(d.hm); HOME_SEEN = null; }
+    if (d.ui) { S.meta.sui = brdNorm(d.ui.sui); S.meta.chw = brdNorm(d.ui.chw); }
+    if (d.cp) { const w = capW(); w.d = capNorm(d.cp.d); w.rnd = d.cp.rnd ? 1 : 0; }
+    if (d.pk) {
+      const n = {};
+      ['b', 'c'].forEach(k => { if (d.pk[k]) n[k] = pkNorm(d.pk[k], k, null); });
+      if (Object.keys(n).length) S.meta.pkd = n; else delete S.meta.pkd;
+    }
+    saveMeta(true);
+    for (const r of olds) await mediaDrop(r);
+    try { skEnter(current); } catch (e) { console.warn(e); }
+    try { skRefresh(); } catch (e) { /* egal */ }
+  }
   async function atApply(id) {
     const it = atItems().find(x => x.id === id); if (!it) return;
     closeDlg(); busy('Theme wird angewendet …');
     try {
-      const d = atJ(it.d), olds = atCurRefs();
-      if (d.sk) {
-        const next = {};
-        SK_PAGES.forEach(p => { if (d.sk[p]) next[p] = skNorm(d.sk[p]); });
-        S.meta.skin = next;
-      }
-      if (d.th) { setPref('theme', d.th); applyTheme(d.th); }
-      if (d.hm) { S.meta.home = homeNorm(d.hm); HOME_SEEN = null; }
-      if (d.ui) { S.meta.sui = brdNorm(d.ui.sui); S.meta.chw = brdNorm(d.ui.chw); }
-      if (d.cp) { const w = capW(); w.d = capNorm(d.cp.d); w.rnd = d.cp.rnd ? 1 : 0; }
-      if (d.pk) {
-        const n = {};
-        ['b', 'c'].forEach(k => { if (d.pk[k]) n[k] = pkNorm(d.pk[k], k, null); });
-        if (Object.keys(n).length) S.meta.pkd = n; else delete S.meta.pkd;
-      }
-      saveMeta(true);
-      for (const r of olds) await mediaDrop(r);
-      try { skEnter(current); } catch (e) { console.warn(e); }
-      try { skRefresh(); } catch (e) { /* egal */ }
+      await atApplyData(atJ(it.d));
       busy(null); SFX.play('pop'); toast(`„${it.n}“ ist jetzt aktiv.`);
       refresh(); renderSetAll();
     } catch (e) { busy(null); console.error(e); toast('Das Theme ließ sich nicht anwenden.'); }
@@ -6413,10 +6443,10 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     }
     return atJ(list);
   }
-  async function atImport(list, photos) {
-    if (!Array.isArray(list)) return 0;
+  // Medien aus einer Sicherung zurueckholen: gibt eine Funktion zurueck, die eine alte Kennung in eine neue umsetzt
+  function atTaker(photos) {
     const cache = new Map();
-    const take = async ref => {
+    return async ref => {
       if (!ref) return null;
       if (cache.has(ref)) return cache.get(ref);
       const du = photos && photos[ref];
@@ -6424,19 +6454,26 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
       if (typeof du === 'string' && /^data:(image|video|audio)\/[a-z0-9.+-]+;base64,/.test(du)) { try { r = await BE.putPhoto(dataURLToBlob(du)); } catch (e) { r = null; } }
       cache.set(ref, r); return r;
     };
+  }
+  async function atRemapD(d, take) {
+    if (d.sk) for (const p of Object.keys(d.sk)) await skRemap(d.sk[p], take);
+    if (d.hm) for (const w of d.hm.w) { if (w.m && w.m.ref) { const r = await take(w.m.ref); if (r) w.m.ref = r; else { w.m.ref = null; w.m.k = null; } } }
+    if (d.pk) for (const k of Object.keys(d.pk)) {
+      const h = d.pk[k];
+      if (h.m && h.m.ref) { h.m.ref = await take(h.m.ref); if (!h.m.ref) h.m.k = null; }
+      if (h.em && h.em.k === 'shape' && h.em.ref) h.em.ref = await take(h.em.ref);
+    }
+  }
+  async function atImport(list, photos) {
+    if (!Array.isArray(list)) return 0;
+    const take = atTaker(photos);
     const cur = atItems();
     let n = 0;
     for (const raw of list.slice(0, AT_MAX)) {
       if (cur.length >= AT_MAX) break;
       const it = atNormItem(raw);
       if (!it || cur.some(x => x.id === it.id)) continue;
-      if (it.d.sk) for (const p of Object.keys(it.d.sk)) await skRemap(it.d.sk[p], take);
-      if (it.d.hm) for (const w of it.d.hm.w) { if (w.m && w.m.ref) { const r = await take(w.m.ref); if (r) w.m.ref = r; else { w.m.ref = null; w.m.k = null; } } }
-      if (it.d.pk) for (const k of Object.keys(it.d.pk)) {
-        const h = it.d.pk[k];
-        if (h.m && h.m.ref) { h.m.ref = await take(h.m.ref); if (!h.m.ref) h.m.k = null; }
-        if (h.em && h.em.k === 'shape' && h.em.ref) h.em.ref = await take(h.em.ref);
-      }
+      await atRemapD(it.d, take);
       cur.push(it); n++;
     }
     if (n) saveMeta(true);
@@ -7735,7 +7772,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     if ('h' in m || 's' in m) { delete m.h; delete m.s; }   // alter Versteck-Code ist abgeschafft
     return m;
   }
-  function isHid(id) { if (HID.open) return false; const m = S.meta.hid; return !!(m && Array.isArray(m.ids) && m.ids.indexOf(id) >= 0); }
+  function isHid(id) { if (HID.open) return false; if (typeof dkHides === 'function' && dkHides(id)) return true; const m = S.meta.hid; return !!(m && Array.isArray(m.ids) && m.ids.indexOf(id) >= 0); }
   const hidCandidates = () => S.cases.filter(c => !c.builtin);
   function hidForget(id) {   // alle Merker auf ein Case loesen, das gerade verschwindet
     if (UI.caseId === id) UI.caseId = null;
@@ -7959,13 +7996,13 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
   function homeRender() {
     const h = homeCfg(), ed = HOME.edit, n = h.w.length;
     if (ed && HOME.sel && !wById(HOME.sel)) HOME.sel = null;
-    $('#view-home').innerHTML = `<div><span class="eyebrow">Home</span>${ed ? `<label class="field" style="margin-top:6px"><span>Überschrift</span><input type="text" id="home-title" maxlength="28" value="${esc(h.title)}" autocomplete="off"></label>` : `<h2>${esc(h.title)}</h2>`}</div>
+    $('#view-home').innerHTML = `${!ed && typeof dkBarHTML === 'function' ? dkBarHTML() : ''}<div><span class="eyebrow">Home</span>${ed ? `<label class="field" style="margin-top:6px"><span>Überschrift</span><input type="text" id="home-title" maxlength="28" value="${esc(h.title)}" autocomplete="off"></label>` : `<h2>${esc(h.title)}</h2>`}</div>
       <div class="tiles hcanvas${ed ? ' editing' : ''}" id="hcanvas" style="height:${hcHeight(h, ed)}px">${n ? h.w.map((w, i) => wHTML(w, i)).join('') : '<div class="empty-note hc-empty"><b>Noch keine Widgets</b><span>Füge unten welche hinzu.</span></div>'}</div>
       ${ed ? `<div class="w-panel" id="w-panel">${wPanelHTML()}</div>
         <div class="row"><button class="btn primary" data-act="wadd">+ Widget hinzufügen</button></div>
         <div class="row"><button class="btn small" data-act="skedit" data-id="home">Design anpassen</button><button class="btn small danger" data-act="homereset">${HOME.armReset ? 'Wirklich zurücksetzen?' : 'Auf Standard zurücksetzen'}</button></div>
         <div class="row"><button class="btn" data-act="homedone">Fertig</button></div>`
-      : `<div class="row"><button class="btn" data-act="homeedit">Home anpassen</button><button class="btn" data-act="skedit" data-id="home">Design anpassen</button></div>`}`;
+      : `<div class="row"><button class="btn" data-act="homeedit">Home anpassen</button><button class="btn" data-act="skedit" data-id="home">Design anpassen</button><button class="btn" data-act="dkopen">Desktops</button></div>`}`;
     $$('#view-home video.sk-m').forEach(v => { v.muted = true; const p = v.play && v.play(); if (p && p.catch) p.catch(() => {}); });
     $$('#view-home .w-fav .card').forEach(liveCard);
   }
@@ -9084,7 +9121,7 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
   const cxMB = b => (b / 1048576 >= 10 ? Math.round(b / 1048576) : Math.round(b / 104857.6) / 10).toString().replace('.', ',') + ' MB';
 
   // ---- Hide: Bereiche auf Home (Gacha, Slot, Comics) ----
-  const TAB_LIST = [['gacha', 'Gacha'], ['lobby', 'Slot'], ['comics', 'Comics']];
+  const TAB_LIST = [['case', 'Case'], ['inv', 'Inventar'], ['coll', 'Sammlung'], ['com', 'Community'], ['gacha', 'Gacha'], ['lobby', 'Slot'], ['comics', 'Comics']];
   const tabHidden = k => Array.isArray(S.meta.htab) && S.meta.htab.indexOf(k) >= 0;
   function tabSetHidden(k, on) {
     if (!TAB_LIST.some(x => x[0] === k)) return;
@@ -9092,10 +9129,11 @@ body.grind .tabs{grid-template-columns:repeat(4,1fr) 52px}
     const has = a.indexOf(k) >= 0;
     if (on && !has) a.push(k); else if (!on && has) a.splice(a.indexOf(k), 1);
     S.meta.htab = a; saveMeta(true);
+    if (typeof dkApplyTabs === 'function') dkApplyTabs();
   }
   function tabManage() {
     dlg(`<h3>Verstecke Bereiche</h3>
-      <p class="note" style="max-width:none">Ein versteckter Bereich verschwindet als Knopf von Home und aus dem Schnellzugriff. Hier holst du ihn zurück.</p>
+      <p class="note" style="max-width:none">Ein versteckter Bereich verschwindet als Knopf von Home, aus dem Schnellzugriff und aus der unteren Leiste. Hier holst du ihn zurück.</p>
       <div class="hid-list">${TAB_LIST.map(([k, n]) => { const h = tabHidden(k); return `<div class="hid-row${h ? ' is-hid' : ''}"><span class="hid-n"><b>${n}</b><small>${h ? 'versteckt' : 'sichtbar'}</small></span><button class="btn small${h ? ' primary' : ''}" data-act="tabflip" data-id="${k}">${h ? 'Wieder zeigen' : 'Verstecken'}</button></div>`; }).join('')}</div>
       <button class="btn" data-act="hidmenuback">Zurück</button>`);
   }
@@ -12971,6 +13009,323 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
     window.__JB_PI = { G, P, replay, BUYS, paint: paintBoard, hud: hudHTML };
     return G;
   })();
+  // ================= Desktops: mehrere Startseiten wie bei Windows =================
+  // Jeder Desktop hat eigene Home-Widgets samt Aussehen (die Teile eines App-Themes: Seiten-Designs, Hell/Dunkel, Startseite, Verpackung,
+  // Gacha-Kapsel), eigene sichtbare Bereiche (Gacha, Slot, Comics) und eine eigene Auswahl an Cases. Startoken, Karten und Inventar sind gemeinsam.
+  // S.meta.dk = { cur, list: [{ id, n, ic, d, tabs, cases }], seen: [Case-Kennungen] }
+  //   d: Abzug des Aussehens, solange der Desktop NICHT aktiv ist (beim aktiven steht alles live in S.meta, d ist dann null)
+  //   tabs: versteckte Bereiche, solange der Desktop nicht aktiv ist (beim aktiven gilt S.meta.htab)
+  //   cases: null = alle Cases, sonst die Kennungen der sichtbaren Cases
+  //   seen: Cases, die dem Desktop-System schon bekannt sind. Ein neues Case gehoert dem Desktop, auf dem es zuerst auftaucht.
+  const DK_MAX = 8, DK_PARTS = ['sk', 'th', 'hm', 'pk', 'cp'];
+  const DK_ICONS = ['🖥️', '🎌', '🏠', '📚', '🎮', '🎨', '💼', '⭐', '🌙', '🎴', '🍿', '🎧'];
+  const DK = { ed: null, armDel: null, busy: false };
+  const dkName = n => String(n == null ? '' : n).replace(/[<>&"'`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 20);
+
+  function dkNormRec(r) {
+    if (!r || typeof r !== 'object' || typeof r.id !== 'string') return null;
+    const o = { id: r.id.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 12) || uid(8), n: dkName(r.n) || 'Desktop', ic: DK_ICONS.includes(r.ic) ? r.ic : DK_ICONS[0], d: null, tabs: [], cases: null };
+    if (r.d && typeof r.d === 'object') { const it = atNormItem({ id: 'x', d: r.d }); o.d = it ? it.d : null; }
+    if (Array.isArray(r.tabs)) o.tabs = r.tabs.filter((k, i, a) => TAB_LIST.some(x => x[0] === k) && a.indexOf(k) === i);
+    if (Array.isArray(r.cases)) o.cases = r.cases.filter((x, i, a) => typeof x === 'string' && x.length < 64 && a.indexOf(x) === i).slice(0, 3000);
+    return o;
+  }
+  let DK_META_SEEN = null, DK_SET = null, DK_SET_SRC = null;
+  function dkMeta() {
+    const m = S.meta && S.meta.dk;
+    if (!m || typeof m !== 'object') return null;
+    if (DK_META_SEEN !== m) {   // einmal pro Stand pruefen
+      const ids = new Set();
+      m.list = (Array.isArray(m.list) ? m.list : []).map(dkNormRec).filter(r => r && !ids.has(r.id) && ids.add(r.id)).slice(0, DK_MAX);
+      if (!m.list.length) { delete S.meta.dk; DK_META_SEEN = null; return null; }
+      if (!m.list.some(r => r.id === m.cur)) m.cur = m.list[0].id;
+      m.seen = Array.isArray(m.seen) ? m.seen.filter(x => typeof x === 'string') : [];
+      DK_META_SEEN = m; DK_SET = null;
+    }
+    return m;
+  }
+  function dkEnsure() {
+    const m = dkMeta(); if (m) return m;
+    const id = uid(8);
+    S.meta.dk = { cur: id, list: [{ id, n: 'Desktop 1', ic: DK_ICONS[0], d: null, tabs: [], cases: null }], seen: S.cases.map(c => c.id) };
+    DK_META_SEEN = null;
+    return dkMeta();
+  }
+  const dkCurRec = () => { const m = dkMeta(); return m ? m.list.find(r => r.id === m.cur) : null; };
+  const dkIsCur = r => { const m = dkMeta(); return !!m && m.cur === r.id; };
+  const dkHiddenTabs = r => (dkIsCur(r) ? (Array.isArray(S.meta.htab) ? S.meta.htab.filter(k => typeof k === 'string') : []) : r.tabs.slice());
+  function dkSetHiddenTabs(r, arr) {
+    const a = arr.filter((k, i, l) => TAB_LIST.some(x => x[0] === k) && l.indexOf(k) === i);
+    if (dkIsCur(r)) S.meta.htab = a; else r.tabs = a;
+  }
+
+  // ---- Welche Cases sieht der jetzige Desktop? (wird von isHid() gefragt) ----
+  function dkHides(id) {
+    if (!S.meta || !S.meta.dk) return false;
+    const m = dkMeta(); if (!m || m.list.length < 2 || id === 'standard') return false;
+    if (DK_SET_SRC !== m.seen || !DK_SET) { DK_SET = new Set(m.seen); DK_SET_SRC = m.seen; }
+    const r = m.list.find(x => x.id === m.cur);
+    if (!DK_SET.has(id)) {   // neues Case: gehoert dem Desktop, auf dem es zuerst auftaucht
+      DK_SET.add(id); m.seen.push(id);
+      if (r && r.cases) r.cases.push(id);
+      saveMeta();
+      return false;
+    }
+    return !!(r && r.cases && r.cases.indexOf(id) < 0);
+  }
+  const dkOwnCases = () => S.cases.filter(c => !c.builtin).sort((a, b) => String(a.name).localeCompare(String(b.name), 'de'));
+  const dkForgetHidden = () => S.cases.forEach(c => { if (isHid(c.id)) hidForget(c.id); });
+
+  // ---- Medien: Bilder in den Abzuegen der nicht aktiven Desktops duerfen nicht aufgeraeumt werden ----
+  function dkRefs() {
+    const r = new Set(), m = S.meta && S.meta.dk ? dkMeta() : null;
+    if (m) m.list.forEach(x => { if (x.id !== m.cur && x.d) atRefsOf(x.d).forEach(y => r.add(y)); });
+    return r;
+  }
+
+  // ---- Untere Leiste: versteckte Bereiche ausblenden, die uebrigen teilen sich die Breite ----
+  function dkApplyTabs() {
+    let n = 1;   // Home
+    ['case', 'inv', 'coll', 'com'].forEach(k => {
+      const b = $('#tab-' + k); if (!b) return;
+      const hide = tabHidden(k) || (k === 'com' && grindOn());
+      b.hidden = hide; if (!hide) n++;
+    });
+    const nav = document.querySelector('.tabs'); if (nav) nav.style.setProperty('--tn', n);
+  }
+
+  // ---- Wechseln ----
+  const dkBlankD = name => { const hm = homeNorm(HOME_DEFAULT()); hm.title = dkName(name) || hm.title; return { sk: {}, th: pref('theme'), hm, pk: {}, cp: { d: capNorm(null), rnd: 0 } }; };
+  function dkAnim(dir) {
+    const v = $('#view-home'); if (!dir || !v || current !== 'home') return;
+    v.classList.remove('dk-l', 'dk-r'); void v.offsetWidth; v.classList.add(dir > 0 ? 'dk-r' : 'dk-l');
+    setTimeout(() => v.classList.remove('dk-l', 'dk-r'), 360);
+  }
+  async function dkSwitch(id, dir) {
+    const m = dkMeta(); if (!m || DK.busy) return false;
+    const to = m.list.find(r => r.id === id), from = m.list.find(r => r.id === m.cur);
+    if (!to || !from || to === from) return false;
+    DK.busy = true;
+    try {
+      S.cases.forEach(c => dkHides(c.id));   // neue Cases bleiben beim alten Desktop
+      HOME.edit = false; HOME.sel = null; HOME.armReset = false;
+      from.d = atSnap(DK_PARTS); from.tabs = dkHiddenTabs(from);
+      m.cur = id;
+      S.meta.htab = to.tabs.slice(); to.tabs = [];
+      const d = to.d ? atJ(to.d) : dkBlankD(to.n);
+      await atApplyData(d);
+      to.d = null;
+      saveMeta(true);
+      dkForgetHidden(); dkApplyTabs();
+      if (current !== 'home' && current !== 'set') showView('home');
+      if (current === 'set') renderSetAll(); else refresh();
+      dkAnim(dir);
+      SFX.play('pop');
+      return true;
+    } catch (e) { console.error(e); toast('Der Desktop ließ sich nicht wechseln.'); return false; }
+    finally { DK.busy = false; }
+  }
+  function dkStep(delta) {
+    const m = dkMeta(); if (!m || m.list.length < 2) return false;
+    const i = m.list.findIndex(r => r.id === m.cur), j = i + delta;
+    if (j < 0 || j >= m.list.length) return false;
+    return dkSwitch(m.list[j].id, delta);
+  }
+
+  // ---- Leiste auf Home ----
+  function dkBarHTML() {
+    const m = dkMeta(); if (!m || m.list.length < 2) return '';
+    return `<nav class="dk-bar" aria-label="Desktops">${m.list.map(r => `<button class="dk-chip${r.id === m.cur ? ' on' : ''}" data-act="dkgo" data-id="${esc(r.id)}" aria-pressed="${r.id === m.cur}"><span aria-hidden="true">${r.ic}</span><b>${esc(r.n)}</b></button>`).join('')}${m.list.length < DK_MAX ? '<button class="dk-chip dk-plus" data-act="dknew" aria-label="Neuer Desktop" title="Neuer Desktop">+</button>' : ''}<button class="dk-chip dk-plus" data-act="dkopen" aria-label="Desktops verwalten" title="Desktops verwalten">⚙</button></nav>`;
+  }
+  ACTS.dkgo = id => {
+    const m = dkMeta(); if (!m) return;
+    const i = m.list.findIndex(r => r.id === m.cur), j = m.list.findIndex(r => r.id === id);
+    if (j < 0 || i === j) { closeDlg(); return; }
+    closeDlg(); dkSwitch(id, j > i ? 1 : -1);
+  };
+
+  // ---- Verwaltung ----
+  function dkSummary(r) {
+    const w = dkIsCur(r) ? homeCfg().w.length : (r.d && r.d.hm && Array.isArray(r.d.hm.w) ? r.d.hm.w.length : 0);
+    const hid = dkHiddenTabs(r), off = TAB_LIST.filter(x => hid.indexOf(x[0]) >= 0).map(x => x[1]);
+    const own = dkOwnCases(), cs = r.cases ? `${own.filter(c => r.cases.indexOf(c.id) >= 0).length} von ${own.length} Cases` : 'alle Cases';
+    return `${w} Widget${w === 1 ? '' : 's'} · ${off.length ? 'ohne ' + off.join(', ') : 'alle Bereiche'} · ${cs}`;
+  }
+  const dkIntro = '<p class="note" style="max-width:none">Mit Desktops hast du mehrere Startseiten, zum Beispiel einen für Anime-Booster und einen für Alltag. Jeder Desktop hat eigene Widgets samt Aussehen, eigene sichtbare Bereiche und eine eigene Auswahl an Cases. Startoken, Karten und Inventar teilen sich alle Desktops. Wechseln: auf Home nach links oder rechts wischen oder in der Leiste antippen (am PC auch Strg+Alt+Pfeil).</p>';
+  function dkManageDlg() {
+    const m = dkMeta();
+    if (!m) { dlg(`<h3>Desktops</h3>${dkIntro}<div class="row"><button class="btn primary" data-act="dknew">Neuen Desktop anlegen</button><button class="btn" data-act="dlgclose">Schließen</button></div>`); return; }
+    const rows = m.list.map((r, i) => {
+      const on = r.id === m.cur;
+      return `<div class="dk-row${on ? ' cur' : ''}" data-dk="${esc(r.id)}"><span class="dk-ic" aria-hidden="true">${r.ic}</span>
+        <span class="dk-n"><b>${esc(r.n)}${on ? ' <em>aktiv</em>' : ''}</b><small>${esc(dkSummary(r))}</small></span>
+        <span class="dk-act">${on ? '' : `<button class="btn small primary" data-act="dkgo" data-id="${esc(r.id)}">Wechseln</button>`}<button class="btn small" data-act="dkedit" data-id="${esc(r.id)}">Bearbeiten</button>${i > 0 ? `<button class="btn small" data-act="dkleft" data-id="${esc(r.id)}" aria-label="Nach vorne">◀</button>` : ''}${i < m.list.length - 1 ? `<button class="btn small" data-act="dkright" data-id="${esc(r.id)}" aria-label="Nach hinten">▶</button>` : ''}</span></div>`;
+    }).join('');
+    dlg(`<h3>Desktops</h3>${dkIntro}<div class="dk-list">${rows}</div>
+      <div class="row"><button class="btn primary" data-act="dknew"${m.list.length >= DK_MAX ? ' disabled' : ''}>+ Neuer Desktop</button><button class="btn" data-act="dlgclose">Schließen</button></div>`);
+  }
+  ACTS.dkopen = () => dkManageDlg();
+  const dkMoveRec = (id, d) => { const m = dkMeta(); if (!m) return; const i = m.list.findIndex(r => r.id === id), j = i + d; if (i < 0 || j < 0 || j >= m.list.length) return; [m.list[i], m.list[j]] = [m.list[j], m.list[i]]; saveMeta(true); SFX.play('pop'); dkManageDlg(); if (current === 'home') homeRender(); };
+  ACTS.dkleft = id => dkMoveRec(id, -1);
+  ACTS.dkright = id => dkMoveRec(id, 1);
+
+  // ---- Anlegen und Bearbeiten ----
+  function dkOpenEdit(id) {
+    const own = dkOwnCases(), m = dkMeta();
+    if (id) {
+      const r = m && m.list.find(x => x.id === id); if (!r) return;
+      DK.ed = { id, n: r.n, ic: r.ic, start: null, hid: dkHiddenTabs(r), all: !r.cases, sel: new Set(r.cases ? r.cases.filter(x => own.some(c => c.id === x)) : own.map(c => c.id)) };
+    } else {
+      const used = m ? m.list.map(r => r.ic) : [DK_ICONS[0]];
+      DK.ed = { id: null, n: '', n0: m ? null : 'Desktop 1', ic: DK_ICONS.find(i => !used.includes(i)) || DK_ICONS[0], start: 'blank', hid: [], all: true, sel: new Set(own.map(c => c.id)) };
+    }
+    DK.armDel = null; dkEditDlg();
+  }
+  const dkReadName = () => { const i = $('#dk-name'), j = $('#dk-name0'); if (i && DK.ed) DK.ed.n = i.value; if (j && DK.ed) DK.ed.n0 = j.value; };
+  function dkEditDlg() {
+    const e = DK.ed; if (!e) return;
+    const own = dkOwnCases(), m = dkMeta(), canDel = !!(e.id && m && m.list.length > 1);
+    dlg(`<h3>${e.id ? 'Desktop bearbeiten' : 'Neuer Desktop'}</h3>
+      ${!e.id && e.n0 != null ? `<label class="field"><span>Name deines jetzigen Desktops</span><input type="text" id="dk-name0" maxlength="20" value="${esc(e.n0)}" autocomplete="off" placeholder="z. B. Anime"></label>` : ''}
+      <label class="field"><span>${!e.id && e.n0 != null ? 'Name des neuen Desktops' : 'Name'}</span><input type="text" id="dk-name" maxlength="20" value="${esc(e.n)}" autocomplete="off" placeholder="z. B. Real Life"></label>
+      <div class="field"><span>Symbol</span><div class="chips">${DK_ICONS.map(i => `<button class="chip dk-icb${e.ic === i ? ' on' : ''}" data-act="dkic" data-id="${i}" aria-pressed="${e.ic === i}">${i}</button>`).join('')}</div></div>
+      ${e.id ? '' : `<div class="field"><span>Start</span><div class="chips"><button class="chip${e.start === 'blank' ? ' on' : ''}" data-act="dkstart" data-id="blank" aria-pressed="${e.start === 'blank'}">Leer</button><button class="chip${e.start === 'copy' ? ' on' : ''}" data-act="dkstart" data-id="copy" aria-pressed="${e.start === 'copy'}">Kopie von hier</button></div><small class="muted">Leer startet mit frischem Home und Standard-Look. Eine Kopie übernimmt Widgets und Aussehen dieses Desktops.</small></div>`}
+      <div class="field"><span>Sichtbare Bereiche</span><div class="chips">${TAB_LIST.map(([k, n]) => { const on = e.hid.indexOf(k) < 0; return `<button class="chip${on ? ' on' : ''}" data-act="dktab" data-id="${k}" aria-pressed="${on}">${n}</button>`; }).join('')}</div></div>
+      <div class="field"><span>Cases</span><div class="chips"><button class="chip${e.all ? ' on' : ''}" data-act="dkall" aria-pressed="${e.all}">Alle Cases</button>${e.all ? '' : '<button class="chip" data-act="dkselall">Alle wählen</button><button class="chip" data-act="dkselnone">Keins</button>'}</div>
+        ${e.all ? '' : (own.length ? `<div class="chips dk-cases">${own.map(c => { const on = e.sel.has(c.id); return `<button class="chip${on ? ' on' : ''}" data-act="dkcase" data-id="${esc(c.id)}" aria-pressed="${on}">${esc(c.name)}</button>`; }).join('')}</div>` : '<small class="muted">Du hast noch kein eigenes Case.</small>')}
+        ${e.all ? '' : '<small class="muted">Das Standard-Case ist auf jedem Desktop da. Neue Cases gehören dem Desktop, auf dem du sie anlegst.</small>'}</div>
+      <div class="row"><button class="btn primary" data-act="dksave">${e.id ? 'Speichern' : 'Anlegen'}</button><button class="btn" data-act="dkcancel">Abbrechen</button></div>
+      ${canDel ? `<div class="row"><button class="btn small danger" data-act="dkdel">${DK.armDel === e.id ? 'Wirklich löschen?' : 'Desktop löschen'}</button></div>` : ''}`);
+  }
+  ACTS.dkcancel = () => { DK.ed = null; DK.armDel = null; dkManageDlg(); };
+  ACTS.dknew = () => { const m = dkMeta(); if (m && m.list.length >= DK_MAX) { toast(`Mehr als ${DK_MAX} Desktops gibt es nicht.`); return; } dkOpenEdit(null); };
+  ACTS.dkedit = id => dkOpenEdit(id);
+  ACTS.dkic = id => { dkReadName(); if (DK.ed) { DK.ed.ic = id; dkEditDlg(); } };
+  ACTS.dkstart = id => {
+    dkReadName(); const e = DK.ed; if (!e || e.id) return;
+    e.start = id === 'copy' ? 'copy' : 'blank';
+    const cur = dkCurRec(), own = dkOwnCases();
+    if (e.start === 'copy' && cur) { e.hid = dkHiddenTabs(cur); e.all = !cur.cases; e.sel = new Set(cur.cases ? cur.cases.filter(x => own.some(c => c.id === x)) : own.map(c => c.id)); }
+    else { e.hid = []; e.all = true; e.sel = new Set(own.map(c => c.id)); }
+    dkEditDlg();
+  };
+  ACTS.dktab = id => { dkReadName(); const e = DK.ed; if (!e) return; const i = e.hid.indexOf(id); if (i >= 0) e.hid.splice(i, 1); else e.hid.push(id); dkEditDlg(); };
+  ACTS.dkall = () => { dkReadName(); const e = DK.ed; if (!e) return; e.all = !e.all; dkEditDlg(); };
+  ACTS.dkselall = () => { dkReadName(); const e = DK.ed; if (!e) return; e.sel = new Set(dkOwnCases().map(c => c.id)); dkEditDlg(); };
+  ACTS.dkselnone = () => { dkReadName(); const e = DK.ed; if (!e) return; e.sel = new Set(); dkEditDlg(); };
+  ACTS.dkcase = id => { dkReadName(); const e = DK.ed; if (!e) return; if (e.sel.has(id)) e.sel.delete(id); else e.sel.add(id); dkEditDlg(); };
+  ACTS.dksave = async () => {
+    dkReadName(); const e = DK.ed; if (!e) return;
+    const cases = e.all ? null : [...e.sel];
+    if (e.id) {
+      const m = dkMeta(), r = m && m.list.find(x => x.id === e.id); if (!r) return;
+      r.n = dkName(e.n) || r.n; r.ic = e.ic; dkSetHiddenTabs(r, e.hid); r.cases = cases;
+      saveMeta(true); DK.ed = null; SFX.play('pop');
+      if (dkIsCur(r)) { dkForgetHidden(); dkApplyTabs(); if (current === 'set') renderSetAll(); else refresh(); }
+      dkManageDlg(); return;
+    }
+    const first = !dkMeta(), m = dkEnsure();
+    if (first && e.n0 != null) m.list[0].n = dkName(e.n0) || 'Desktop 1';
+    if (m.list.length >= DK_MAX) { toast(`Mehr als ${DK_MAX} Desktops gibt es nicht.`); return; }
+    const name = dkName(e.n) || `Desktop ${m.list.length + 1}`;
+    const rec = { id: uid(8), n: name, ic: e.ic, d: atJ(e.start === 'copy' ? atSnap(DK_PARTS) : dkBlankD(name)), tabs: e.hid.slice(), cases };
+    S.cases.forEach(c => { if (m.seen.indexOf(c.id) < 0) m.seen.push(c.id); });   // alle bisherigen Cases sind bekannt
+    DK_SET = null;
+    m.list.push(rec); saveMeta(true);
+    DK.ed = null; closeDlg();
+    await dkSwitch(rec.id, 1);
+    toast(`Desktop „${name}“ ist angelegt.`);
+  };
+  ACTS.dkdel = async () => {
+    const e = DK.ed, m = dkMeta(); if (!e || !e.id || !m || m.list.length < 2) return;
+    if (DK.armDel !== e.id) { DK.armDel = e.id; dkReadName(); dkEditDlg(); return; }
+    DK.armDel = null; DK.ed = null; closeDlg();
+    const id = e.id, r = m.list.find(x => x.id === id); if (!r) return;
+    if (m.cur === id) { const i = m.list.indexOf(r), nx = m.list[i + 1] || m.list[i - 1]; if (!(await dkSwitch(nx.id, i + 1 < m.list.length ? 1 : -1))) return; }
+    const refs = r.d ? [...atRefsOf(r.d)] : [];
+    m.list = m.list.filter(x => x.id !== id);
+    if (m.list.length < 2) m.list.forEach(x => { x.cases = null; });
+    saveMeta(true);
+    SFX.play('back'); toast(`„${r.n}“ ist gelöscht.`);
+    if (current === 'set') renderSetAll(); else if (current === 'home') homeRender();
+    for (const ref of refs) await mediaDrop(ref);
+  };
+
+  // ---- Einstellungen ----
+  function dkSetHTML() {
+    const m = dkMeta(), cur = dkCurRec();
+    return `${dkIntro}${m && cur ? `<p class="note" style="max-width:none">Aktiv: <b>${cur.ic} ${esc(cur.n)}</b> · ${m.list.length} Desktop${m.list.length === 1 ? '' : 's'}</p>` : ''}
+      <div class="row left"><button class="btn" data-act="dkopen">Desktops verwalten</button><button class="btn primary" data-act="dknew">Neuer Desktop</button></div>`;
+  }
+  { const i = SET_SECS.findIndex(s => s.id === 'look'); SET_SECS.splice(i < 0 ? SET_SECS.length : i + 1, 0, { id: 'desk', t: 'Desktops', ic: '🖥️', d: 'Mehrere Startseiten', body: dkSetHTML }); }
+
+  // ---- Sicherung ----
+  async function dkExport(photos) {
+    const m = dkMeta(); if (!m) return null;
+    const list = m.list.map(r => {
+      const cur = r.id === m.cur;
+      return { id: r.id, n: r.n, ic: r.ic, d: cur ? atSnap(DK_PARTS) : r.d, tabs: cur ? dkHiddenTabs(r) : r.tabs.slice(), cases: r.cases ? r.cases.slice() : null };
+    });
+    for (const r of list) {
+      if (!r.d) continue;
+      for (const ref of atRefsOf(r.d)) {
+        if (photos[ref]) continue;
+        try { const b = await BE.blobOf(ref); if (b) photos[ref] = await blobToDataURL(b); } catch (e) { console.warn('Desktop-Medium fehlt', ref, e); }
+      }
+    }
+    return atJ({ cur: m.cur, list, seen: m.seen.slice() });
+  }
+  async function dkImport(w, photos, idMap) {
+    if (!w || typeof w !== 'object' || !Array.isArray(w.list)) return 0;
+    const mapCase = id => (idMap && idMap[id]) || (S.cases.some(c => c.id === id) ? id : null);
+    const take = atTaker(photos);
+    const incoming = [];
+    for (const raw of w.list.slice(0, DK_MAX)) {
+      const r = dkNormRec(raw); if (!r) continue;
+      if (r.d) await atRemapD(r.d, take);
+      if (r.cases) r.cases = r.cases.map(mapCase).filter(Boolean);
+      incoming.push(r);
+    }
+    if (!incoming.length) return 0;
+    const seen = (Array.isArray(w.seen) ? w.seen : []).filter(x => typeof x === 'string').map(mapCase).filter(Boolean);
+    let m = dkMeta(), n = 0;
+    if (!m) {
+      S.meta.dk = { cur: incoming.some(r => r.id === w.cur) ? w.cur : incoming[0].id, list: incoming, seen: [...new Set(S.cases.map(c => c.id).concat(seen))] };
+      DK_META_SEEN = null; n = incoming.length;
+    } else {
+      incoming.forEach(r => { if (m.list.length < DK_MAX && !m.list.some(x => x.id === r.id)) { m.list.push(r); n++; } });
+      seen.forEach(id => { if (m.seen.indexOf(id) < 0) m.seen.push(id); });
+    }
+    if (n) saveMeta(true);
+    return n;
+  }
+
+  // ---- Wischen und Tastatur ----
+  (function dkWire() {
+    const v = $('#view-home'); if (!v) return;
+    let t0 = null;
+    const skip = el => !!(el && el.closest && el.closest('input,textarea,select,video,.dk-bar,.w-media,[data-noswipe]'));
+    v.addEventListener('touchstart', e => {
+      t0 = null;
+      const m = dkMeta();
+      if (!m || m.list.length < 2 || HOME.edit || e.touches.length !== 1 || skip(e.target)) return;
+      const t = e.touches[0]; if (t.clientX < 24) return;   // der Rand gehoert dem Zurueck-Wischen von iOS
+      t0 = { x: t.clientX, y: t.clientY, t: Date.now() };
+    }, { passive: true });
+    v.addEventListener('touchend', e => {
+      if (!t0) return;
+      const t = e.changedTouches[0], dx = t.clientX - t0.x, dy = t.clientY - t0.y, dt = Date.now() - t0.t; t0 = null;
+      if ($('#dlg') && !$('#dlg').hidden) return;
+      if (Math.abs(dx) >= 70 && Math.abs(dx) > 2 * Math.abs(dy) && dt < 800) dkStep(dx < 0 ? 1 : -1);
+    }, { passive: true });
+    document.addEventListener('keydown', e => {
+      if (!e.ctrlKey || !e.altKey || e.shiftKey || e.metaKey || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+      const tg = e.target; if (tg && /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName)) return;
+      const d = $('#dlg'); if (d && !d.hidden) return;
+      e.preventDefault(); dkStep(e.key === 'ArrowRight' ? 1 : -1);
+    });
+  })();
+  window.__JB_DK = { meta: () => { const m = dkMeta(); return m ? JSON.parse(JSON.stringify({ cur: m.cur, list: m.list.map(r => ({ id: r.id, n: r.n, ic: r.ic, tabs: r.tabs, cases: r.cases, hasD: !!r.d })), seen: m.seen })) : null; }, go: (id, dir) => dkSwitch(id, dir), step: dkStep, refs: () => [...dkRefs()] };
   // ================= Bekanntes Set per KI nachbauen =================
   // Die KI liefert aus ihrem Wissen: Set-Daten (Kartenzahl, Seltenheiten, Booster, Preis, Farbe) und danach
   // die Kartenliste mit Marktpreisen. Bilder werden nicht kopiert: Karten bekommen ein Emoji als Platzhalter.
@@ -13286,7 +13641,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     }));
     const extra = {};   // Medien aus Slot, Home und Designs (wenige)
     const cases = list.map(cs => withProg ? { case: serializeCase(cs), prog: progOf(cs.id) } : { case: serializeCase(cs) });
-    const walletObj = wallet ? { c: MONEY_VER, tokens: tokens(), standard: progOf('standard'), slot: await slotExport(extra), gm: gmExport(), home: await homeExport(extra), ...(hidExport() ? { hid: hidExport() } : {}), ...(XR.length ? { xr: XR.map(x => ({ ...x })) } : {}), ...(KL.length ? { kl: KL.map(x => ({ ...x })) } : {}), ...(await mlExport(extra).then(l => (l ? { ml: l } : {}))), ...(await atExport(extra).then(a => (a ? { at: a } : {}))), ...(Object.keys(ROV).length ? { rov: JSON.parse(JSON.stringify(ROV)) } : {}), ...(await pkExport(extra).then(p => (p ? { pk: p } : {}))), ...(capExport() ? { cap: capExport() } : {}), ...(S.meta.sui ? { sui: JSON.parse(JSON.stringify(S.meta.sui)) } : {}), ...(S.meta.chw ? { chw: JSON.parse(JSON.stringify(S.meta.chw)) } : {}) } : null;
+    const walletObj = wallet ? { c: MONEY_VER, tokens: tokens(), standard: progOf('standard'), slot: await slotExport(extra), gm: gmExport(), home: await homeExport(extra), ...(hidExport() ? { hid: hidExport() } : {}), ...(XR.length ? { xr: XR.map(x => ({ ...x })) } : {}), ...(KL.length ? { kl: KL.map(x => ({ ...x })) } : {}), ...(await mlExport(extra).then(l => (l ? { ml: l } : {}))), ...(await atExport(extra).then(a => (a ? { at: a } : {}))), ...(await dkExport(extra).then(x => (x ? { dk: x } : {}))), ...(Object.keys(ROV).length ? { rov: JSON.parse(JSON.stringify(ROV)) } : {}), ...(await pkExport(extra).then(p => (p ? { pk: p } : {}))), ...(capExport() ? { cap: capExport() } : {}), ...(S.meta.sui ? { sui: JSON.parse(JSON.stringify(S.meta.sui)) } : {}), ...(S.meta.chw ? { chw: JSON.parse(JSON.stringify(S.meta.chw)) } : {}) } : null;
     const refs = [...uses.keys()];
     const bid = uid(10);
     let part = 0, blobs = [], files = [], size = 0, missing = 0;
@@ -13457,6 +13812,7 @@ Nur die Zeilen, keine Überschrift, kein weiterer Text.`;
     try { if (w.rov && typeof w.rov === 'object') { xrApply(XR, { ...rovNorm(w.rov), ...ROV }); S.meta.rov = { ...ROV }; } } catch (e) { console.warn('Seltenheiten-Import', e); }
     try { if (Array.isArray(w.kl)) klMerge(w.kl); } catch (e) { console.warn('Look-Import', e); }
     try { if (Array.isArray(w.at)) await atImport(w.at, photos); } catch (e) { console.warn('Theme-Import', e); }
+    try { if (w.dk) await dkImport(w.dk, photos, idMap); } catch (e) { console.warn('Desktop-Import', e); }
     try { if (w.cap) capImport(w.cap); } catch (e) { console.warn('Kapsel-Import', e); }
     try { if (w.sui && typeof w.sui === 'object') S.meta.sui = brdNorm(w.sui); if (w.chw && typeof w.chw === 'object') S.meta.chw = brdNorm(w.chw); } catch (e) { console.warn('Layout-Import', e); }
     try { if (Array.isArray(w.ml)) await mlImport(w.ml, photos); } catch (e) { console.warn('Bildspeicher-Import', e); }
