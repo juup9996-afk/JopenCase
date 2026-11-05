@@ -1372,6 +1372,75 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
 .dk-icb{padding:5px 10px;font-size:18px}
 .dk-cases{max-height:28vh;overflow-y:auto}
 @media (prefers-reduced-motion:reduce){#view-home.dk-r,#view-home.dk-l{animation:none}}
+
+.dk-info{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;margin:0 0 12px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--muted);font-size:13px}
+.dk-info.warn{border-color:var(--accent);color:var(--fg)}
+.dk-info-b{display:flex;gap:6px;flex-wrap:wrap}
+.chip[data-act=dktab]:not(.on){text-decoration:line-through;opacity:.75}
+.dup-list{display:flex;flex-direction:column;gap:8px;max-height:50vh;overflow-y:auto;margin:6px 0 10px}
+.dup-row{display:grid;grid-template-columns:auto auto auto 1fr;grid-template-areas:"a eq b t" "k k k k";align-items:center;gap:8px 8px;border:1px solid var(--line);border-radius:12px;padding:8px;background:var(--surface-2)}
+.dup-row.keep{border-color:var(--accent)}
+.dup-row .dup-img-wrap:nth-of-type(1){grid-area:a}
+.dup-row .dup-eq{grid-area:eq;font-size:20px;color:var(--muted)}
+.dup-row .dup-img-wrap:nth-of-type(2){grid-area:b}
+.dup-t{grid-area:t;display:flex;flex-direction:column;min-width:0}
+.dup-t b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dup-t small{color:var(--muted);font-size:12px}
+.dup-row .chip{grid-area:k;justify-self:start}
+.dup-img{display:block;width:52px;height:68px;object-fit:cover;border-radius:6px;background:var(--surface)}
+.dup-none{background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 6px,var(--surface-2) 6px,var(--surface-2) 12px)}
+.dlg.dup-top{z-index:95}
+
+#top-mu[hidden]{display:none}
+#top-mu.mu-on{color:var(--accent)}
+.mu-now{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:2px 0 4px}
+.mu-now b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.mu-now small{color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+.mu-seek{width:100%;margin:2px 0 8px}
+.mu-ctl{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin:4px 0 10px}
+.mu-ctl .btn[aria-pressed=true]{border-color:var(--accent);color:var(--fg)}
+.mu-ctl .mu-pp{min-width:56px}
+.mu-ctl .btn span{font-size:12px}
+.mu-list{display:flex;flex-direction:column;gap:6px;max-height:34vh;overflow-y:auto;margin:6px 0 10px}
+.mu-row{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--surface-2)}
+.mu-list.mu-fxl{max-height:none;overflow:visible}
+.mu-row.cur{border-color:var(--accent)}
+.mu-row.bad{opacity:.6}
+.mu-n{display:flex;flex-direction:column;min-width:0}
+.mu-n b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.mu-n small{color:var(--muted);font-size:12px}
+.mu-b{display:flex;gap:4px;flex:none}
+.mu-b .btn{padding:5px 9px}
+.mu-qh{margin:10px 0 2px}
+.mu-box .mu-list{max-height:30vh}
+.set-sec select[data-mu-sel]{max-width:60vw}
+#top-mu{margin-left:0}
+.mu-ctl .btn.small{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;padding:6px 10px;min-width:52px}
+.mu-ctl .btn.small span{font-size:10px;color:var(--muted)}
+.mu-ctl{gap:6px}
+
+.mu-pg{border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--surface-2);margin:8px 0;display:flex;flex-direction:column;gap:6px}
+.mu-pg>b{font-size:14px}
+.mu-pgr{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mu-pgr .l{flex:none;min-width:44px;font-size:12px;color:var(--muted)}
+.mu-pgr select{flex:1 1 130px;min-width:0;max-width:100%}
+.set-sec .mu-pgr select[data-mu-sel]{max-width:none}
+.mu-pgr .btn.small{padding:5px 9px}
+.mu-pgr .mu-b{margin-left:auto}
+.mu-pjn{flex:1 1 0;min-width:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px}
+.mu-pjn.own{color:var(--fg)}
+.mu-box .set-sub{margin:12px 0 2px}
+/* Kopfzeile mit drei Knoepfen (Case und Booster, Design, Musik): auf Handys enger setzen, damit nichts ueber den Rand laeuft */
+@media (max-width:440px){
+  .top{gap:6px;padding-left:12px;padding-right:12px}
+  .top .brand{font-size:22px}
+  .top .top-skin{width:34px;height:34px;font-size:16px;margin-right:0}
+}
+@media (max-width:340px){
+  .top{gap:5px;padding-left:10px;padding-right:10px}
+  .top .brand{font-size:20px}
+  .top .top-skin{width:32px;height:32px;font-size:15px}
+}
 </style>
 <style>body{margin:0}</style>
 </head><body>
@@ -1382,6 +1451,7 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
     <div class="brand">JopenBox</div>
     <button class="top-skin" id="top-pkg" data-act="pkopen" aria-label="Case und Booster gestalten" title="Case &amp; Booster gestalten">📦</button>
     <button class="top-skin" id="top-skin" data-act="skedit" aria-label="Design dieser Seite anpassen" title="Design anpassen">🎨</button>
+    <button class="top-skin" id="top-mu" data-act="muplayer" aria-label="Musik" title="Musik" hidden>🎵</button>
     <div class="stats" id="stats"></div>
   </header>
   <div class="safebar" id="safebar" hidden></div>
@@ -3213,31 +3283,75 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
   async function addPhotos(files) {
     const room = MAX_CARDS - ED.draft.cards.length;
     if (files.length > room) { files = files.slice(0, Math.max(0, room)); toast(`Maximal ${MAX_CARDS} Karten pro Case.`); }
-    let ok = 0, bad = 0, big = 0;
+    let ok = 0, bad = 0, big = 0, skipped = 0;
     const through = !!(BE && BE.mode === 'local' && BE.thumbs);
+    // Doppelte erkennen: Fingerabdruecke der Karten, die schon da sind, und der Bilder dieser Runde
+    const known = [], dups = [];
+    let compare = files.length > 0;
+    if (compare) {
+      try {
+        busy('Vergleiche mit vorhandenen Karten …');
+        guardArm('import', 30000);
+        await dupKnownCards(ED.draft.cards, known, (i, n) => busy(`Vergleiche mit vorhandenen Karten (${i}/${n})`, i / n));
+      } catch (e) { console.warn(e); compare = false; }
+    }
+    const addOne = async (blob, m, nm, fp, file) => {
+      let id = uid(6);
+      while (ED.draft.cards.some(c => c.id === id)) id = uid(6);
+      let card;
+      if (through) {
+        // Lokal wird jede Datei sofort gespeichert (samt Standbild fuer die Raster). So liegen hunderte GIFs und Videos nicht alle im Arbeitsspeicher.
+        const ref = await BE.putPhoto(blob, { cache: false, thumb: true, video: m === 'video' });
+        ED.uploaded.add(ref);
+        if (fp) fpPut(ref, fp);
+        card = { id, n: nm, r: 'common', l: 'auto', z: 1, x: 0, y: 0, p: ref, ...(m ? { m } : {}) };
+      } else {
+        card = { id, n: nm, r: 'common', l: 'auto', z: 1, x: 0, y: 0, p: null, ...(m ? { m } : {}), _blob: blob, _url: URL.createObjectURL(blob) };
+        if (fp) FP.blobs.set(blob, fp);
+      }
+      ED.draft.cards.push(card);
+      if (fp) known.push({ fp, name: nm, card, file: file ? file.name : '' });
+    };
     for (let i = 0; i < files.length; i++) {
       busy(`Fotos verarbeiten (${i + 1}/${files.length})`, i / files.length);
       guardArm('import', 15000);
       try {
         const { blob, m } = await prepMedia(files[i]);
-        let id = uid(6);
-        while (ED.draft.cards.some(c => c.id === id)) id = uid(6);
-        const nm = guessName(files[i].name, ED.draft.cards.length + 1);
-        if (through) {
-          // Lokal wird jede Datei sofort gespeichert (samt Standbild fuer die Raster). So liegen hunderte GIFs und Videos nicht alle im Arbeitsspeicher.
-          const ref = await BE.putPhoto(blob, { cache: false, thumb: true, video: m === 'video' });
-          ED.uploaded.add(ref);
-          ED.draft.cards.push({ id, n: nm, r: 'common', l: 'auto', z: 1, x: 0, y: 0, p: ref, ...(m ? { m } : {}) });
-        } else ED.draft.cards.push({ id, n: nm, r: 'common', l: 'auto', z: 1, x: 0, y: 0, p: null, ...(m ? { m } : {}), _blob: blob, _url: URL.createObjectURL(blob) });
-        ok++;
+        let fp = null;
+        if (compare) { try { fp = await fpOfBlob(blob, m === 'video'); } catch (e) { fp = null; } }
+        const hit = fp ? dupMatch(known, fp) : null;
+        if (hit) { dups.push({ blob, m, fp, file: files[i], name: guessName(files[i].name, ED.draft.cards.length + dups.length + 1), hit, exact: fpExact(fp, hit.fp), url: URL.createObjectURL(blob) }); }
+        else await addOne(blob, m, guessName(files[i].name, ED.draft.cards.length + 1), fp, files[i]);
+        if (!hit) ok++;
       } catch (e) { if (e && e.big) big++; else bad++; }
       if (i % 4 === 3) await sleep(0);
       if (i % 40 === 39) await sleep(60);   // kurze Pause, damit das Handy Speicher freigeben kann
     }
     busy(null);
+    if (dups.length) {
+      renderEdGrid(); renderEdChips(); renderEdCount();
+      for (const d of dups) {
+        const o = await dupStoredUrl(d.hit.card); d.otherUrl = o.url; d.otherOwn = o.own;
+        d.where = `Karte „${d.hit.name || 'Karte'}“ ist schon im Case`;
+      }
+      let more = [];
+      try { more = await dupAsk(dups, files.length === 1 ? 'Beim Hinzufügen' : `Von ${files.length} Bildern`); } catch (e) { console.warn(e); }
+      skipped = dups.length - more.length;
+      dupFree(dups);
+      if (more.length) busy('Fotos verarbeiten …');
+      for (const d of more) {
+        if (ED.draft.cards.length >= MAX_CARDS) { toast(`Maximal ${MAX_CARDS} Karten pro Case.`); break; }
+        try { await addOne(d.blob, d.m, d.name, d.fp, d.file); ok++; } catch (e) { bad++; }
+      }
+      busy(null);
+    }
     if (ok) ED.dirty = true;
     renderEdGrid(); renderEdChips(); renderEdCount();
-    toast(bad || big ? `${ok} Karten hinzugefügt${bad ? `, ${bad} Bilder konnten nicht gelesen werden` : ''}${big ? `, ${big} Video${big === 1 ? ' ist' : 's sind'} größer als 15 MB` : ''}.` : `${ok} Karten hinzugefügt.`);
+    const extra = [];
+    if (skipped) extra.push(`${skipped} doppelte${skipped === 1 ? 's' : ''} übersprungen`);
+    if (bad) extra.push(`${bad} Bilder konnten nicht gelesen werden`);
+    if (big) extra.push(`${big} Video${big === 1 ? ' ist' : 's sind'} größer als 15 MB`);
+    toast(`${ok} Karten hinzugefügt${extra.length ? ', ' + extra.join(', ') : ''}.`);
   }
 
   // Foto der geoeffneten Karte ersetzen (Datei, Kamera oder Bildspeicher) und Foto der Karte in den Bildspeicher legen
@@ -3264,7 +3378,22 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
       let blob = c._blob;
       if (!blob && c.p) blob = await BE.blobOf(c.p);
       if (!blob) { busy(null); toast('Diese Karte hat noch kein Foto.'); return; }
+      let fp = null; try { fp = await fpOfBlob(blob, false); } catch (e2) { fp = null; }
+      if (fp) {
+        const hit = dupMatch(await mlKnown().catch(() => []), fp);
+        if (hit) {
+          busy(null);
+          const d = { f: { name: c.n || 'Bild' }, name: c.n || 'Bild', hit, exact: fpExact(fp, hit.fp), url: URL.createObjectURL(blob), where: `„${hit.name}“ liegt schon im Bildspeicher` };
+          try { const b = hit.ml && BE && BE.blobOf ? await BE.blobOf(hit.ml.r).catch(() => null) : null; if (b) { d.otherUrl = URL.createObjectURL(b); d.otherOwn = true; } } catch (e3) { /* ohne Vorschau */ }
+          let more = [];
+          try { more = await dupAsk([d], 'Beim Speichern'); } catch (e3) { console.warn(e3); }
+          dupFree([d]);
+          if (!more.length) { toast('Nicht gespeichert, das Bild liegt schon im Bildspeicher.'); return; }
+          busy('Wird gespeichert …');
+        }
+      }
       const e = await mlAddBlob(blob, c.n);
+      if (e && fp) fpPut(e.r, fp);
       busy(null); if (e) toast(`„${e.n}“ liegt jetzt im Bildspeicher.`);
     } catch (err) { busy(null); console.error(err); toast('Das konnte ich nicht speichern.'); }
   }
@@ -5049,6 +5178,12 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
         return ctx;
       } catch (e) { return null; }
     }
+    // Eigene Effekte (aus Einstellungen > Musik): ersetzen die synthetische Stimme gleichen Namens durch einen geladenen Klang
+    const CUSTOM = {};
+    function playBuf(c, d, t, buf) {
+      const s = c.createBufferSource(), g = c.createGain();
+      s.buffer = buf; g.gain.value = 0.9; s.connect(g); g.connect(d); s.start(t);
+    }
     function play(name, o) {
       if (!V[name]) return;
       const now = performance.now(), gap = name === 'tick' || name === 'count' ? 28 : 0;
@@ -5056,8 +5191,20 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
       lastAt[name] = now;
       const c = ensure();
       if (!c) return;
-      try { V[name](c, master, c.currentTime + 0.005, o || {}); } catch (e) { /* Ton darf nie etwas kaputtmachen */ }
+      try {
+        const cu = CUSTOM[name];
+        if (cu) { playBuf(c, master, c.currentTime + 0.005, cu); return; }
+        V[name](c, master, c.currentTime + 0.005, o || {});
+      } catch (e) { /* Ton darf nie etwas kaputtmachen */ }
     }
+    // Einen geladenen Klang unter seinem Schluessel abspielen (Seiten-Sounds)
+    function playKey(key) {
+      const buf = CUSTOM[key]; if (!buf) return false;
+      const c = ensure(); if (!c) return false;
+      try { playBuf(c, master, c.currentTime + 0.005, buf); return true; } catch (e) { return false; }
+    }
+    const setCustom = (names, buf) => { names.forEach(n => { if (buf) CUSTOM[n] = buf; else delete CUSTOM[n]; }); };
+    const peek = () => { try { return ctx && !bad(ctx) ? ctx : null; } catch (e) { return null; } };
     // Antippen schaltet den Ton frei (Browser und iPhone verlangen eine Geste) und weckt ihn nach Unterbrechungen wieder auf
     const unlock = () => {
       gestureAt = Date.now();
@@ -5085,7 +5232,7 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
     }
     // Fuer Hintergrundmusik: ruft fn(Kontext, Ziel, jetzt, Helfer) auf, sofern Ton an ist
     const at = fn => { const c = ensure(); if (!c) return false; try { fn(c, master, c.currentTime + 0.02, { tone, noise, NOTE, arp }); } catch (e) { /* egal */ } return true; };
-    return { play, render, at, reset, ctx: ensure, peek: () => (bad(ctx) ? null : ctx), out: () => comp, H: { tone, noise, NOTE, arp }, names: Object.keys(V), tick: i => play('tick', { i }), coin: n => play('coin', { n }), reveal: r => play('r_' + baseKey(r)) };
+    return { play, render, at, reset, setCustom, peek, playKey, hasKey: k => !!CUSTOM[k], customCount: () => Object.keys(CUSTOM).length, ctx: ensure, peek: () => (bad(ctx) ? null : ctx), out: () => comp, H: { tone, noise, NOTE, arp }, names: Object.keys(V), tick: i => play('tick', { i }), coin: n => play('coin', { n }), reveal: r => play('r_' + baseKey(r)) };
   })();
   window.__JB_SFX = { render: SFX.render, names: SFX.names };
 
@@ -5435,7 +5582,7 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
 
   // ---- Konto/Ton/Grind-Aktionen ----
   ACTS.theme = id => { setPref('theme', id); applyTheme(id); renderSetAll(); };
-  ACTS.sound = () => { const on = pref('sound') === false; setPref('sound', on); renderSetAll(); if (on) SFX.play('pop'); };
+  ACTS.sound = () => { const on = pref('sound') === false; setPref('sound', on); renderSetAll(); if (on) SFX.play('pop'); if (typeof MUSIC !== 'undefined') MUSIC.sync(current, true); };
   ACTS.soundtest = () => { SFX.play('coin', { n: 2 }); setTimeout(() => SFX.play('r_epic'), 600); };
   ACTS.soundfix = () => {
     if (pref('sound') === false) { toast('Schalte erst „Töne und Effekte“ ein.'); return; }
@@ -6136,29 +6283,70 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
   const mlOk = f => /^image\//.test(f.type || '') || /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(f.name || '');
   const mlName = f => String((f && f.name) || '').replace(/\.[a-z0-9]{2,5}$/i, '').replace(/[<>&"'`]/g, '').replace(/[_-]+/g, ' ').trim().slice(0, 24);
   // Eine Datei oder ein Blob in den Bildspeicher legen. Gibt den Eintrag zurueck (oder null).
-  async function mlAddBlob(file, name) {
-    if (mlList().length >= ML_MAX) { toast(`Im Bildspeicher ist Platz für ${ML_MAX} Bilder.`); return null; }
+  async function mlPrep(file) {
     const gif = file.type === 'image/gif' || /\.gif$/i.test(file.name || '');
-    const blob = gif ? file : await skShrink(file, 1600, file.type === 'image/png');
-    const ref = await BE.putPhoto(blob, { cache: false, thumb: true });
-    const e = { id: 'm_' + uid(6), n: (name || mlName(file) || `Bild ${mlList().length + 1}`).slice(0, 24), r: ref, t: Date.now(), ...(gif ? { g: 1 } : {}) };
+    return { blob: gif ? file : await skShrink(file, 1600, file.type === 'image/png'), gif };
+  }
+  async function mlStore(pre, file, name) {
+    const ref = await BE.putPhoto(pre.blob, { cache: false, thumb: true });
+    const e = { id: 'm_' + uid(6), n: (name || mlName(file) || `Bild ${mlList().length + 1}`).slice(0, 24), r: ref, t: Date.now(), ...(pre.gif ? { g: 1 } : {}) };
     mlList().push(e); saveMeta(true);
     return e;
+  }
+  async function mlAddBlob(file, name) {
+    if (mlList().length >= ML_MAX) { toast(`Im Bildspeicher ist Platz für ${ML_MAX} Bilder.`); return null; }
+    return mlStore(await mlPrep(file), file, name);
+  }
+  // Fingerabdruecke der Bilder, die schon im Bildspeicher liegen
+  async function mlKnown() {
+    const known = [];
+    for (const e of mlList()) { const fp = await fpOfStored(e.r, false); if (fp) known.push({ fp, name: e.n, ml: e }); }
+    return known;
   }
   async function mlAddFiles(files) {
     files = [...files || []];
     if (!files.length) return;
-    let ok = 0, bad = 0;
+    let ok = 0, bad = 0, skipped = 0;
+    const dups = [];
     busy('Bilder werden gespeichert …');
     try {
+      let known = [], compare = true;
+      try { known = await mlKnown(); } catch (e) { console.warn(e); compare = false; }
       for (const f of files) {
         if (mlList().length >= ML_MAX) { toast(`Im Bildspeicher ist Platz für ${ML_MAX} Bilder.`); break; }
         if (!mlOk(f)) { bad++; continue; }
         if (f.size > SK_MAX_BYTES) { bad++; continue; }
-        try { if (await mlAddBlob(f)) ok++; else bad++; } catch (e) { console.warn(e); bad++; }
+        try {
+          const pre = await mlPrep(f);
+          let fp = null;
+          if (compare) { try { fp = await fpOfBlob(pre.blob, false); } catch (e) { fp = null; } }
+          const hit = fp ? dupMatch(known, fp) : null;
+          if (hit) { dups.push({ pre, f, fp, name: mlName(f) || 'Bild', hit, exact: fpExact(fp, hit.fp), url: URL.createObjectURL(pre.blob) }); continue; }
+          const e = await mlStore(pre, f);
+          if (fp) { fpPut(e.r, fp); known.push({ fp, name: e.n, ml: e }); }
+          ok++;
+        } catch (e) { console.warn(e); bad++; }
+      }
+      busy(null);
+      if (dups.length) {
+        mlRender();
+        for (const d of dups) {
+          const b = d.hit.ml && BE && BE.blobOf ? await BE.blobOf(d.hit.ml.r).catch(() => null) : null;
+          if (b) { d.otherUrl = URL.createObjectURL(b); d.otherOwn = true; }
+          d.where = `„${d.hit.name}“ liegt schon im Bildspeicher`;
+        }
+        let more = [];
+        try { more = await dupAsk(dups, files.length === 1 ? 'Beim Speichern' : `Von ${files.length} Bildern`); } catch (e) { console.warn(e); }
+        skipped = dups.length - more.length;
+        dupFree(dups);
+        busy('Bilder werden gespeichert …');
+        for (const d of more) {
+          if (mlList().length >= ML_MAX) { toast(`Im Bildspeicher ist Platz für ${ML_MAX} Bilder.`); break; }
+          try { const e = await mlStore(d.pre, d.f); fpPut(e.r, d.fp); ok++; } catch (e) { console.warn(e); bad++; }
+        }
       }
     } finally { busy(null); }
-    if (ok || bad) toast(`${ok} ${ok === 1 ? 'Bild' : 'Bilder'} gespeichert${bad ? `, ${bad} konnte${bad === 1 ? '' : 'n'} ich nicht lesen` : ''}.`);
+    if (ok || bad || skipped) toast(`${ok} ${ok === 1 ? 'Bild' : 'Bilder'} gespeichert${skipped ? `, ${skipped} doppelte${skipped === 1 ? 's' : ''} übersprungen` : ''}${bad ? `, ${bad} konnte${bad === 1 ? '' : 'n'} ich nicht lesen` : ''}.`);
     mlRender(); try { if (typeof renderSetAll === 'function') renderSetAll(); } catch (e) { /* egal */ }
   }
   function mlTile(e) {
@@ -6293,6 +6481,181 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
   }
   window.__JB_ML = { list: () => mlList().map(x => ({ ...x })), open: mlOpen, pickFile: mlPickFile, add: mlAddBlob };
 
+  // ================= Doppelte Bilder erkennen =================
+  // Jedes Bild bekommt einen kleinen Fingerabdruck: 64 Bit "Helligkeitsverlauf" (dHash) plus die Durchschnittsfarbe der vier Viertel.
+  // Zwei Bilder gelten als doppelt, wenn beides fast gleich ist. So fallen auch Kopien auf, die kleiner gerechnet, neu gespeichert
+  // oder als anderes Format abgelegt wurden. Videos werden ueber ihre Pruefsumme verglichen (nur exakt gleiche Dateien).
+  // Die Fingerabdruecke gespeicherter Fotos merkt sich der Browser pro Foto-Verweis (nur Cache, kein Teil von Cases oder Sicherungen).
+  const FP_KEY = 'jb-fpc', FP_CAP = 4000;
+  const FP = { map: new Map(), loaded: false, t: 0, blobs: new WeakMap() };
+  const fpOk = v => typeof v === 'string' && (/^i[0-9a-f]{40}$/.test(v) || /^v[0-9a-f]{64}$/.test(v));
+  function fpLoad() {
+    if (FP.loaded) return;
+    FP.loaded = true;
+    try {
+      const a = JSON.parse(localStorage.getItem(FP_KEY) || '[]');
+      if (Array.isArray(a)) a.forEach(x => { if (Array.isArray(x) && typeof x[0] === 'string' && x[0].length < 80 && fpOk(x[1])) FP.map.set(x[0], x[1]); });
+    } catch (e) { /* kein Speicher: dann wird eben neu gerechnet */ }
+  }
+  function fpSave() {
+    clearTimeout(FP.t);
+    FP.t = setTimeout(() => { try { localStorage.setItem(FP_KEY, JSON.stringify([...FP.map].slice(-FP_CAP))); } catch (e) { /* egal */ } }, 1500);
+  }
+  function fpPut(ref, fp) {
+    if (!ref || !fpOk(fp)) return;
+    fpLoad();
+    FP.map.delete(ref); FP.map.set(ref, fp);
+    while (FP.map.size > FP_CAP) FP.map.delete(FP.map.keys().next().value);
+    fpSave();
+  }
+  const fpHex = (buf) => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  async function fpBitmap(blob) {
+    try { return await createImageBitmap(blob, { imageOrientation: 'from-image' }); } catch (e) { return loadImg(blob); }
+  }
+  // Bild auf w x h Pixel verkleinern (in Halbierungen, damit es wie ein Durchschnitt wirkt) und die Pixel zurueckgeben
+  function fpPixels(img, w, h) {
+    let sw = img.width || img.naturalWidth, sh = img.height || img.naturalHeight;
+    if (!sw || !sh) throw new Error('leer');
+    let cur = img;
+    while (sw > w * 2 || sh > h * 2) {
+      const nw = Math.max(w, Math.ceil(sw / 2)), nh = Math.max(h, Math.ceil(sh / 2));
+      const cv = document.createElement('canvas'); cv.width = nw; cv.height = nh;
+      const cx = cv.getContext('2d'); cx.imageSmoothingQuality = 'high'; cx.drawImage(cur, 0, 0, nw, nh);
+      if (cur !== img) cur.width = cur.height = 0;
+      cur = cv; sw = nw; sh = nh;
+    }
+    const out = document.createElement('canvas'); out.width = w; out.height = h;
+    const cx = out.getContext('2d', { willReadFrequently: true });
+    cx.imageSmoothingQuality = 'high'; cx.fillStyle = '#10131b'; cx.fillRect(0, 0, w, h); cx.drawImage(cur, 0, 0, w, h);
+    if (cur !== img) cur.width = cur.height = 0;
+    const px = cx.getImageData(0, 0, w, h).data;
+    out.width = out.height = 0;
+    return px;
+  }
+  async function fpOfBlob(blob, video) {
+    if (video) return 'v' + fpHex(await crypto.subtle.digest('SHA-256', await blob.arrayBuffer()));
+    const img = await fpBitmap(blob);
+    try {
+      const W = 36, H = 32, px = fpPixels(img, W, H);
+      // 9 x 8 Grauwerte (Durchschnitt aus 4 x 4 Pixeln)
+      const gray = [];
+      for (let gy = 0; gy < 8; gy++) for (let gx = 0; gx < 9; gx++) {
+        let s = 0;
+        for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) { const i = ((gy * 4 + y) * W + gx * 4 + x) * 4; s += px[i] * 0.299 + px[i + 1] * 0.587 + px[i + 2] * 0.114; }
+        gray.push(s / 16);
+      }
+      let bits = '';
+      for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) bits += gray[y * 9 + x] > gray[y * 9 + x + 1] ? '1' : '0';
+      let hex = '';
+      for (let i = 0; i < 64; i += 4) hex += parseInt(bits.substr(i, 4), 2).toString(16);
+      // Durchschnittsfarbe der vier Viertel
+      let col = '';
+      for (let qy = 0; qy < 2; qy++) for (let qx = 0; qx < 2; qx++) {
+        const sum = [0, 0, 0];
+        for (let y = 0; y < H / 2; y++) for (let x = 0; x < W / 2; x++) { const i = ((qy * (H / 2) + y) * W + qx * (W / 2) + x) * 4; sum[0] += px[i]; sum[1] += px[i + 1]; sum[2] += px[i + 2]; }
+        sum.forEach(v => { col += Math.round(v / ((W / 2) * (H / 2))).toString(16).padStart(2, '0'); });
+      }
+      return 'i' + hex + col;
+    } finally { if (img.close) img.close(); }
+  }
+  const FP_POP = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
+  function fpDist(a, b) {
+    if (!a || !b || a[0] !== b[0]) return null;
+    if (a[0] === 'v') return a === b ? { h: 0, c: 0 } : null;
+    let h = 0, c = 0;
+    for (let i = 1; i <= 16; i++) h += FP_POP[parseInt(a[i], 16) ^ parseInt(b[i], 16)];
+    for (let i = 17; i < 41; i += 2) c = Math.max(c, Math.abs(parseInt(a.substr(i, 2), 16) - parseInt(b.substr(i, 2), 16)));
+    return { h, c };
+  }
+  const FP_MAXH = 6, FP_MAXC = 10;
+  const fpSame = (a, b) => { const d = fpDist(a, b); return !!d && d.h <= FP_MAXH && d.c <= FP_MAXC; };
+  const fpExact = (a, b) => { const d = fpDist(a, b); return !!d && d.h <= 1 && d.c <= 4; };
+  // Bester Treffer unter den bekannten Bildern (oder null)
+  function dupMatch(known, fp) {
+    let best = null, bs = 1e9;
+    for (const k of known) {
+      const d = fpDist(fp, k.fp);
+      if (d && d.h <= FP_MAXH && d.c <= FP_MAXC && d.h * 8 + d.c < bs) { best = k; bs = d.h * 8 + d.c; }
+    }
+    return best;
+  }
+  // Fingerabdruck eines gespeicherten oder noch nicht gespeicherten Fotos
+  async function fpOfStored(ref, video) {
+    fpLoad();
+    let f = FP.map.get(ref); if (f) return f;
+    if (!BE || !BE.blobOf) return null;
+    try { const b = await BE.blobOf(ref); if (!b) return null; f = await fpOfBlob(b, video); fpPut(ref, f); return f; } catch (e) { return null; }
+  }
+  async function fpOfCard(c) {
+    if (c._blob) {
+      let f = FP.blobs.get(c._blob);
+      if (!f) { try { f = await fpOfBlob(c._blob, c.m === 'video'); FP.blobs.set(c._blob, f); } catch (e) { return null; } }
+      return f;
+    }
+    return c.p ? fpOfStored(c.p, c.m === 'video') : null;
+  }
+  // Fingerabdruecke aller Karten eines Cases sammeln (mit Fortschritt). Karten ohne Foto zaehlen nicht.
+  async function dupKnownCards(cards, known, say) {
+    for (let i = 0; i < cards.length; i++) {
+      const c = cards[i];
+      if (say && i % 10 === 0) say(i, cards.length);
+      const fp = await fpOfCard(c);
+      if (fp) known.push({ fp, name: c.n || 'Karte', card: c });
+      if (i % 12 === 11) await sleep(0);
+    }
+  }
+
+  // ---- Nachfrage-Fenster ----
+  // items: [{ name, url, hit: { name, card?, url?, blob? }, exact }]. Ergebnis: die Eintraege, die du trotzdem hinzufuegen willst.
+  const DUP = { cur: null };
+  function dupBodyHTML(st) {
+    const n = st.items.length, kept = st.keep.size;
+    const rows = st.items.map((it, i) => {
+      const on = st.keep.has(i);
+      const other = `<span class="dup-img-wrap">${it.otherUrl ? `<img class="dup-img" src="${esc(it.otherUrl)}" alt="">` : '<i class="dup-img dup-none"></i>'}</span>`;
+      const where = esc(it.where || 'schon vorhanden');
+      return `<div class="dup-row${on ? ' keep' : ''}"><span class="dup-img-wrap"><img class="dup-img" src="${esc(it.url)}" alt=""></span><span class="dup-eq" aria-hidden="true">${it.exact ? '＝' : '≈'}</span>${other}
+        <span class="dup-t"><b>${esc(((it.file || it.f) && (it.file || it.f).name) || it.name)}</b><small>${it.exact ? 'Gleiches Bild' : 'Sehr ähnliches Bild'}: ${where}.</small></span>
+        <button class="chip${on ? ' on' : ''}" data-act="dupkeep" data-id="${i}" aria-pressed="${on}">${on ? '✓ Wird hinzugefügt' : 'Überspringen'}</button></div>`;
+    }).join('');
+    return `<h3>Doppelte Bilder</h3>
+      <p class="note" style="max-width:none">${st.what}: ${n} ${n === 1 ? 'Bild gibt' : 'Bilder gibt'} es schon. Sie werden übersprungen. Tippe bei einem Bild auf „Überspringen“, wenn du es trotzdem haben willst.</p>
+      <div class="dup-list">${rows}</div>
+      <div class="row"><button class="btn primary" data-act="dupgo">${kept ? `${kept} trotzdem hinzufügen` : (n === 1 ? 'Überspringen' : 'Alle überspringen')}</button>${kept < n ? '<button class="btn" data-act="dupall">Alle hinzufügen</button>' : '<button class="btn" data-act="dupnone">Keins hinzufügen</button>'}</div>`;
+  }
+  function dupAsk(items, what) {
+    return new Promise(resolve => {
+      const d = $('#dlg'), st = { items, keep: new Set(), what: what || 'Beim Hinzufügen', done: false };
+      const fin = () => {
+        if (st.done) return;
+        st.done = true; obs.disconnect(); DUP.cur = null; d.classList.remove('dup-top');
+        const out = items.filter((_, i) => st.keep.has(i));
+        if (!d.hidden && d.querySelector('.dup-box')) closeDlg();
+        resolve(out);
+      };
+      st.fin = fin;
+      const obs = new MutationObserver(() => { if (d.hidden || !d.querySelector('.dup-box')) fin(); });
+      st.paint = () => { dlg(`<div class="dup-box">${dupBodyHTML(st)}</div>`); };
+      DUP.cur = st; d.classList.add('dup-top');
+      st.paint();
+      obs.observe(d, { attributes: true, childList: true });
+    });
+  }
+  ACTS.dupkeep = id => { const st = DUP.cur; if (!st) return; const i = +id; if (st.keep.has(i)) st.keep.delete(i); else st.keep.add(i); st.paint(); };
+  ACTS.dupall = () => { const st = DUP.cur; if (!st) return; st.items.forEach((_, i) => st.keep.add(i)); st.paint(); };
+  ACTS.dupnone = () => { const st = DUP.cur; if (!st) return; st.keep.clear(); st.paint(); };
+  ACTS.dupgo = () => { const st = DUP.cur; if (st) st.fin(); };
+  // Bild fuer die Anzeige im Fenster: { url, own } (own = wir haben die Adresse angelegt und muessen sie wieder freigeben)
+  async function dupStoredUrl(c) {
+    try {
+      if (c._url) return { url: c._url, own: false };
+      if (c._blob) return { url: URL.createObjectURL(c._blob), own: true };
+      const b = c.p && BE && BE.blobOf ? await BE.blobOf(c.p) : null;
+      return b ? { url: URL.createObjectURL(b), own: true } : { url: '', own: false };
+    } catch (e) { return { url: '', own: false }; }
+  }
+  const dupFree = items => items.forEach(it => { try { if (it.url) URL.revokeObjectURL(it.url); if (it.otherOwn && it.otherUrl) URL.revokeObjectURL(it.otherUrl); } catch (e) { /* egal */ } });
+  window.__JB_DUP = { fpOfBlob, fpDist, fpSame, dupMatch };
   // ================= App-Themes: das ganze Aussehen der App unter einem Namen speichern =================
   // Ein Theme ist ein Abzug von: Design jeder Seite (Hintergrund, Farben, Symbole ...), Hell/Dunkel, Startseite, Layout von Einstellungen und
   // Cheat-Fenster und den Standard-Designs fuer Case und Booster. S.meta.at = [{ id, n, t, d: { sk, th, hm, ui, pk } }].
@@ -6924,7 +7287,7 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
     return r;
   };
   const skAllRefs = () => { const r = new Set(); Object.values(S.meta.skin || {}).forEach(c => { if (c && c.page) skRefsOf(c).forEach(x => r.add(x)); }); dsRefs().forEach(x => r.add(x)); pkAllRefs().forEach(x => r.add(x)); return r; };
-  const mediaUsed = ref => S.cases.some(c => c.cards.some(x => x.p === ref)) || mlRefs().has(ref) || atRefs().has(ref) || skAllRefs().has(ref) || (typeof homeRefs === 'function' && homeRefs().has(ref));
+  const mediaUsed = ref => S.cases.some(c => c.cards.some(x => x.p === ref)) || mlRefs().has(ref) || (typeof muRefs === 'function' && muRefs().has(ref)) || atRefs().has(ref) || skAllRefs().has(ref) || (typeof homeRefs === 'function' && homeRefs().has(ref));
   async function mediaDrop(ref) { if (ref && !mediaUsed(ref)) { try { await BE.dropPhoto(ref); } catch (e) { /* egal */ } } }
 
   // ---- Medien anzeigen ----
@@ -7737,7 +8100,8 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
       if (elUrl) { URL.revokeObjectURL(elUrl); elUrl = null; }
     }
     function sync(page, force) {
-      want = page === 'slot' && !document.hidden && cfg().on && soundOn();
+      if (typeof muSync === 'function') muSync(page, force);   // eigene Musik (Warteschlange) entscheidet mit
+      want = page === 'slot' && !document.hidden && cfg().on && soundOn() && !(typeof muOwns === 'function' && muOwns(page));
       if (!want) { stop(); return; }
       if (playing && key !== keyOf()) stop();
       if (!playing) start();
@@ -7759,6 +8123,679 @@ body.grind .tabs{grid-template-columns:repeat(var(--tn,4),1fr) 52px}
     return { sync, vol, stop, render, state: () => ({ playing, want, key, steps: count, ctx: ctx ? ctx.state : null }), STEPS, EIGHTH };
   })();
   window.__JB_MUSIC = { render: MUSIC.render, state: MUSIC.state, steps: MUSIC.STEPS };
+  // ================= Musik: eigene Lieder, Warteschlange, Wiederholen und Musik pro Seite =================
+  // S.meta.mu = { on, vol, loop ('all'|'one'|'off'), shuf, all (Haupt-Musik), pl: { Seite: Modus }, pj: { all|Seite: { r, n, z } | { off: true } } (kurzer Sound beim Oeffnen einer Seite), songs: [{ id, n, r, z, d, t }], q: [Lied-Kennungen], pos }
+  //   Modus: 'off' (Stille) | 'queue' (Warteschlange) | 'song:<id>' (ein Lied, in Dauerschleife)
+  //          | 'inherit' (nur Seiten: wie "Ueberall") | 'skin' (nur Slot: Musik aus dem Slot-Design)
+  // Steht "Ueberall" auf Aus und die Seite auf "wie ueberall", gilt wie bisher die Slot-Musik aus dem Design. Sonst gewinnt die eigene Musik.
+  // Die Lieder liegen nur in diesem Browser (nicht in Sicherungen, sie sind zu gross). Die Einstellungen sind Teil von S.meta.
+  const MU_MAX = 60, MU_QMAX = 300, MU_BYTES = 25 * 1024 * 1024;
+  const MU_PLACES = [['home', 'Startseite'], ['case', 'Case'], ['inv', 'Inventar'], ['coll', 'Sammlung'], ['com', 'Community'], ['gacha', 'Gacha'], ['lobby', 'Slot-Lobby'], ['slot', 'Slot'], ['game', 'Slot-Spiel'], ['comics', 'Comics'], ['set', 'Einstellungen']];
+  const MU_LOOPS = [['all', 'Alle wiederholen', '🔁', 'Alle'], ['one', 'Ein Lied wiederholen', '🔂', 'Eins'], ['off', 'Nicht wiederholen', '➡️', 'Aus']];
+  // Eigene Effekte: Gruppe, Name, die Klaenge, die sie ersetzt
+  const MU_FX = [['tap', 'Antippen', ['pop']], ['back', 'Zurück', ['back']], ['err', 'Fehler', ['err']], ['coin', 'Münzen und Verkaufen', ['coin']], ['rip', 'Booster aufreißen', ['rip']],
+    ['flip', 'Karte umdrehen', ['flip', 'thud']], ['rare', 'Seltene Karte (Rare, Epic)', ['r_rare', 'r_epic']], ['top', 'Starke Karte (Legendary+)', ['r_legendary', 'r_mythic', 'r_ultra']],
+    ['win', 'Gewinn im Slot', ['win', 'win1', 'win2', 'win3']], ['big', 'Großer Gewinn', ['jackpot', 'maxwin']], ['lose', 'Kein Gewinn', ['lose']], ['bonus', 'Bonus und Freispiele', ['bonusin', 'scatter']]];
+  const MU_FX_BYTES = 2 * 1024 * 1024, MU_FX_SECS = 8;
+  const muIdOk = v => typeof v === 'string' && /^s_[a-z0-9]{4,10}$/.test(v);
+  let MU_SEEN = null;
+  function muCfg() {
+    let m = S.meta.mu;
+    if (!m || typeof m !== 'object' || Array.isArray(m)) { m = S.meta.mu = {}; MU_SEEN = null; }
+    if (MU_SEEN === m) return m;
+    const ids = new Set(), songs = [];
+    (Array.isArray(m.songs) ? m.songs : []).forEach(x => {
+      if (!x || typeof x !== 'object' || !muIdOk(x.id) || ids.has(x.id) || typeof x.r !== 'string' || !REF_RE.test(x.r) || songs.length >= MU_MAX) return;
+      ids.add(x.id);
+      songs.push({ id: x.id, n: String(x.n == null ? '' : x.n).replace(/[<>&"'`]/g, '').trim().slice(0, 40) || 'Lied', r: x.r, z: Number.isFinite(+x.z) && +x.z > 0 ? Math.round(+x.z) : 0, d: Number.isFinite(+x.d) && +x.d > 0 && +x.d < 36000 ? Math.round(+x.d) : 0, t: Number.isFinite(+x.t) ? +x.t : 0 });
+    });
+    m.songs = songs;
+    m.q = (Array.isArray(m.q) ? m.q : []).filter(id => ids.has(id)).slice(0, MU_QMAX);
+    m.pos = Number.isInteger(m.pos) && m.pos >= 0 && m.pos < m.q.length ? m.pos : 0;
+    m.loop = ['all', 'one', 'off'].includes(m.loop) ? m.loop : 'all';
+    m.shuf = !!m.shuf;
+    m.on = m.on !== false;
+    m.vol = m.vol != null && Number.isFinite(+m.vol) ? Math.max(0, Math.min(1, +m.vol)) : 0.7;
+    const okMode = (v, place) => v === 'off' || v === 'queue' || (place && (v === 'inherit' || v === 'skin')) || (typeof v === 'string' && v.slice(0, 5) === 'song:' && ids.has(v.slice(5)));
+    m.all = okMode(m.all, false) ? m.all : 'off';
+    const pl = {};
+    MU_PLACES.forEach(([k]) => { const v = m.pl && typeof m.pl === 'object' ? m.pl[k] : null; if (okMode(v, true) && v !== 'inherit' && !(v === 'skin' && k !== 'slot')) pl[k] = v; });
+    m.pl = pl;
+    const fx = {};
+    MU_FX.forEach(([k]) => { const f = m.fx && typeof m.fx === 'object' ? m.fx[k] : null; if (f && typeof f.r === 'string' && REF_RE.test(f.r)) fx[k] = { r: f.r, n: String(f.n == null ? '' : f.n).replace(/[<>&"'`]/g, '').trim().slice(0, 40) || 'Effekt', z: Number.isFinite(+f.z) && +f.z > 0 ? Math.round(+f.z) : 0 }; });
+    m.fx = fx;
+    const pj = {};
+    ['all', ...MU_PLACES.map(p => p[0])].forEach(k => {
+      const f = m.pj && typeof m.pj === 'object' ? m.pj[k] : null;
+      if (!f || typeof f !== 'object') return;
+      if (f.off === true && k !== 'all') pj[k] = { off: true };
+      else if (typeof f.r === 'string' && REF_RE.test(f.r)) pj[k] = { r: f.r, n: String(f.n == null ? '' : f.n).replace(/[<>&"'`]/g, '').trim().slice(0, 40) || 'Sound', z: Number.isFinite(+f.z) && +f.z > 0 ? Math.round(+f.z) : 0 };
+    });
+    m.pj = pj;
+    MU_SEEN = m;
+    return m;
+  }
+  const muRefs = () => { const m = muCfg(), r = new Set(m.songs.map(s => s.r)); Object.values(m.fx).forEach(f => r.add(f.r)); Object.values(m.pj).forEach(f => { if (f.r) r.add(f.r); }); return r; };
+  const muSong = id => muCfg().songs.find(s => s.id === id) || null;
+  const muSoundOn = () => pref('sound') !== false;
+  const muFmt = s => { s = Math.max(0, Math.round(+s || 0)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+  const muMB = b => (b / 1048576 >= 10 ? Math.round(b / 1048576) : Math.round(b / 104857.6) / 10).toString().replace('.', ',') + ' MB';
+  const muAudioOk = f => /^audio\//.test(f.type || '') || /\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|weba)$/i.test(f.name || '');
+  const MU_TYPES = { mp3: 'audio/mpeg', m4a: 'audio/mp4', aac: 'audio/aac', wav: 'audio/wav', ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg', flac: 'audio/flac', weba: 'audio/webm' };
+  function muTyped(f) {
+    if (/^audio\//.test(f.type || '')) return f;
+    const ext = ((f.name || '').match(/\.([a-z0-9]+)$/i) || [])[1];
+    return new Blob([f], { type: MU_TYPES[(ext || '').toLowerCase()] || 'audio/mpeg' });
+  }
+  const muName = f => String((f && f.name) || '').replace(/\.[a-z0-9]{2,5}$/i, '').replace(/[<>&"'`]/g, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 40) || 'Lied';
+
+  // ---- Wer bestimmt die Musik auf dieser Seite? ----
+  function muResolve(view) {
+    const m = muCfg();
+    if (!m.on) return { owns: false, play: null };
+    const p = m.pl[view] || 'inherit';
+    const mode = p === 'inherit' ? m.all : p;
+    const owns = mode !== 'skin' && !(p === 'inherit' && m.all === 'off');
+    let play = null;
+    if (owns && muSoundOn()) {
+      if (mode === 'queue' && m.q.length) play = { kind: 'queue' };
+      else if (mode.slice(0, 5) === 'song:' && muSong(mode.slice(5))) play = { kind: 'song', id: mode.slice(5) };
+    }
+    return { owns, play };
+  }
+  const muOwns = view => muResolve(view).owns;
+  const MUFX_DIRTY = () => Object.keys(MUFX.loaded).length > 0;
+
+  // ---- Abspielen ----
+  const MUP = { el: null, url: null, kind: null, sid: null, view: null, userPaused: false, finished: false, blocked: false, order: [], errs: 0, tk: 0, bad: new Set(), volFixed: false, started: 0, jv: null, jlog: [] };
+  try { const t = new Audio(); t.volume = 0.5; MUP.volFixed = Math.abs(t.volume - 0.5) > 0.01; } catch (e) { MUP.volFixed = false; }   // iPhone: Lautstaerke nur ueber die Tasten
+  const muVol = () => { const m = muCfg(); return Math.max(0, Math.min(1, m.vol)); };
+  function muApplyVol() { if (MUP.el && !MUP.volFixed) { try { MUP.el.volume = muVol(); } catch (e) { /* egal */ } } }
+  function muEl() {
+    if (MUP.el) return MUP.el;
+    const el = new Audio();
+    el.preload = 'auto'; el.setAttribute('playsinline', '');
+    el.addEventListener('ended', muEnded);
+    el.addEventListener('error', muError);
+    el.addEventListener('loadedmetadata', () => {
+      const s = muSong(MUP.sid);
+      if (s && isFinite(el.duration) && el.duration > 0 && Math.round(el.duration) !== s.d) { s.d = Math.round(el.duration); saveMeta(); }
+      muTick(true);
+    });
+    el.addEventListener('playing', () => { MUP.errs = 0; });
+    ['play', 'pause', 'playing'].forEach(ev => el.addEventListener(ev, () => muUI()));
+    el.addEventListener('timeupdate', () => muTick());
+    MUP.el = el; muApplyVol();
+    return el;
+  }
+  function muTryPlay() {
+    const el = MUP.el;
+    if (!el || !MUP.url) return;
+    try { const p = el.play(); if (p && p.catch) p.catch(e => { if (e && e.name === 'NotAllowedError') MUP.blocked = true; else if (e && e.name !== 'AbortError') console.warn('Musik', e); }); } catch (e) { /* egal */ }
+  }
+  async function muLoad(id) {
+    const s = muSong(id), tk = ++MUP.tk;
+    if (!s) return false;
+    let blob = null;
+    try { blob = await BE.blobOf(s.r); } catch (e) { blob = null; }
+    if (tk !== MUP.tk) return false;
+    if (!blob) { MUP.bad.add(id); return muSkipBad(id, 'fehlt'); }
+    const el = muEl(), old = MUP.url;
+    MUP.url = URL.createObjectURL(blob); MUP.sid = id;
+    const m = muCfg();
+    el.loop = MUP.kind === 'song' || m.loop === 'one';
+    el.src = MUP.url;
+    if (old) URL.revokeObjectURL(old);
+    muApplyVol();
+    if (!MUP.userPaused) muTryPlay();
+    muMedia(s); muUI(true);
+    return true;
+  }
+  function muOrderFor(n, first) {
+    const m = muCfg();
+    if (!m.shuf) return [...Array(n).keys()];
+    const o = [...Array(n).keys()];
+    for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; }
+    if (first != null) { const k = o.indexOf(first); if (k > 0) { o.splice(k, 1); o.unshift(first); } }
+    return o;
+  }
+  // Naechste Stelle in der Warteschlange (dir = +1 oder -1). auto: ein Lied ist zu Ende gegangen
+  function muNextIdx(dir, auto) {
+    const m = muCfg(), n = m.q.length;
+    if (!n) return -1;
+    if (MUP.order.length !== n) MUP.order = muOrderFor(n, m.pos);
+    let k = MUP.order.indexOf(m.pos);
+    if (k < 0) k = 0;
+    k += dir;
+    if (k >= MUP.order.length) {
+      if (auto && m.loop === 'off') return -1;
+      if (m.shuf) MUP.order = muOrderFor(n);
+      k = 0;
+    }
+    if (k < 0) k = MUP.order.length - 1;
+    return MUP.order[k];
+  }
+  async function muPlayIdx(i) {
+    const m = muCfg();
+    if (i < 0 || i >= m.q.length) return false;
+    m.pos = i; saveMeta();
+    return muLoad(m.q[i]);
+  }
+  function muStart(play, fromUser) {
+    const m = muCfg();
+    MUP.kind = play.kind; MUP.finished = false;
+    if (fromUser) MUP.userPaused = false;
+    if (play.kind === 'song') { MUP.order = []; muLoad(play.id); return; }
+    MUP.order = muOrderFor(m.q.length, m.pos);
+    muPlayIdx(m.pos);
+  }
+  function muEnded() {
+    if (MUP.kind !== 'queue') return;
+    const i = muNextIdx(1, true);
+    if (i < 0) { MUP.finished = true; muUI(); return; }
+    muPlayIdx(i);
+  }
+  function muError() {
+    const id = MUP.sid;
+    if (!id) return;
+    MUP.bad.add(id);
+    muSkipBad(id, 'nicht abspielbar');
+  }
+  // Ein Lied ist kaputt: zum naechsten (bei der Warteschlange), sonst anhalten
+  function muSkipBad(id, why) {
+    const s = muSong(id), m = muCfg();
+    MUP.errs++;
+    if (MUP.errs <= 1 || MUP.kind !== 'queue') toast(`„${s ? s.n : 'Lied'}“ ${why === 'fehlt' ? 'fehlt in diesem Browser' : 'lässt sich auf diesem Gerät nicht abspielen'}.`);
+    if (MUP.kind === 'queue' && m.q.length > 1 && MUP.errs < m.q.length) {
+      const i = muNextIdx(1, true);
+      if (i >= 0) return muPlayIdx(i);
+    }
+    MUP.userPaused = true; MUP.finished = true; muUI();
+    return false;
+  }
+  function muStopAll() {
+    MUP.tk++;
+    if (MUP.el) { try { MUP.el.pause(); MUP.el.removeAttribute('src'); MUP.el.load(); } catch (e) { /* egal */ } }
+    if (MUP.url) { URL.revokeObjectURL(MUP.url); MUP.url = null; }
+    MUP.sid = null; MUP.kind = null; MUP.finished = false; muUI(true);
+  }
+  // Wird bei jedem Seitenwechsel (und wenn sich Einstellungen aendern) aufgerufen
+  function muSync(view, force) {
+    MUP.view = view;
+    if (Object.keys(muCfg().fx).length || Object.keys(muCfg().pj).length || MUFX_DIRTY()) muFxLoad().catch(() => {});
+    if (MUP.jv != null && MUP.jv !== view && !force) muJingle(view);
+    MUP.jv = view;
+    const r = muResolve(view), hid = document.hidden;
+    muPill();
+    if (!r.play || hid) {
+      if (MUP.el && !MUP.el.paused) { try { MUP.el.pause(); } catch (e) { /* egal */ } }
+      muUI();
+      return;
+    }
+    const same = MUP.kind === r.play.kind && (r.play.kind === 'queue' || MUP.sid === r.play.id);
+    if (!same || !MUP.url) { if (same && MUP.finished) { muUI(); return; } muStart(r.play); return; }
+    muApplyVol();
+    if (!MUP.userPaused && MUP.el && MUP.el.paused && !MUP.finished) muTryPlay();
+    muUI();
+  }
+  // Erste Beruehrung: Browser und iPhone erlauben Ton erst nach einer Geste
+  document.addEventListener('pointerdown', e => {
+    if (!MUP.blocked) return;
+    if (e && e.target && e.target.closest && e.target.closest('[data-act^="mu"]')) return;   // Bedienknoepfe entscheiden selbst
+    MUP.blocked = false;
+    const r = muResolve(MUP.view || current);
+    if (r.play && !MUP.userPaused && MUP.el && MUP.el.paused) muTryPlay();
+  }, { capture: true, passive: true });
+
+  // ---- Bedienung ----
+  function muToggle(force) {
+    const el = MUP.el, playing = !!el && !el.paused && !!MUP.url;
+    const wantPlay = force == null ? !playing : force;
+    if (!wantPlay) { MUP.userPaused = true; if (el) { try { el.pause(); } catch (e) { /* egal */ } } muUI(); return; }
+    MUP.userPaused = false; MUP.finished = false;
+    if (!MUP.url) {
+      const m = muCfg(), r = muResolve(MUP.view || current);
+      const play = r.play || (m.q.length ? { kind: 'queue' } : (m.songs.length ? { kind: 'song', id: m.songs[0].id } : null));
+      if (!play) { toast('Füge erst Lieder hinzu.'); return; }
+      if (!m.on) { toast('Die Musik ist ausgeschaltet.'); return; }
+      if (!muSoundOn()) { toast('Der Ton ist ausgeschaltet (Einstellungen > Ton).'); return; }
+      muStart(play, true); return;
+    }
+    muTryPlay(); muUI();
+  }
+  function muSkip(dir) {
+    const m = muCfg();
+    if (MUP.kind !== 'queue') {
+      if (!m.q.length) return;
+      MUP.kind = 'queue'; MUP.order = muOrderFor(m.q.length, m.pos); MUP.userPaused = false; MUP.finished = false; muPlayIdx(m.pos); return;
+    }
+    if (dir < 0 && MUP.el && MUP.el.currentTime > 3) { MUP.el.currentTime = 0; muTick(true); return; }
+    const i = muNextIdx(dir, false);
+    if (i < 0) return;
+    MUP.userPaused = false; MUP.finished = false;
+    muPlayIdx(i);
+  }
+  function muPlayNow(id) {
+    const m = muCfg();
+    if (!muSong(id)) return;
+    let i = m.q.indexOf(id);
+    if (i < 0) { m.q.push(id); i = m.q.length - 1; }
+    MUP.kind = 'queue'; MUP.order = muOrderFor(m.q.length, i); MUP.userPaused = false; MUP.finished = false;
+    muPlayIdx(i); muRepaint();
+  }
+  function muMedia(s) {
+    try {
+      if (!('mediaSession' in navigator)) return;
+      navigator.mediaSession.metadata = new MediaMetadata({ title: s.n, artist: 'JopenBox' });
+      [['play', () => muToggle(true)], ['pause', () => muToggle(false)], ['previoustrack', () => muSkip(-1)], ['nexttrack', () => muSkip(1)]].forEach(([a, f]) => { try { navigator.mediaSession.setActionHandler(a, f); } catch (e) { /* egal */ } });
+    } catch (e) { /* egal */ }
+  }
+
+  // ---- Anzeige, die sich laufend aendert ----
+  function muTick(force) {
+    const el = MUP.el, s = muSong(MUP.sid);
+    const cur = el ? el.currentTime || 0 : 0, dur = el && isFinite(el.duration) && el.duration > 0 ? el.duration : (s ? s.d : 0);
+    document.querySelectorAll('[data-mu-time]').forEach(n => { n.textContent = `${muFmt(cur)} / ${dur ? muFmt(dur) : '–:––'}`; });
+    document.querySelectorAll('input[data-mu-seek]').forEach(n => { if (force || document.activeElement !== n) { n.max = String(Math.round(dur) || 0); n.value = String(Math.round(cur)); } n.disabled = !dur; });
+  }
+  function muPill() {
+    const m = muCfg(), b = document.getElementById('top-mu');
+    if (b) b.hidden = !m.on;
+  }
+  function muUI(force) {
+    const m = muCfg(), el = MUP.el, s = muSong(MUP.sid), playing = !!el && !el.paused && !!MUP.url;
+    document.querySelectorAll('[data-mu-t]').forEach(n => { n.textContent = s ? s.n : 'Nichts läuft'; });
+    document.querySelectorAll('[data-mu-pp]').forEach(n => { n.textContent = playing ? '⏸' : '▶'; n.setAttribute('aria-label', playing ? 'Pause' : 'Abspielen'); });
+    const b = document.getElementById('top-mu');
+    if (b) { b.hidden = !m.on; b.classList.toggle('mu-on', playing); }
+    document.querySelectorAll('[data-mu-qi]').forEach(n => n.classList.toggle('cur', MUP.kind === 'queue' && +n.dataset.muQi === m.pos && !!MUP.url));
+    document.querySelectorAll('[data-mu-sid]').forEach(n => n.classList.toggle('cur', !!MUP.url && n.dataset.muSid === MUP.sid));
+    muTick(force);
+  }
+  function muRepaint() {
+    const d = document.getElementById('dlg');
+    if (d && !d.hidden && d.querySelector('.mu-box')) muPlayerDlg();
+    else if (current === 'set') renderSetAll();
+    muUI(true);
+  }
+
+  // ---- Oberflaeche ----
+  const muCtlHTML = () => {
+    const m = muCfg(), lp = MU_LOOPS.find(x => x[0] === m.loop);
+    return `<div class="mu-now"><b data-mu-t>Nichts läuft</b><small data-mu-time>–:–– / –:––</small></div>
+      <input type="range" class="mu-seek" data-mu-seek min="0" max="0" step="1" value="0" aria-label="Position im Lied" disabled>
+      <div class="mu-ctl">
+        <button class="btn small" data-act="mushuf" aria-pressed="${m.shuf}" title="Mischen">🔀 <span>Mischen</span></button>
+        <button class="btn" data-act="muprev" aria-label="Zurück">⏮</button>
+        <button class="btn primary mu-pp" data-act="mupp" data-mu-pp aria-label="Abspielen">▶</button>
+        <button class="btn" data-act="munext" aria-label="Weiter">⏭</button>
+        <button class="btn small" data-act="muloop" title="${lp[1]}" aria-label="${lp[1]}">${lp[2]} <span>${lp[3]}</span></button>
+      </div>`;
+  };
+  const muVolHTML = () => MUP.volFixed
+    ? '<p class="note" style="max-width:none">Die Lautstärke stellst du bei deinem Gerät mit den Lautstärke-Tasten ein.</p>'
+    : `<label class="field"><span>Lautstärke</span><input type="range" id="mu-vol" min="0" max="1" step="0.01" value="${muVol()}" aria-label="Lautstärke der Musik"></label>`;
+  function muSelHTML(key, place) {
+    const m = muCfg(), songs = m.songs;
+    const cur = place ? (m.pl[key] || 'inherit') : m.all;
+    const opts = [];
+    if (place) opts.push(['inherit', 'Wie Haupt-Musik']);
+    opts.push(['off', 'Aus'], ['queue', 'Warteschlange']);
+    if (place && key === 'slot') opts.push(['skin', 'Musik aus dem Slot-Design']);
+    songs.forEach(s => opts.push(['song:' + s.id, 'Lied: ' + s.n]));
+    return `<select data-mu-sel="${key}" aria-label="${place ? 'Musik auf dieser Seite' : 'Haupt-Musik'}">${opts.map(([v, n]) => `<option value="${esc(v)}"${v === cur ? ' selected' : ''}>${esc(n)}</option>`).join('')}</select>`;
+  }
+  // Karte fuer eine Seite (oder "all" = Haupt-Musik): Musik (Auswahl oder direkt eine Datei) und Sound beim Oeffnen
+  function muPageHTML(key, noTitle) {
+    const m = muCfg(), isAll = key === 'all', e = m.pj[key], nm = isAll ? 'Haupt-Musik (überall)' : muPgName(key);
+    const acc = 'audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus,.flac';
+    const state = e && e.off ? 'Stumm' : e && e.r ? e.n : (isAll ? 'Kein Sound' : (m.pj.all && m.pj.all.r ? 'Wie Haupt-Sound' : 'Kein Sound'));
+    return `<div class="mu-pg" data-mu-pg="${key}">${noTitle ? '' : `<b>${esc(nm)}</b>`}
+      <div class="mu-pgr"><span class="l">Musik</span>${muSelHTML(key, !isAll)}<label class="btn small" aria-label="Eigene Musikdatei für ${esc(nm)}">Datei<input type="file" class="vh" data-mu-pf="${key}" accept="${acc}"></label></div>
+      <div class="mu-pgr"><span class="l">Sound</span><small class="mu-pjn${e && (e.r || e.off) ? ' own' : ''}">${esc(state)}</small>
+        <span class="mu-b"><label class="btn small" aria-label="Eigener Sound beim Öffnen: ${esc(nm)}">Datei<input type="file" class="vh" data-mu-pj="${key}" accept="${acc}"></label>
+        <button class="btn small" data-act="mupjtest" data-id="${key}" aria-label="Sound anhören: ${esc(nm)}">▶</button>${isAll ? '' : `<button class="btn small${e && e.off ? ' primary' : ''}" data-act="mupjoff" data-id="${key}" aria-pressed="${!!(e && e.off)}" aria-label="Sound stummschalten: ${esc(nm)}">🔇</button>`}${e && e.r ? `<button class="btn small" data-act="mupjdel" data-id="${key}" aria-label="Sound entfernen: ${esc(nm)}">✕</button>` : ''}</span></div></div>`;
+  }
+  function muSongsHTML() {
+    const m = muCfg();
+    if (!m.songs.length) return '<p class="note" style="max-width:none">Noch keine Lieder. Tippe auf „Lieder hinzufügen“ und wähle Dateien (mp3, m4a, wav, ogg …) von deinem Gerät.</p>';
+    return `<div class="mu-list">${m.songs.map(s => `<div class="mu-row${MUP.bad.has(s.id) ? ' bad' : ''}" data-mu-sid="${esc(s.id)}"><span class="mu-n"><b>${esc(s.n)}</b><small>${s.d ? muFmt(s.d) + ' · ' : ''}${s.z ? muMB(s.z) : ''}${MUP.bad.has(s.id) ? ' · nicht abspielbar' : ''}</small></span>
+      <span class="mu-b"><button class="btn small" data-act="muplay" data-id="${esc(s.id)}" aria-label="Abspielen: ${esc(s.n)}">▶</button><button class="btn small" data-act="muqadd" data-id="${esc(s.id)}" aria-label="In die Warteschlange: ${esc(s.n)}">＋</button><button class="btn small" data-act="murename" data-id="${esc(s.id)}" aria-label="Umbenennen: ${esc(s.n)}">✎</button><button class="btn small" data-act="mudel" data-id="${esc(s.id)}" aria-label="Löschen: ${esc(s.n)}">🗑</button></span></div>`).join('')}</div>`;
+  }
+  function muQueueHTML() {
+    const m = muCfg();
+    if (!m.q.length) return m.songs.length ? '<p class="note" style="max-width:none">Die Warteschlange ist leer. Mit ＋ bei einem Lied legst du es hinein.</p>' : '<p class="note" style="max-width:none">Noch keine Lieder in der Warteschlange. Eine Datei nur für eine Seite wählst du oben bei „Musik“, mehrere Lieder fügst du in den Einstellungen hinzu.</p>';
+    return `<div class="mu-list">${m.q.map((id, i) => { const s = muSong(id); return `<div class="mu-row" data-mu-qi="${i}"><span class="mu-n"><b>${i + 1}. ${esc(s ? s.n : 'Lied')}</b></span>
+      <span class="mu-b"><button class="btn small" data-act="muqplay" data-id="${i}" aria-label="Abspielen">▶</button><button class="btn small" data-act="muqup" data-id="${i}"${i === 0 ? ' disabled' : ''} aria-label="Nach oben">▲</button><button class="btn small" data-act="muqdown" data-id="${i}"${i === m.q.length - 1 ? ' disabled' : ''} aria-label="Nach unten">▼</button><button class="btn small" data-act="muqdel" data-id="${i}" aria-label="Aus der Warteschlange nehmen">✕</button></span></div>`; }).join('')}</div>`;
+  }
+  function muSetHTML() {
+    const m = muCfg(), cloud = !!(BE && BE.mode === 'cloud');
+    const off = !muSoundOn() ? '<p class="note" style="max-width:none"><b>Der Ton ist ausgeschaltet.</b> Schalte ihn unter „Ton“ ein, damit Musik läuft.</p>' : '';
+    return `<p class="note" style="max-width:none">Füge eigene Lieder hinzu, bau eine Warteschlange und lege fest, was wo läuft: überall dasselbe oder pro Seite etwas anderes. Die Lieder bleiben in diesem Browser, sie sind nicht in Sicherungen.</p>
+      ${cloud ? '<p class="note" style="max-width:none"><b>Eigene Lieder gehen nur in der Offline-App</b>, nicht in der Claude-Version.</p>' : ''}${off}
+      <div class="row left"><button class="btn${m.on ? ' primary' : ''}" data-act="muon" aria-pressed="${m.on}">${m.on ? 'Eigene Musik: an' : 'Eigene Musik: aus'}</button></div>
+      <h4 class="set-sub">Player</h4>${muCtlHTML()}${muVolHTML()}
+      <h4 class="set-sub">Lieder (${m.songs.length})</h4>
+      <div class="row left"><label class="btn small primary" for="mu-file">＋ Lieder hinzufügen</label><input type="file" id="mu-file" class="vh" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus,.flac" multiple></div>
+      ${muSongsHTML()}
+      <h4 class="set-sub">Warteschlange (${m.q.length})</h4>
+      <div class="row left"><button class="btn small" data-act="muqall"${m.songs.length ? '' : ' disabled'}>Alle Lieder hineinlegen</button><button class="btn small" data-act="muqclear"${m.q.length ? '' : ' disabled'}>Leeren</button></div>
+      ${muQueueHTML()}
+      <h4 class="set-sub">Haupt-Musik und Seiten</h4>
+      <p class="note" style="max-width:none">Die <b>Haupt-Musik</b> läuft überall, wo eine Seite nichts anderes hat. Jede Seite kann ihre eigene <b>Musik</b> bekommen (Lied aus der Bibliothek wählen oder mit „Datei“ direkt eine Datei festlegen) und einen kurzen <b>Sound</b>, der beim Öffnen der Seite erklingt (höchstens 2 MB und ${MU_FX_SECS} Sekunden). Dasselbe findest du auch oben unter 🎵 für die Seite, auf der du gerade bist.</p>
+      ${muPageHTML('all')}${MU_PLACES.map(([k]) => muPageHTML(k)).join('')}
+      <p class="note" style="max-width:none">Steht die Haupt-Musik auf Aus und eine Seite auf „Wie Haupt-Musik“, läuft im Slot wie bisher die Musik aus dem Slot-Design.</p>
+      ${muFxHTML()}`;
+  }
+  { const i = SET_SECS.findIndex(s => s.id === 'sound'); SET_SECS.splice(i < 0 ? SET_SECS.length : i + 1, 0, { id: 'mus', t: 'Musik', ic: '🎵', d: 'Eigene Lieder, Warteschlange', body: muSetHTML }); }
+  function muPlayerDlg() {
+    const m = muCfg();
+    dlg(`<div class="mu-box"><h3>🎵 Musik</h3>${muCtlHTML()}${muVolHTML()}
+      ${(() => { const v = MUP.view || current; return MU_PLACES.some(p => p[0] === v) ? `<h4 class="set-sub">Diese Seite: ${esc(muPgName(v))}</h4>${muPageHTML(v, true)}` : ''; })()}
+      <h4 class="set-sub">Haupt-Musik (überall)</h4>${muPageHTML('all', true)}
+      <div class="mu-qh"><b>Warteschlange (${m.q.length})</b></div>${muQueueHTML()}
+      <div class="row"><button class="btn" data-act="muopenset">Einstellungen</button><button class="btn" data-act="dlgclose">Schließen</button></div></div>`);
+    muUI(true);
+  }
+  ACTS.muplayer = () => { muPlayerDlg(); };
+  ACTS.muopenset = () => {
+    closeDlg();
+    const c = suiCfg(); if (c.mode === 'acc') { c.open = c.open || {}; c.open.mus = 1; saveMeta(true); }
+    showView('set');
+    setTimeout(() => { const s = document.getElementById('sec-mus'); if (s && s.scrollIntoView) s.scrollIntoView({ block: 'start' }); }, 80);
+  };
+
+  // ---- Eigene Effekte ----
+  const MUFX = { loaded: {}, run: null, again: false };   // Schluessel -> { ref }
+  // Dekodieren geht auch ohne laufenden Ton (Offline-Kontext); ein AudioBuffer laeuft in jedem Kontext
+  function muDecCtx() {
+    try { const c = SFX.peek && SFX.peek(); if (c) return c; } catch (e) { /* egal */ }
+    try { const O = window.OfflineAudioContext || window.webkitOfflineAudioContext; return O ? new O(1, 1, 44100) : null; } catch (e) { return null; }
+  }
+  // Alle kurzen Klaenge, die geladen sein sollen: Effekte (Schluessel = Gruppe) und Seiten-Sounds (pj_<Seite>)
+  function muShortList() {
+    const m = muCfg(), out = [];
+    MU_FX.forEach(([k, , names]) => out.push({ k, names, f: m.fx[k] || null }));
+    ['all', ...MU_PLACES.map(p => p[0])].forEach(k => out.push({ k: 'pj_' + k, names: ['pg_' + k], f: m.pj[k] && m.pj[k].r ? m.pj[k] : null }));
+    return out;
+  }
+  async function muFxLoadOnce() {
+    const ctx = muDecCtx();
+    if (!ctx) return;
+    for (const { k, names, f } of muShortList()) {
+      const have = MUFX.loaded[k];
+      if (!f) { if (have) { SFX.setCustom(names, null); delete MUFX.loaded[k]; } continue; }
+      if (have && have.ref === f.r) continue;
+      try {
+        const blob = await BE.blobOf(f.r);
+        if (!blob) continue;
+        const buf = await ctx.decodeAudioData(await blob.arrayBuffer());
+        SFX.setCustom(names, buf); MUFX.loaded[k] = { ref: f.r };
+      } catch (e) { console.warn('Klang', k, e); }
+    }
+  }
+  // Nie zwei Ladevorgaenge gleichzeitig; kommt waehrenddessen eine Aenderung, laeuft er danach noch einmal
+  function muFxLoad() {
+    if (MUFX.run) { MUFX.again = true; return MUFX.run; }
+    MUFX.run = (async () => { do { MUFX.again = false; await muFxLoadOnce(); } while (MUFX.again); })().finally(() => { MUFX.run = null; });
+    return MUFX.run;
+  }
+  // Datei fuer einen kurzen Klang pruefen: Typ, Groesse, lesbar, nicht zu lang. Gibt { blob } zurueck oder null (Meldung ist schon da)
+  async function muShortPrep(file) {
+    if (!file) return null;
+    if (BE && BE.mode === 'cloud') { toast('Eigene Sounds gehen nur in der Offline-App.'); return null; }
+    if (!muAudioOk(file)) { toast('Das ist keine Audiodatei.'); return null; }
+    if (file.size > MU_FX_BYTES) { toast('Die Datei ist größer als 2 MB.'); return null; }
+    const c = muDecCtx(); if (!c) { toast('Dieser Browser kann den Klang nicht lesen.'); return null; }
+    busy('Sound wird geprüft …');
+    try {
+      const blob = muTyped(file);
+      const buf = await c.decodeAudioData(await blob.arrayBuffer());
+      if (buf.duration > MU_FX_SECS) { toast(`Der Sound ist länger als ${MU_FX_SECS} Sekunden. Längere Stücke gehören als Lied in die Musik.`); return null; }
+      return { blob };
+    } catch (e) { console.warn(e); toast('Die Datei lässt sich nicht als Klang lesen.'); return null; }
+    finally { busy(null); }
+  }
+  async function muFxPick(key, file) {
+    const def = MU_FX.find(x => x[0] === key); if (!def || !file) return;
+    const p = await muShortPrep(file); if (!p) return;
+    const m = muCfg();
+    try {
+      busy('Sound wird gespeichert …');
+      const ref = await BE.putPhoto(p.blob, { cache: false }), old = m.fx[key] && m.fx[key].r;
+      m.fx[key] = { r: ref, n: muName(file), z: file.size };
+      saveMeta(true);
+      if (old) await mediaDrop(old);
+      await muFxLoad();
+      busy(null); SFX.play(def[2][0]); toast(`„${def[1]}“ klingt jetzt nach deiner Datei.`);
+    } catch (e) { busy(null); console.warn(e); toast('Das konnte ich nicht speichern.'); }
+    muRepaint();
+  }
+  const muFxHTML = () => {
+    const m = muCfg();
+    return `<h4 class="set-sub">Eigene Effekte</h4>
+      <p class="note" style="max-width:none">Ersetze einzelne Klänge der App durch deine eigene Datei (höchstens 2 MB und ${MU_FX_SECS} Sekunden). Ohne Datei klingt es wie bisher.</p>
+      <div class="mu-list mu-fxl">${MU_FX.map(([k, n]) => { const f = m.fx[k]; return `<div class="mu-row"><span class="mu-n"><b>${esc(n)}</b><small>${f ? esc(f.n) : 'Standard'}</small></span>
+        <span class="mu-b"><label class="btn small" for="mu-fx-${k}" aria-label="Datei wählen: ${esc(n)}">Datei</label><input type="file" id="mu-fx-${k}" data-mu-fx="${k}" class="vh" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus,.flac">
+        <button class="btn small" data-act="mufxtest" data-id="${k}" aria-label="Anhören: ${esc(n)}">▶</button>${f ? `<button class="btn small" data-act="mufxdel" data-id="${k}" aria-label="Zurück auf Standard: ${esc(n)}">✕</button>` : ''}</span></div>`; }).join('')}</div>`;
+  };
+  ACTS.mufxtest = k => { const d = MU_FX.find(x => x[0] === k); if (d) { if (!muSoundOn()) { toast('Der Ton ist ausgeschaltet.'); return; } SFX.play(d[2][0]); } };
+  ACTS.mufxdel = async k => {
+    const m = muCfg(), f = m.fx[k]; if (!f) return;
+    delete m.fx[k]; saveMeta(true);
+    await muFxLoad(); await mediaDrop(f.r);
+    SFX.play('back'); muRepaint();
+  };
+
+  // ---- Seiten-Sounds: ein kurzer Klang beim Oeffnen einer Seite ----
+  // Schluessel des Klangs, der auf dieser Seite gilt: eigener Sound der Seite, sonst der Haupt-Sound, sonst nichts
+  function muJingleKey(view) {
+    const m = muCfg(), e = m.pj[view];
+    if (e && e.off) return null;
+    if (e && e.r) return 'pg_' + view;
+    return m.pj.all && m.pj.all.r ? 'pg_all' : null;
+  }
+  function muJingle(view) {
+    const m = muCfg();
+    if (!m.on || !muSoundOn()) return;
+    const k = muJingleKey(view);
+    if (k && SFX.playKey(k)) { MUP.jlog.push(k); if (MUP.jlog.length > 30) MUP.jlog.shift(); }
+  }
+  const muPgName = key => key === 'all' ? 'Haupt-Musik' : ((MU_PLACES.find(p => p[0] === key) || [])[1] || 'Seite');
+  async function muPjPick(key, file) {
+    if (!file || !(key === 'all' || MU_PLACES.some(p => p[0] === key))) return;
+    const p = await muShortPrep(file); if (!p) return;
+    const m = muCfg();
+    try {
+      busy('Sound wird gespeichert …');
+      const ref = await BE.putPhoto(p.blob, { cache: false }), old = m.pj[key] && m.pj[key].r;
+      m.pj[key] = { r: ref, n: muName(file), z: file.size };
+      saveMeta(true);
+      if (old) await mediaDrop(old);
+      await muFxLoad();
+      busy(null);
+      SFX.playKey('pg_' + key);
+      toast(key === 'all' ? `Der Haupt-Sound ist jetzt „${m.pj[key].n}“.` : `Beim Öffnen von „${muPgName(key)}“ erklingt jetzt „${m.pj[key].n}“.`);
+    } catch (e) { busy(null); console.warn(e); toast('Das konnte ich nicht speichern.'); }
+    muRepaint();
+  }
+  // Eigene Musikdatei direkt fuer eine Seite (oder als Haupt-Musik) festlegen, ohne Umweg ueber die Warteschlange
+  async function muPfPick(key, file) {
+    if (!file || !(key === 'all' || MU_PLACES.some(p => p[0] === key))) return;
+    const m = muCfg();
+    const got = await muAddFiles([file], { queue: false, quiet: true });
+    const id = got && got[0], s = id ? muSong(id) : null;
+    if (!s) return;
+    if (key === 'all') m.all = 'song:' + id; else m.pl[key] = 'song:' + id;
+    MU_SEEN = null; muCfg(); saveMeta(true); SFX.play('pop');
+    toast(key === 'all' ? `„${s.n}“ ist jetzt die Haupt-Musik.` : `Auf „${muPgName(key)}“ läuft jetzt „${s.n}“.`);
+    muRepaint(); muSync(current, true);
+  }
+  ACTS.mupjtest = async key => {
+    if (!muSoundOn()) { toast('Der Ton ist ausgeschaltet.'); return; }
+    const k = muJingleKey(key);
+    if (!k) { toast(key === 'all' ? 'Noch kein Haupt-Sound festgelegt.' : 'Hier ist noch kein Sound festgelegt.'); return; }
+    await muFxLoad();
+    if (!SFX.playKey(k)) toast('Der Sound lässt sich nicht abspielen.');
+  };
+  ACTS.mupjoff = async key => {
+    const m = muCfg(), e = m.pj[key];
+    if (key === 'all') return;
+    if (e && e.off) delete m.pj[key]; else m.pj[key] = { off: true };
+    saveMeta(true); SFX.play('pop');
+    await muFxLoad();
+    if (e && e.r) await mediaDrop(e.r);
+    muRepaint();
+  };
+  ACTS.mupjdel = async key => {
+    const m = muCfg(), e = m.pj[key]; if (!e) return;
+    delete m.pj[key]; saveMeta(true); SFX.play('back');
+    await muFxLoad();
+    if (e.r) await mediaDrop(e.r);
+    muRepaint();
+  };
+
+  // ---- Aktionen ----
+  ACTS.mupp = () => muToggle();
+  ACTS.munext = () => muSkip(1);
+  ACTS.muprev = () => muSkip(-1);
+  ACTS.muloop = () => {
+    const m = muCfg(), i = MU_LOOPS.findIndex(x => x[0] === m.loop);
+    m.loop = MU_LOOPS[(i + 1) % MU_LOOPS.length][0]; saveMeta(true);
+    if (MUP.el) MUP.el.loop = MUP.kind === 'song' || m.loop === 'one';
+    SFX.play('pop'); muRepaint();
+  };
+  ACTS.mushuf = () => { const m = muCfg(); m.shuf = !m.shuf; MUP.order = []; saveMeta(true); SFX.play('pop'); muRepaint(); };
+  ACTS.muon = () => { const m = muCfg(); m.on = !m.on; saveMeta(true); if (!m.on) muStopAll(); SFX.play('pop'); muSync(current, true); muRepaint(); };
+  ACTS.muplay = id => muPlayNow(id);
+  ACTS.muqplay = i => { const m = muCfg(); i = +i; if (!(i >= 0 && i < m.q.length)) return; MUP.kind = 'queue'; MUP.order = muOrderFor(m.q.length, i); MUP.userPaused = false; MUP.finished = false; muPlayIdx(i); };
+  ACTS.muqadd = id => { const m = muCfg(); if (!muSong(id) || m.q.length >= MU_QMAX) return; m.q.push(id); saveMeta(true); MUP.order = []; SFX.play('pop'); toast('In der Warteschlange.'); muRepaint(); muSync(current); };
+  ACTS.muqall = () => { const m = muCfg(); m.q = m.songs.map(s => s.id).slice(0, MU_QMAX); m.pos = 0; MUP.order = []; saveMeta(true); SFX.play('pop'); muRepaint(); muSync(current); };
+  ACTS.muqclear = () => {
+    const m = muCfg(); m.q = []; m.pos = 0; MUP.order = []; saveMeta(true);
+    if (MUP.kind === 'queue') muStopAll();
+    SFX.play('back'); muRepaint(); muSync(current, true);
+  };
+  function muMoveQ(i, d) {
+    const m = muCfg(), j = i + d;
+    if (!(i >= 0 && j >= 0 && i < m.q.length && j < m.q.length)) return;
+    [m.q[i], m.q[j]] = [m.q[j], m.q[i]];
+    if (m.pos === i) m.pos = j; else if (m.pos === j) m.pos = i;
+    MUP.order = []; saveMeta(true); SFX.play('pop'); muRepaint();
+  }
+  ACTS.muqup = i => muMoveQ(+i, -1);
+  ACTS.muqdown = i => muMoveQ(+i, 1);
+  ACTS.muqdel = i => {
+    const m = muCfg(); i = +i;
+    if (!(i >= 0 && i < m.q.length)) return;
+    m.q.splice(i, 1);
+    const wasCur = MUP.kind === 'queue' && MUP.url && m.pos === i;
+    if (i < m.pos) m.pos--;
+    if (m.pos >= m.q.length) m.pos = Math.max(0, m.q.length - 1);
+    MUP.order = []; saveMeta(true); SFX.play('back');
+    if (wasCur) { if (m.q.length) muPlayIdx(m.pos); else muStopAll(); }
+    muRepaint(); muSync(current);
+  };
+  ACTS.murename = id => {
+    const s = muSong(id); if (!s) return;
+    dlg(`<h3>Lied umbenennen</h3><label class="field"><span>Name</span><input type="text" id="mu-rn" maxlength="40" value="${esc(s.n)}" autocomplete="off" data-id="${esc(id)}"></label>
+      <div class="row"><button class="btn primary" data-act="murenamego" data-id="${esc(id)}">Speichern</button><button class="btn" data-act="dlgclose">Abbrechen</button></div>`);
+    setTimeout(() => { const i = $('#mu-rn'); if (i) { i.focus(); i.select(); } }, 60);
+  };
+  ACTS.murenamego = id => {
+    const s = muSong(id), i = $('#mu-rn'); if (!s || !i) return;
+    s.n = String(i.value).replace(/[<>&"'`]/g, '').trim().slice(0, 40) || s.n; saveMeta(true); closeDlg(); SFX.play('pop'); muRepaint();
+  };
+  ACTS.mudel = id => {
+    const s = muSong(id); if (!s) return;
+    dlg(`<h3>„${esc(s.n)}“ löschen?</h3><p class="note" style="max-width:none">Das Lied verschwindet aus der Bibliothek und der Warteschlange. Deine Originaldatei bleibt, wo sie ist.</p>
+      <div class="row"><button class="btn danger" data-act="mudelgo" data-id="${esc(id)}">Löschen</button><button class="btn" data-act="dlgclose">Abbrechen</button></div>`);
+  };
+  ACTS.mudelgo = async id => {
+    const m = muCfg(), s = muSong(id); if (!s) return;
+    closeDlg();
+    const playingIt = MUP.sid === id;
+    m.songs = m.songs.filter(x => x.id !== id);
+    const keepPos = m.q.slice(0, m.pos).filter(x => x !== id).length;
+    m.q = m.q.filter(x => x !== id); m.pos = Math.min(keepPos, Math.max(0, m.q.length - 1));
+    MU_SEEN = null; muCfg();   // Merker auf das Lied (Ueberall, Seiten) bereinigen
+    MUP.order = []; MUP.bad.delete(id); saveMeta(true);
+    if (playingIt) muStopAll();
+    SFX.play('back');
+    try { await mediaDrop(s.r); } catch (e) { /* egal */ }
+    muRepaint(); muSync(current, true);
+  };
+  // Dateien hinzufuegen
+  // o.queue === false: nicht in die Warteschlange legen; o.quiet: keine Sammelmeldung und kein Neuzeichnen (macht der Aufrufer).
+  // Gibt die Kennungen der Lieder zurueck (neu angelegt oder schon vorhanden), in der Reihenfolge der Dateien.
+  async function muAddFiles(files, o) {
+    o = o || {};
+    const m = muCfg(), got = [];
+    files = [...files || []];
+    if (!files.length) return got;
+    if (BE && BE.mode === 'cloud') { toast('Eigene Lieder gehen nur in der Offline-App, nicht in der Claude-Version.'); return got; }
+    let ok = 0, bad = 0, big = 0, dup = 0, full = 0;
+    busy('Lieder werden gespeichert …');
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        if (m.songs.length >= MU_MAX) { full = files.length - i; break; }
+        if (!muAudioOk(f)) { bad++; continue; }
+        if (f.size > MU_BYTES) { big++; continue; }
+        const nm = muName(f), have = m.songs.find(s => s.n === nm && s.z === f.size);
+        if (have) { dup++; got.push(have.id); continue; }
+        busy(`Lieder werden gespeichert (${i + 1}/${files.length})`, i / files.length);
+        try {
+          const ref = await BE.putPhoto(muTyped(f), { cache: false });
+          const s = { id: 's_' + uid(6), n: nm, r: ref, z: f.size, d: 0, t: Date.now() };
+          m.songs.push(s); if (o.queue !== false && m.q.length < MU_QMAX) m.q.push(s.id);
+          got.push(s.id);
+          ok++;
+        } catch (e) { console.warn(e); bad++; }
+      }
+    } finally { busy(null); }
+    MUP.order = []; saveMeta(true);
+    const extra = [];
+    if (dup) extra.push(`${dup} schon vorhanden`);
+    if (big) extra.push(`${big} größer als 25 MB`);
+    if (bad) extra.push(`${bad} keine Musikdatei`);
+    if (full) extra.push(`Platz ist nur für ${MU_MAX} Lieder`);
+    if (!o.quiet) {
+      toast(`${ok} ${ok === 1 ? 'Lied' : 'Lieder'} hinzugefügt${extra.length ? ', ' + extra.join(', ') : ''}.`);
+      muRepaint(); muSync(current, true);
+    } else if (!got.length) toast(extra.length ? `Nicht hinzugefügt: ${extra.join(', ')}.` : 'Nichts hinzugefügt.');
+    return got;
+  }
+  document.addEventListener('change', async e => {
+    const t = e.target;
+    if (!t || !t.id && !(t.dataset && (t.dataset.muSel || t.dataset.muPf || t.dataset.muPj))) return;
+    if (t.dataset && t.dataset.muPf) { const f = t.files && t.files[0]; t.value = ''; await muPfPick(t.dataset.muPf, f); return; }
+    if (t.dataset && t.dataset.muPj) { const f = t.files && t.files[0]; t.value = ''; await muPjPick(t.dataset.muPj, f); return; }
+    if (t.dataset && t.dataset.muFx) { const f = t.files && t.files[0]; t.value = ''; await muFxPick(t.dataset.muFx, f); return; }
+    if (t.id === 'mu-file') { const fs = [...(t.files || [])]; t.value = ''; await muAddFiles(fs); }
+    else if (t.dataset && t.dataset.muSel) {
+      const m = muCfg(), k = t.dataset.muSel, v = t.value;
+      if (k === 'all') m.all = v; else if (v === 'inherit') { if (m.pl) delete m.pl[k]; } else m.pl[k] = v;
+      MU_SEEN = null; muCfg(); saveMeta(true); SFX.play('pop');
+      muSync(current, true); muUI(true);
+    } else if (t.id === 'mu-seek') { /* wird ueber input behandelt */ }
+  });
+  document.addEventListener('input', e => {
+    const t = e.target;
+    if (!t) return;
+    if (t.id === 'mu-vol') { const m = muCfg(); m.vol = Math.max(0, Math.min(1, +t.value)); muApplyVol(); saveMeta(); }
+    else if (t.dataset && t.dataset.muSeek !== undefined) { if (MUP.el && isFinite(+t.value)) { try { MUP.el.currentTime = +t.value; } catch (er) { /* egal */ } muTick(true); } }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target && e.target.id === 'mu-rn') { e.preventDefault(); ACTS.murenamego(e.target.dataset.id); } }, true);
+  // Notaus: laeuft sonst irgendwo etwas anderes (Tonquelle ist aus), Anzeige nachziehen
+  setInterval(() => { if (MUP.el && !MUP.el.paused) muTick(); }, 1000);
+  window.__JB_MU = {
+    cfg: () => JSON.parse(JSON.stringify(muCfg())),
+    state: () => ({ kind: MUP.kind, sid: MUP.sid, playing: !!MUP.el && !MUP.el.paused && !!MUP.url, paused: !!MUP.el && MUP.el.paused, loop: MUP.el ? MUP.el.loop : null, t: MUP.el ? MUP.el.currentTime : 0, dur: MUP.el ? MUP.el.duration : 0, userPaused: MUP.userPaused, finished: MUP.finished, volFixed: MUP.volFixed, vol: MUP.el ? MUP.el.volume : null, order: MUP.order.slice(), bad: [...MUP.bad] }),
+    resolve: v => muResolve(v), add: muAddFiles,
+    fx: () => ({ count: SFX.customCount(), loaded: Object.keys(MUFX.loaded), jingles: MUP.jlog.slice() }),
+    jkey: v => muJingleKey(v),
+  };
   // ================= Cases verstecken =================
   // Ein verstecktes Case taucht nirgends mehr auf (Home, Case, Inventar, Sammlung, Community, Gacha, Widgets).
   // Verstecken: im Reiter Case ("Case verstecken") oder im Cheat-Menue (Code 6906) -> "Verstecke Cases".
@@ -13019,7 +14056,7 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
   //   seen: Cases, die dem Desktop-System schon bekannt sind. Ein neues Case gehoert dem Desktop, auf dem es zuerst auftaucht.
   const DK_MAX = 8, DK_PARTS = ['sk', 'th', 'hm', 'pk', 'cp'];
   const DK_ICONS = ['🖥️', '🎌', '🏠', '📚', '🎮', '🎨', '💼', '⭐', '🌙', '🎴', '🍿', '🎧'];
-  const DK = { ed: null, armDel: null, busy: false };
+  const DK = { ed: null, armDel: null, armReset: false, busy: false };
   const dkName = n => String(n == null ? '' : n).replace(/[<>&"'`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 20);
 
   function dkNormRec(r) {
@@ -13121,6 +14158,7 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
       if (current === 'set') renderSetAll(); else refresh();
       dkAnim(dir);
       SFX.play('pop');
+      { const i = dkInfo(); if (i && i.own > 0 && i.vis === 0) toast('Auf diesem Desktop sind alle deine eigenen Cases ausgeblendet. Auf Home: „Alles zeigen“.'); }
       return true;
     } catch (e) { console.error(e); toast('Der Desktop ließ sich nicht wechseln.'); return false; }
     finally { DK.busy = false; }
@@ -13133,8 +14171,25 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
   }
 
   // ---- Leiste auf Home ----
+  // Was ist auf dem jetzigen Desktop eingeschraenkt? (damit nichts "verschwindet", ohne dass man weiss warum)
+  function dkInfo() {
+    const m = dkMeta(), r = dkCurRec(); if (!m || !r || m.list.length < 2) return null;
+    const hid = dkHiddenTabs(r), off = TAB_LIST.filter(x => hid.indexOf(x[0]) >= 0).map(x => x[1]);
+    const own = dkOwnCases(), vis = r.cases ? own.filter(c => r.cases.indexOf(c.id) >= 0).length : own.length;
+    return { r, off, own: own.length, vis, limited: !!r.cases && vis < own.length };
+  }
+  function dkNoteHTML() {
+    const i = dkInfo(); if (!i || (!i.off.length && !i.limited)) return '';
+    const none = i.own > 0 && i.vis === 0, parts = [];
+    if (i.off.length) parts.push('ohne ' + i.off.join(', '));
+    if (i.limited) parts.push(`${i.vis} von ${i.own} eigenen Cases`);
+    return `<div class="dk-info${none ? ' warn' : ''}" role="status"><span>${none ? 'Auf diesem Desktop sind alle deine eigenen Cases ausgeblendet.' : 'Auf diesem Desktop: ' + esc(parts.join(' · ')) + '.'}</span><span class="dk-info-b"><button class="btn small primary" data-act="dkshowall">Alles zeigen</button><button class="btn small" data-act="dkedit" data-id="${esc(i.r.id)}">Ändern</button></span></div>`;
+  }
   function dkBarHTML() {
     const m = dkMeta(); if (!m || m.list.length < 2) return '';
+    return dkBarNav(m) + dkNoteHTML();
+  }
+  function dkBarNav(m) {
     return `<nav class="dk-bar" aria-label="Desktops">${m.list.map(r => `<button class="dk-chip${r.id === m.cur ? ' on' : ''}" data-act="dkgo" data-id="${esc(r.id)}" aria-pressed="${r.id === m.cur}"><span aria-hidden="true">${r.ic}</span><b>${esc(r.n)}</b></button>`).join('')}${m.list.length < DK_MAX ? '<button class="dk-chip dk-plus" data-act="dknew" aria-label="Neuer Desktop" title="Neuer Desktop">+</button>' : ''}<button class="dk-chip dk-plus" data-act="dkopen" aria-label="Desktops verwalten" title="Desktops verwalten">⚙</button></nav>`;
   }
   ACTS.dkgo = id => {
@@ -13165,6 +14220,24 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
       <div class="row"><button class="btn primary" data-act="dknew"${m.list.length >= DK_MAX ? ' disabled' : ''}>+ Neuer Desktop</button><button class="btn" data-act="dlgclose">Schließen</button></div>`);
   }
   ACTS.dkopen = () => dkManageDlg();
+  // Notausgang 1: auf dem jetzigen Desktop wieder alle Cases und Bereiche zeigen
+  ACTS.dkshowall = () => {
+    const r = dkCurRec(); if (!r) return;
+    r.cases = null; dkSetHiddenTabs(r, []); saveMeta(true);
+    dkApplyTabs(); SFX.play('pop'); toast('Auf diesem Desktop ist jetzt alles sichtbar.');
+    if (current === 'set') renderSetAll(); else refresh();
+  };
+  // Notausgang 2: nur den jetzigen Desktop behalten (Startseite und Look bleiben), alle Cases und Bereiche wieder sichtbar
+  ACTS.dkreset = async () => {
+    const m = dkMeta(); if (!m) return;
+    if (!DK.armReset) { DK.armReset = true; renderSetAll(); setTimeout(() => { if (DK.armReset) { DK.armReset = false; if (current === 'set') renderSetAll(); } }, 3500); return; }
+    DK.armReset = false;
+    const refs = []; m.list.forEach(x => { if (x.id !== m.cur && x.d) atRefsOf(x.d).forEach(y => refs.push(y)); });
+    delete S.meta.dk; DK_META_SEEN = null; DK_SET = null; S.meta.htab = [];
+    saveMeta(true); dkApplyTabs(); SFX.play('back'); toast('Es gibt jetzt nur noch einen Desktop. Alle Cases und Bereiche sind sichtbar.');
+    if (current === 'set') renderSetAll(); else refresh();
+    for (const ref of [...new Set(refs)]) await mediaDrop(ref);
+  };
   const dkMoveRec = (id, d) => { const m = dkMeta(); if (!m) return; const i = m.list.findIndex(r => r.id === id), j = i + d; if (i < 0 || j < 0 || j >= m.list.length) return; [m.list[i], m.list[j]] = [m.list[j], m.list[i]]; saveMeta(true); SFX.play('pop'); dkManageDlg(); if (current === 'home') homeRender(); };
   ACTS.dkleft = id => dkMoveRec(id, -1);
   ACTS.dkright = id => dkMoveRec(id, 1);
@@ -13190,9 +14263,10 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
       <label class="field"><span>${!e.id && e.n0 != null ? 'Name des neuen Desktops' : 'Name'}</span><input type="text" id="dk-name" maxlength="20" value="${esc(e.n)}" autocomplete="off" placeholder="z. B. Real Life"></label>
       <div class="field"><span>Symbol</span><div class="chips">${DK_ICONS.map(i => `<button class="chip dk-icb${e.ic === i ? ' on' : ''}" data-act="dkic" data-id="${i}" aria-pressed="${e.ic === i}">${i}</button>`).join('')}</div></div>
       ${e.id ? '' : `<div class="field"><span>Start</span><div class="chips"><button class="chip${e.start === 'blank' ? ' on' : ''}" data-act="dkstart" data-id="blank" aria-pressed="${e.start === 'blank'}">Leer</button><button class="chip${e.start === 'copy' ? ' on' : ''}" data-act="dkstart" data-id="copy" aria-pressed="${e.start === 'copy'}">Kopie von hier</button></div><small class="muted">Leer startet mit frischem Home und Standard-Look. Eine Kopie übernimmt Widgets und Aussehen dieses Desktops.</small></div>`}
-      <div class="field"><span>Sichtbare Bereiche</span><div class="chips">${TAB_LIST.map(([k, n]) => { const on = e.hid.indexOf(k) < 0; return `<button class="chip${on ? ' on' : ''}" data-act="dktab" data-id="${k}" aria-pressed="${on}">${n}</button>`; }).join('')}</div></div>
-      <div class="field"><span>Cases</span><div class="chips"><button class="chip${e.all ? ' on' : ''}" data-act="dkall" aria-pressed="${e.all}">Alle Cases</button>${e.all ? '' : '<button class="chip" data-act="dkselall">Alle wählen</button><button class="chip" data-act="dkselnone">Keins</button>'}</div>
+      <div class="field"><span>Sichtbare Bereiche</span><div class="chips">${TAB_LIST.map(([k, n]) => { const on = e.hid.indexOf(k) < 0; return `<button class="chip${on ? ' on' : ''}" data-act="dktab" data-id="${k}" aria-pressed="${on}">${on ? '✓' : '✕'} ${n}</button>`; }).join('')}</div><small class="muted">Haken = sichtbar, Kreuz = auf diesem Desktop ausgeblendet.</small></div>
+      <div class="field"><span>Cases</span><div class="chips"><button class="chip${e.all ? ' on' : ''}" data-act="dkall" aria-pressed="${e.all}">${e.all ? '✓ ' : ''}Alle Cases zeigen</button>${e.all ? '' : '<button class="chip" data-act="dkselall">Alle wählen</button><button class="chip" data-act="dkselnone">Keins</button>'}</div>
         ${e.all ? '' : (own.length ? `<div class="chips dk-cases">${own.map(c => { const on = e.sel.has(c.id); return `<button class="chip${on ? ' on' : ''}" data-act="dkcase" data-id="${esc(c.id)}" aria-pressed="${on}">${esc(c.name)}</button>`; }).join('')}</div>` : '<small class="muted">Du hast noch kein eigenes Case.</small>')}
+        ${e.all ? '<small class="muted">Dieser Desktop zeigt alle deine Cases, auch neue.</small>' : '<small class="muted">Nur die markierten Cases sind hier sichtbar.</small>'}
         ${e.all ? '' : '<small class="muted">Das Standard-Case ist auf jedem Desktop da. Neue Cases gehören dem Desktop, auf dem du sie anlegst.</small>'}</div>
       <div class="row"><button class="btn primary" data-act="dksave">${e.id ? 'Speichern' : 'Anlegen'}</button><button class="btn" data-act="dkcancel">Abbrechen</button></div>
       ${canDel ? `<div class="row"><button class="btn small danger" data-act="dkdel">${DK.armDel === e.id ? 'Wirklich löschen?' : 'Desktop löschen'}</button></div>` : ''}`);
@@ -13255,7 +14329,9 @@ const infoWild = (G, s, text) => `<li><span class="sc-i">${gmImg(G, s)}</span> <
   function dkSetHTML() {
     const m = dkMeta(), cur = dkCurRec();
     return `${dkIntro}${m && cur ? `<p class="note" style="max-width:none">Aktiv: <b>${cur.ic} ${esc(cur.n)}</b> · ${m.list.length} Desktop${m.list.length === 1 ? '' : 's'}</p>` : ''}
-      <div class="row left"><button class="btn" data-act="dkopen">Desktops verwalten</button><button class="btn primary" data-act="dknew">Neuer Desktop</button></div>`;
+      <div class="row left"><button class="btn" data-act="dkopen">Desktops verwalten</button><button class="btn primary" data-act="dknew">Neuer Desktop</button></div>
+      ${m && m.list.length > 1 ? `<div class="row left"><button class="btn small" data-act="dkshowall">Alle Cases und Bereiche hier zeigen</button><button class="btn small${DK.armReset ? ' danger' : ''}" data-act="dkreset">${DK.armReset ? 'Wirklich? Andere Desktops werden gelöscht' : 'Nur diesen Desktop behalten'}</button></div>
+      <p class="note" style="max-width:none">Fehlt dir etwas? Dann ist es auf diesem Desktop ausgeblendet. „Alle Cases und Bereiche hier zeigen“ holt alles zurück. Cases, Karten und Startoken gehen durch Desktops nie verloren.</p>` : ''}`;
   }
   { const i = SET_SECS.findIndex(s => s.id === 'look'); SET_SECS.splice(i < 0 ? SET_SECS.length : i + 1, 0, { id: 'desk', t: 'Desktops', ic: '🖥️', d: 'Mehrere Startseiten', body: dkSetHTML }); }
 
