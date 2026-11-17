@@ -1,4 +1,4 @@
-// JopenBox Service Worker: haelt die App offline verfuegbar. Build: 2026-11-05 04:44:28
+// JopenBox Service Worker: haelt die App offline verfuegbar. Build: 2026-11-17 19:27:24
 const SHELL_CACHE = 'jopenbox-shell';
 const FONT_CACHE = 'jopenbox-fonts';
 const SHELL = ['index.html', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
